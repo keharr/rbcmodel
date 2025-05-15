@@ -1,11 +1,18 @@
 Package: rbcmodel
-Title: What the Package Does (One Line, Title Case)
+Title: Model Rubisco Carboxylation Rate Across Temperature, CO2, and O2
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Authors@R: c(
+    person("Kaitlin", "Harrison", email = "k.harrison.sci@gmail.com", role = c("aut", "cre"))
+    person("Wing-Ho", "Ko", email = "", role = "aut"))
+Description: 'rbcmodel' collects published kinetics of Rubisco and uses these
+    kinetics to model the carboxylation rate across CO2 and O2 concentrations
+    and different temperatures. The carboxylation rate can be modeled as the
+    gross rate or the net rate, which takes into account the oxygenase
+    activity of the enzyme using one of the two known phosphoglycolate
+    salvage pathways. Custom enzymes and temperature dependences can be
+    created with user kinetics, or published kinetics can be accessed through
+    a meta-analysis contained within the package.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
