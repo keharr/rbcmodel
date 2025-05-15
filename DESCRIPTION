@@ -3,7 +3,7 @@ Title: Model Rubisco Carboxylation Rate Across Temperature, CO2, and O2
 Version: 0.0.0.9000
 Authors@R: c(
     person("Kaitlin", "Harrison", email = "k.harrison.sci@gmail.com", role = c("aut", "cre"))
-    person("Wing-Ho", "Ko", email = "", role = "aut"))
+    person("Wing-Ho", "Ko", email = "winghoko@alum.mit.edu", role = "aut"))
 Description: 'rbcmodel' collects published kinetics of Rubisco and uses these
     kinetics to model the carboxylation rate across CO2 and O2 concentrations
     and different temperatures. The carboxylation rate can be modeled as the
