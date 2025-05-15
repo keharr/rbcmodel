@@ -8,9 +8,9 @@ instance}
 modify_DHScale(
   the_DHScale,
   kcat_dH = NULL,
-  kc_dH = NULL,
-  ko_dH = NULL,
-  s_dH = NULL,
+  Kc_dH = NULL,
+  Ko_dH = NULL,
+  S_dH = NULL,
   name = NULL
 )
 }
@@ -20,11 +20,11 @@ instance on.}
 
 \item{kcat_dH}{if not NULL, the kcat_dH value for the new instance}
 
-\item{kc_dH}{if not NULL, the kc_dH value for the new instance}
+\item{Kc_dH}{if not NULL, the Kc_dH value for the new instance}
 
-\item{ko_dH}{if not NULL, the ko_dH value for the new instance}
+\item{Ko_dH}{if not NULL, the Ko_dH value for the new instance}
 
-\item{s_dH}{if not NULL, the s_dH value for the new instance}
+\item{S_dH}{if not NULL, the S_dH value for the new instance}
 
 \item{name}{if not NULL, the identifier ("name") for the new instance}
 }

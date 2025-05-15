@@ -7,13 +7,13 @@
 modify_enzyme(
   the_enzyme,
   kcat_val = NULL,
-  kc_val = NULL,
-  ko_val = NULL,
-  s_val = NULL,
+  Kc_val = NULL,
+  Ko_val = NULL,
+  S_val = NULL,
   kcat_T = NULL,
-  kc_T = NULL,
-  ko_T = NULL,
-  s_T = NULL,
+  Kc_T = NULL,
+  Ko_T = NULL,
+  S_T = NULL,
   name = NULL
 )
 }
@@ -22,19 +22,19 @@ modify_enzyme(
 
 \item{kcat_val}{if not NULL, the kcat_val value for the new instance}
 
-\item{kc_val}{if not NULL, the kc_val value for the new instance}
+\item{Kc_val}{if not NULL, the Kc_val value for the new instance}
 
-\item{ko_val}{if not NULL, the ko_val value for the new instance}
+\item{Ko_val}{if not NULL, the Ko_val value for the new instance}
 
-\item{s_val}{if not NULL, the s_val value for the new instance}
+\item{S_val}{if not NULL, the S_val value for the new instance}
 
 \item{kcat_T}{if not NULL, the kcat_T value for the new instance}
 
-\item{kc_T}{if not NULL, the kc_T value for the new instance}
+\item{Kc_T}{if not NULL, the Kc_T value for the new instance}
 
-\item{ko_T}{if not NULL, the ko_T value for the new instance}
+\item{Ko_T}{if not NULL, the Ko_T value for the new instance}
 
-\item{s_T}{if not NULL, the s_T value for the new instance}
+\item{S_T}{if not NULL, the S_T value for the new instance}
 
 \item{name}{if not NULL, the identifier ("name") for the new instance}
 }
@@ -51,6 +51,6 @@ each 'enzyme' attribute, see the documentation of \code{\link[=new_enzyme]{new_e
 \examples{
 pro_enzyme <- new_enzyme(6.6, 144, 394, 10.8, name="pro") # new instance
 print(pro_enzyme) # printout enzyme info
-pro_worse_enzyme <- modify_enzyme(pro_enzyme, kcat_val=2, kc_val=310, name="pro_worse")
+pro_worse_enzyme <- modify_enzyme(pro_enzyme, kcat_val=2, Kc_val=310, name="pro_worse")
 print(pro_worse_enzyme) # printout modified enzyme info
 }

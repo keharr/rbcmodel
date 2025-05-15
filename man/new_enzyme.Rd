@@ -6,14 +6,14 @@
 \usage{
 new_enzyme(
   kcat_val,
-  kc_val,
-  ko_val,
-  s_val,
+  Kc_val,
+  Ko_val,
+  S_val,
   temp = 25,
   kcat_T = NULL,
-  kc_T = NULL,
-  ko_T = NULL,
-  s_T = NULL,
+  Kc_T = NULL,
+  Ko_T = NULL,
+  S_T = NULL,
   name = ""
 )
 }
@@ -23,30 +23,30 @@ reaction (in s^-1). kcat represents the number of reactions per second a
 single active site can perform. The temperature at which it was measured
 can be found in kcat_T (if present) or temp.}
 
-\item{kc_val}{The measured value of Kc (in uM). Kc is the Michaelis constant
+\item{Kc_val}{The measured value of Kc (in uM). Kc is the Michaelis constant
 of Rubisco for CO2, or its affinity for CO2. The temperature at which it
-was measured can be found in kc_T (if present) or temp.}
+was measured can be found in Kc_T (if present) or temp.}
 
-\item{ko_val}{The measured value of Ko (in uM). Ko is the Michaelis constant
+\item{Ko_val}{The measured value of Ko (in uM). Ko is the Michaelis constant
 of Rubisco for O2, or its affinity for O2. The temperature at which it
-was measured can be found in ko_T (if present) or temp.}
+was measured can be found in Ko_T (if present) or temp.}
 
-\item{s_val}{The measured value of Sc/o (unitless). Sc/o is the specificity of
+\item{S_val}{The measured value of Sc/o (unitless). Sc/o is the specificity of
 Rubisco for CO2 versus O2. The temperature at which it was measured can be
-found in s_T (if present) or temp.}
+found in S_T (if present) or temp.}
 
 \item{temp}{The common temperature (in celsius) at which the kinetic
 constants are measured. Can be overridden by the more specialized
-arguments kcat_T, kc_T, ko_T, and s_T. If NULL these 4 arguments are
+arguments kcat_T, Kc_T, Ko_T, and S_T. If NULL these 4 arguments are
 used to specify temperatures.}
 
 \item{kcat_T}{The temperature (in celsius) at which kcat_val is measured.}
 
-\item{kc_T}{The temperature (in celsius) at which kc_val is measured.}
+\item{Kc_T}{The temperature (in celsius) at which Kc_val is measured.}
 
-\item{ko_T}{The temperature (in celsius) at which ko_val is measured.}
+\item{Ko_T}{The temperature (in celsius) at which Ko_val is measured.}
 
-\item{s_T}{The temperature (in celsius) at which s_val is measured.}
+\item{S_T}{The temperature (in celsius) at which S_val is measured.}
 
 \item{name}{An identifier ("name") of the enzyme instance.}
 }

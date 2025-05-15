@@ -4,17 +4,17 @@
 \alias{new_DHScale}
 \title{Constructor for the S3 class 'DHScale'.}
 \usage{
-new_DHScale(kcat_dH, kc_dH, ko_dH, s_dH, name = "")
+new_DHScale(kcat_dH, Kc_dH, Ko_dH, S_dH, name = "")
 }
 \arguments{
 \item{kcat_dH}{The temperature scaling constant of kcat for the carboxylation
 reaction, also known as the activation energy (in kJ/mol).}
 
-\item{kc_dH}{The temperature scaling constant of Kc (in kJ/mol).}
+\item{Kc_dH}{The temperature scaling constant of Kc (in kJ/mol).}
 
-\item{ko_dH}{The temperature scaling constant of Ko (in kJ/mol).}
+\item{Ko_dH}{The temperature scaling constant of Ko (in kJ/mol).}
 
-\item{s_dH}{The temperature scaling constant of Sc/o (in kJ/mol).}
+\item{S_dH}{The temperature scaling constant of Sc/o (in kJ/mol).}
 
 \item{name}{An identifier ("name") of the scale instance.}
 }

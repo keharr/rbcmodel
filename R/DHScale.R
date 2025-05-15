@@ -9,23 +9,23 @@
 #'
 #' @param kcat_dH The temperature scaling constant of kcat for the carboxylation
 #'   reaction, also known as the activation energy (in kJ/mol).
-#' @param kc_dH The temperature scaling constant of Kc (in kJ/mol).
-#' @param ko_dH The temperature scaling constant of Ko (in kJ/mol).
-#' @param s_dH The temperature scaling constant of Sc/o (in kJ/mol).
+#' @param Kc_dH The temperature scaling constant of Kc (in kJ/mol).
+#' @param Ko_dH The temperature scaling constant of Ko (in kJ/mol).
+#' @param S_dH The temperature scaling constant of Sc/o (in kJ/mol).
 #' @param name An identifier ("name") of the scale instance.
 #' @returns A new 'DHScale' instance.
 #' @export
 #' @examples
 #' new_DHScale(40.1, 38.8, 26.7, -27.4, name = "Form Ia, cyanobacteria")
-new_DHScale <- function(kcat_dH, kc_dH, ko_dH, s_dH, name = "") {
+new_DHScale <- function(kcat_dH, Kc_dH, Ko_dH, S_dH, name = "") {
 
   # initialize kinetic values
   a_DHScale <- list(
     name = name,
     kcat_dH = kcat_dH,
-    kc_dH = kc_dH,
-    ko_dH = ko_dH,
-    s_dH = s_dH
+    Kc_dH = Kc_dH,
+    Ko_dH = Ko_dH,
+    S_dH = S_dH
   )
 
   # add the S3 class "DHScale" to the object
@@ -54,14 +54,14 @@ check_DHScale <- function(the_DHScale) {
   if (!is.numeric(the_DHScale$kcat_dH)) {
     stop("The value of kcat_dH must be numeric", call. = FALSE)
   }
-  if (!is.numeric(the_DHScale$kc_dH)) {
-    stop("The value of kc_dH must be numeric", call. = FALSE)
+  if (!is.numeric(the_DHScale$Kc_dH)) {
+    stop("The value of Kc_dH must be numeric", call. = FALSE)
   }
-  if (!is.numeric(the_DHScale$ko_dH)) {
-    stop("The value of ko_dH must be numeric", call. = FALSE)
+  if (!is.numeric(the_DHScale$Ko_dH)) {
+    stop("The value of Ko_dH must be numeric", call. = FALSE)
   }
-  if (!is.numeric(the_DHScale$s_dH)) {
-    stop("The value of s_dH must be numeric", call. = FALSE)
+  if (!is.numeric(the_DHScale$S_dH)) {
+    stop("The value of S_dH must be numeric", call. = FALSE)
   }
 
   # return the DHScale if all tests are passed
@@ -93,9 +93,9 @@ print.DHScale <- function(x, unicode = TRUE, ...) {
   }
   cat(paste0(DH_char, ' scaling "', the_DHScale$name, '":\n'))
   cat(paste0("  ", DH_char2, "_kcat = ", the_DHScale$kcat_dH, "kJ/mol\n"))
-  cat(paste0("  ", DH_char2, "_kc = ", the_DHScale$kc_dH, "kJ/mol\n"))
-  cat(paste0("  ", DH_char2, "_ko = ", the_DHScale$ko_dH, "kJ/mol\n"))
-  cat(paste0("  ", DH_char2, "_s = ", the_DHScale$s_dH, "kJ/mol\n"))
+  cat(paste0("  ", DH_char2, "_Kc = ", the_DHScale$Kc_dH, "kJ/mol\n"))
+  cat(paste0("  ", DH_char2, "_Ko = ", the_DHScale$Ko_dH, "kJ/mol\n"))
+  cat(paste0("  ", DH_char2, "_S = ", the_DHScale$S_dH, "kJ/mol\n"))
 }
 
 #' Create a new instance of S3 class 'DHScale', starting from a previous
@@ -110,9 +110,9 @@ print.DHScale <- function(x, unicode = TRUE, ...) {
 #' @param the_DHScale the previous 'DHScale' instance to base the new
 #'   instance on.
 #' @param kcat_dH if not NULL, the kcat_dH value for the new instance
-#' @param kc_dH if not NULL, the kc_dH value for the new instance
-#' @param ko_dH if not NULL, the ko_dH value for the new instance
-#' @param s_dH if not NULL, the s_dH value for the new instance
+#' @param Kc_dH if not NULL, the Kc_dH value for the new instance
+#' @param Ko_dH if not NULL, the Ko_dH value for the new instance
+#' @param S_dH if not NULL, the S_dH value for the new instance
 #' @param name if not NULL, the identifier ("name") for the new instance
 #' @returns a new instance of the S3 class 'DHScale'.
 #' @export
@@ -123,7 +123,7 @@ print.DHScale <- function(x, unicode = TRUE, ...) {
 #' print(tmrIA_DHScale) # printout modified DHScale info
 #'
 modify_DHScale <- function(
-  the_DHScale, kcat_dH = NULL, kc_dH = NULL, ko_dH = NULL, s_dH = NULL, 
+  the_DHScale, kcat_dH = NULL, Kc_dH = NULL, Ko_dH = NULL, S_dH = NULL, 
   name = NULL
 ) {
 
@@ -133,14 +133,14 @@ modify_DHScale <- function(
   if (!is.null(kcat_dH)) {
     the_DHScale$kcat_dH <- kcat_dH
   }
-  if (!is.null(kc_dH)) {
-    the_DHScale$kc_dH <- kc_dH
+  if (!is.null(Kc_dH)) {
+    the_DHScale$Kc_dH <- Kc_dH
   }
-  if (!is.null(ko_dH)) {
-    the_DHScale$ko_dH <- ko_dH
+  if (!is.null(Ko_dH)) {
+    the_DHScale$Ko_dH <- Ko_dH
   }
-  if (!is.null(s_dH)) {
-    the_DHScale$s_dH <- s_dH
+  if (!is.null(S_dH)) {
+    the_DHScale$S_dH <- S_dH
   }
   if (!is.null(name)) {
     the_DHScale$name <- name

@@ -63,21 +63,21 @@ CO2_dependence <- function(enzyme, DHScale, pathway) {
   kcat_val <- enzyme$kcat_val
   kcat_dH <- DHScale$kcat_dH
   kcat_T <- enzyme$kcat_T
-  kc_val <- enzyme$kc_val
-  kc_dH <- DHScale$kc_dH
-  kc_T <- enzyme$kc_T
-  ko_val <- enzyme$ko_val
-  ko_dH <- DHScale$ko_dH
-  ko_T <- enzyme$ko_T
-  s_val <- enzyme$s_val
-  s_dH <- DHScale$s_dH
-  s_T <- enzyme$s_T
+  Kc_val <- enzyme$Kc_val
+  Kc_dH <- DHScale$Kc_dH
+  Kc_T <- enzyme$Kc_T
+  Ko_val <- enzyme$Ko_val
+  Ko_dH <- DHScale$Ko_dH
+  Ko_T <- enzyme$Ko_T
+  S_val <- enzyme$S_val
+  S_dH <- DHScale$S_dH
+  S_T <- enzyme$S_T
 
   # create temperature dependence function for each kinetic variable
   kcat <- kinetics_T_dep(kcat_val, kcat_dH, kcat_T)
-  kc <- kinetics_T_dep(kc_val, kc_dH, kc_T)
-  ko <- kinetics_T_dep(ko_val, ko_dH, ko_T)
-  s <- kinetics_T_dep(s_val, s_dH, s_T)
+  kc <- kinetics_T_dep(Kc_val, Kc_dH, Kc_T)
+  ko <- kinetics_T_dep(Ko_val, Ko_dH, Ko_T)
+  s <- kinetics_T_dep(S_val, S_dH, S_T)
 
   # use different formula depending on the pathway chosen
   if (pathway == "gross") {

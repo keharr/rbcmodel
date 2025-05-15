@@ -12,31 +12,31 @@
 #'   reaction (in s^-1). kcat represents the number of reactions per second a
 #'   single active site can perform. The temperature at which it was measured
 #'   can be found in kcat_T (if present) or temp.
-#' @param kc_val The measured value of Kc (in uM). Kc is the Michaelis constant
+#' @param Kc_val The measured value of Kc (in uM). Kc is the Michaelis constant
 #'   of Rubisco for CO2, or its affinity for CO2. The temperature at which it
-#'   was measured can be found in kc_T (if present) or temp.
-#' @param ko_val The measured value of Ko (in uM). Ko is the Michaelis constant
+#'   was measured can be found in Kc_T (if present) or temp.
+#' @param Ko_val The measured value of Ko (in uM). Ko is the Michaelis constant
 #'   of Rubisco for O2, or its affinity for O2. The temperature at which it
-#'   was measured can be found in ko_T (if present) or temp.
-#' @param s_val The measured value of Sc/o (unitless). Sc/o is the specificity of
+#'   was measured can be found in Ko_T (if present) or temp.
+#' @param S_val The measured value of Sc/o (unitless). Sc/o is the specificity of
 #'   Rubisco for CO2 versus O2. The temperature at which it was measured can be
-#'   found in s_T (if present) or temp.
+#'   found in S_T (if present) or temp.
 #' @param temp The common temperature (in celsius) at which the kinetic
 #'   constants are measured. Can be overridden by the more specialized
-#'   arguments kcat_T, kc_T, ko_T, and s_T. If NULL these 4 arguments are
+#'   arguments kcat_T, Kc_T, Ko_T, and S_T. If NULL these 4 arguments are
 #'   used to specify temperatures.
 #' @param kcat_T The temperature (in celsius) at which kcat_val is measured.
-#' @param kc_T The temperature (in celsius) at which kc_val is measured.
-#' @param ko_T The temperature (in celsius) at which ko_val is measured.
-#' @param s_T The temperature (in celsius) at which s_val is measured.
+#' @param Kc_T The temperature (in celsius) at which Kc_val is measured.
+#' @param Ko_T The temperature (in celsius) at which Ko_val is measured.
+#' @param S_T The temperature (in celsius) at which S_val is measured.
 #' @param name An identifier ("name") of the enzyme instance.
 #' @returns A new enzyme instance.
 #' @export
-#' @examples 
+#' @examples
 #' new_enzyme(6.6, 144, 394, 10.8, name="pro")
 new_enzyme <- function(
-  kcat_val, kc_val, ko_val, s_val, temp = 25,
-  kcat_T = NULL, kc_T = NULL, ko_T = NULL, s_T = NULL,
+  kcat_val, Kc_val, Ko_val, S_val, temp = 25,
+  kcat_T = NULL, Kc_T = NULL, Ko_T = NULL, S_T = NULL,
   name = ""
 ) {
 
@@ -44,32 +44,32 @@ new_enzyme <- function(
   an_enzyme <- list(
     name = name,
     kcat_val = kcat_val,
-    kc_val = kc_val,
-    ko_val = ko_val,
-    s_val = s_val
+    Kc_val = Kc_val,
+    Ko_val = Ko_val,
+    S_val = S_val
   )
 
   # if common temperature is supplied, associate it with
   # all kinetic variables
   if (!is.null(temp)) {
     an_enzyme$kcat_T <- temp
-    an_enzyme$kc_T <- temp
-    an_enzyme$ko_T <- temp
-    an_enzyme$s_T <- temp
+    an_enzyme$Kc_T <- temp
+    an_enzyme$Ko_T <- temp
+    an_enzyme$S_T <- temp
   }
 
   # override an associated temperature if an overriding value is supplied
   if (!is.null(kcat_T)) {
     an_enzyme$kcat_T <- kcat_T
   }
-  if (!is.null(kc_T)) {
-    an_enzyme$kc_T <- kc_T
+  if (!is.null(Kc_T)) {
+    an_enzyme$Kc_T <- Kc_T
   }
-  if (!is.null(ko_T)) {
-    an_enzyme$ko_T <- ko_T
+  if (!is.null(Ko_T)) {
+    an_enzyme$Ko_T <- Ko_T
   }
-  if (!is.null(s_T)) {
-    an_enzyme$s_T <- s_T
+  if (!is.null(S_T)) {
+    an_enzyme$S_T <- S_T
   }
 
   # add the S3 class "enzyme" to the object
@@ -98,26 +98,26 @@ check_enzyme <- function(the_enzyme) {
   if (!is.numeric(the_enzyme$kcat_val)) {
     stop("The value of kcat_val must be numeric", call. = FALSE)
   }
-  if (!is.numeric(the_enzyme$kc_val)) {
-    stop("The value of kc_val must be numeric", call. = FALSE)
+  if (!is.numeric(the_enzyme$Kc_val)) {
+    stop("The value of Kc_val must be numeric", call. = FALSE)
   }
-  if (!is.numeric(the_enzyme$ko_val)) {
-    stop("The value of ko_val must be numeric", call. = FALSE)
+  if (!is.numeric(the_enzyme$Ko_val)) {
+    stop("The value of Ko_val must be numeric", call. = FALSE)
   }
-  if (!is.numeric(the_enzyme$s_val)) {
-    stop("The value of s_val must be numeric", call. = FALSE)
+  if (!is.numeric(the_enzyme$S_val)) {
+    stop("The value of S_val must be numeric", call. = FALSE)
   }
   if (!is.numeric(the_enzyme$kcat_T)) {
     stop("The value of kcat_T must be numeric", call. = FALSE)
   }
-  if (!is.numeric(the_enzyme$kc_T)) {
-    stop("The value of kc_T must be numeric", call. = FALSE)
+  if (!is.numeric(the_enzyme$Kc_T)) {
+    stop("The value of Kc_T must be numeric", call. = FALSE)
   }
-  if (!is.numeric(the_enzyme$ko_T)) {
-    stop("The value of ko_T must be numeric", call. = FALSE)
+  if (!is.numeric(the_enzyme$Ko_T)) {
+    stop("The value of Ko_T must be numeric", call. = FALSE)
   }
-  if (!is.numeric(the_enzyme$s_T)) {
-    stop("The value of s_T must be numeric", call. = FALSE)
+  if (!is.numeric(the_enzyme$S_T)) {
+    stop("The value of S_T must be numeric", call. = FALSE)
   }
 
   # if pass, the object itself is returned
@@ -156,16 +156,16 @@ print.enzyme <- function(x, unicode = TRUE, ...) {
     " @ T_cat = ", the_enzyme$kcat_T, T_unit, "\n"
   ))
   cat(paste0(
-    "  k_c = ", the_enzyme$kc_val, k_unit,
-    " @ T_c = ", the_enzyme$kc_T, T_unit, "\n"
+    "  K_c = ", the_enzyme$Kc_val, k_unit,
+    " @ T_c = ", the_enzyme$Kc_T, T_unit, "\n"
   ))
   cat(paste0(
-    "  k_o = ", the_enzyme$ko_val, k_unit,
-    " @ T_o = ", the_enzyme$ko_T, T_unit, "\n"
+    "  K_o = ", the_enzyme$Ko_val, k_unit,
+    " @ T_o = ", the_enzyme$Ko_T, T_unit, "\n"
   ))
   cat(paste0(
-    "  s = ", the_enzyme$s_val,
-    " @ T_s = ", the_enzyme$s_T, T_unit, "\n"
+    "  S = ", the_enzyme$S_val,
+    " @ T_S = ", the_enzyme$S_T, T_unit, "\n"
   ))
 }
 
@@ -179,25 +179,25 @@ print.enzyme <- function(x, unicode = TRUE, ...) {
 #'
 #' @param the_enzyme the previous 'enzyme' instance to base the new instance on.
 #' @param kcat_val if not NULL, the kcat_val value for the new instance
-#' @param kc_val if not NULL, the kc_val value for the new instance
-#' @param ko_val if not NULL, the ko_val value for the new instance
-#' @param s_val if not NULL, the s_val value for the new instance
+#' @param Kc_val if not NULL, the Kc_val value for the new instance
+#' @param Ko_val if not NULL, the Ko_val value for the new instance
+#' @param S_val if not NULL, the S_val value for the new instance
 #' @param kcat_T if not NULL, the kcat_T value for the new instance
-#' @param kc_T if not NULL, the kc_T value for the new instance
-#' @param ko_T if not NULL, the ko_T value for the new instance
-#' @param s_T if not NULL, the s_T value for the new instance
+#' @param Kc_T if not NULL, the Kc_T value for the new instance
+#' @param Ko_T if not NULL, the Ko_T value for the new instance
+#' @param S_T if not NULL, the S_T value for the new instance
 #' @param name if not NULL, the identifier ("name") for the new instance
 #' @returns a new instance of the S3 class 'enzyme'.
 #' @export
 #' @examples
 #' pro_enzyme <- new_enzyme(6.6, 144, 394, 10.8, name="pro") # new instance
 #' print(pro_enzyme) # printout enzyme info
-#' pro_worse_enzyme <- modify_enzyme(pro_enzyme, kcat_val=2, kc_val=310, name="pro_worse")
+#' pro_worse_enzyme <- modify_enzyme(pro_enzyme, kcat_val=2, Kc_val=310, name="pro_worse")
 #' print(pro_worse_enzyme) # printout modified enzyme info
 modify_enzyme <- function(
   the_enzyme,
-  kcat_val = NULL, kc_val = NULL, ko_val = NULL, s_val = NULL,
-  kcat_T = NULL, kc_T = NULL, ko_T = NULL, s_T = NULL, name = NULL
+  kcat_val = NULL, Kc_val = NULL, Ko_val = NULL, S_val = NULL,
+  kcat_T = NULL, Kc_T = NULL, Ko_T = NULL, S_T = NULL, name = NULL
 ) {
 
   # NOTE: recall that R copy on edit
@@ -206,26 +206,26 @@ modify_enzyme <- function(
   if (!is.null(kcat_val)) {
     the_enzyme$kcat_val <- kcat_val
   }
-  if (!is.null(kc_val)) {
-    the_enzyme$kc_val <- kc_val
+  if (!is.null(Kc_val)) {
+    the_enzyme$Kc_val <- Kc_val
   }
-  if (!is.null(ko_val)) {
-    the_enzyme$ko_val <- ko_val
+  if (!is.null(Ko_val)) {
+    the_enzyme$Ko_val <- Ko_val
   }
-  if (!is.null(s_val)) {
-    the_enzyme$s_val <- s_val
+  if (!is.null(S_val)) {
+    the_enzyme$S_val <- S_val
   }
   if (!is.null(kcat_T)) {
     the_enzyme$kcat_T <- kcat_T
   }
-  if (!is.null(kc_T)) {
-    the_enzyme$kc_T <- kc_T
+  if (!is.null(Kc_T)) {
+    the_enzyme$Kc_T <- Kc_T
   }
-  if (!is.null(ko_T)) {
-    the_enzyme$ko_T <- ko_T
+  if (!is.null(Ko_T)) {
+    the_enzyme$Ko_T <- Ko_T
   }
-  if (!is.null(s_T)) {
-    the_enzyme$s_T <- s_T
+  if (!is.null(S_T)) {
+    the_enzyme$S_T <- S_T
   }
   if (!is.null(name)) {
     the_enzyme$name <- name
@@ -233,4 +233,218 @@ modify_enzyme <- function(
 
   # return the modified instance
   the_enzyme
+}
+
+#' Create an Enzyme instance by looking up the relevant data in database
+#'
+#' @param id_name the name of identifier used to pull out a single record
+#'   out of the database
+#' @param id_col the name of the column from which the id_name will be searched
+#'   for within the database
+#' @param enzyme_name the name of the enzyme instance. If NULL the value is
+#'   defaulted to id_name
+#' @param data the database to search from. Can be "abridged", "comprehensive",
+#'   NULL, or a data.frame. If NULL, the abridged table is first searched and
+#'   if no entry is found the comprehensive table is searched.
+#'   NOTE: if a custom data.frame is supplied, it is assumed to have columns
+#'   named "kcat_val", "Kc_val", "Ko_val", and "S_val". In addition, it may
+#'   have optional columns named "temp", "kcat_T", "Kc_T", "Ko_T", and "S_T"
+#' @returns a new Enzyme instance
+#' @export
+#' @examples
+#' biuncialis <- Enzyme("biuncialis_prins_2016") # retrieved from abridged database
+#' # specify enzyme using species name
+#' vavilovii <- Enzyme("vavilovii", "Species", data="comprehensive")
+Enzyme <- function(id_name, id_col="identifier", enzyme_name=NULL, data=NULL){
+
+  if (is.null(enzyme_name)){ enzyme_name = id_name }
+
+  # translate name to the actual database
+  if (is.character(data)){
+    if (data == "abrdiged"){
+      data <- abridged
+    } else if (data=="comprehensive"){
+      data <- Rubisco_kinetics
+    }
+  }
+
+  # work through abridged then Rubisco_kinetics if data=NULL
+  if (is.null(data)){
+
+    data_sub <- abridged
+
+    if (!is.null(id_col)){
+      data_sub <- data_sub[
+        !is.na(data_sub[[id_col]]) & data_sub[[id_col]] == id_name
+        , ]
+    }
+
+    if (nrow(data_sub) == 0){
+
+      data_sub <- Rubisco_kinetics
+
+      if (!is.null(id_col)){
+        data_sub <- data_sub[
+          !is.na(data_sub[[id_col]]) & data_sub[[id_col]] == id_name
+          , ]
+      }
+    }
+
+  } else if (!is.null(id_col)){ # now handle the non-NULL case
+    data_sub <- data[
+      !is.na(data[[id_col]]) & data[[id_col]] == id_name
+      , ]
+  } else {
+    data_sub <- data
+  }
+
+  if (nrow(data_sub) == 0){
+    stop("No entry found. Abort.")
+  } else if (nrow(data_sub) > 1) {
+    print(data_sub)
+    stop("Multiple entries found. Abort.")
+  }
+
+  cols <- colnames(data)
+
+  if ("kcat_T" %in% cols){ kcat_T = data_sub$kcat_T } else { kcat_T = NULL}
+  if ("Kc_T" %in% cols){ Kc_T = data_sub$Kc_T } else { Kc_T = NULL }
+  if ("Ko_T" %in% cols){ Ko_T = data_sub$Ko_T } else { Ko_T = NULL }
+  if ("S_T" %in% cols){ S_T = data_sub$S_T } else { S_T = NULL }
+
+  if ("temp" %in% cols){
+    return(new_enzyme(
+      data_sub$kcat_val, data_sub$Kc_val, data_sub$Ko_val, data_sub$S_val,
+      data_sub$temp,
+      kcat_T = kcat_T, Kc_T = Kc_T, Ko_T = Ko_T, S_T = S_T,
+      name = enzyme_name
+    ))
+  } else {
+    return(new_enzyme(
+      data_sub$kcat_val, data_sub$Kc_val, data_sub$Ko_val, data_sub$S_val,
+      kcat_T = kcat_T, Kc_T = Kc_T, Ko_T = Ko_T, S_T = S_T,
+      name = enzyme_name
+    ))
+  }
+}
+
+
+#' Search for data of Rubisco enzyme from the database
+#'
+#' Data is pulled either from the abridged table or the comprehensive table,
+#' both of which are included in this package
+#'
+#' @param string a string to search for in the database
+#' @param level the taxonomic level to search. Can be "alias", "genus", "species",
+#'   or NULL. If NULL, the search will proceed from alias to genus to species
+#'   until a match is found
+#' @param data the source data to search from. Can be "abridged", "comprehensive",
+#'   or NULL. If NULL, the search will proceed from abridged to comprehensive
+#'   until a match is found
+#' @param match whether to require complete match. Can be "complete" or "partial"
+#' @returns a tibble containing matching entries.
+#' @export
+#' @examples
+#' Aegilops <- search_enzyme("Aegilops", level="genus") # complete genus search
+#' print(Aegilops) # printout search results
+search_enzyme <- function(string, level=NULL, data=NULL, match="complete"){
+
+  out <- data.frame()
+
+  # First search for alias in abridged table
+  if (is.null(level) || tolower(level) == "alias"){;}
+
+  if (is.null(level) || tolower(level) == "genus"){
+
+    if (is.null(data) || tolower(data) == "abridged"){
+
+      # search the abridged table
+      if (tolower(match)=="complete"){
+        out <- abridged[
+          !is.na(abridged[["Genus"]]) &
+            (abridged[["Genus"]] == string)
+          , ]
+      } else {
+        out <- abridged[
+          !is.na(abridged[["Genus"]]) &
+            grepl(string, abridged[["Genus"]], fixed=TRUE)
+          , ]
+      }
+
+      # return if there's any match
+      if (nrow(out) > 0) {
+        message("Matched genus in abridged table")
+        return(out)
+      }
+    }
+
+    if (is.null(data) || tolower(data) == "comprehensive"){
+      # search the full table
+      if (tolower(match)=="complete"){
+        out <- Rubisco_kinetics[
+          !is.na(Rubisco_kinetics[["Genus"]]) &
+            (Rubisco_kinetics[["Genus"]] == string)
+          , ]
+      } else {
+        out <- Rubisco_kinetics[
+          !is.na(Rubisco_kinetics[["Genus"]]) &
+            grepl(string, Rubisco_kinetics[["Genus"]], fixed=TRUE)
+          , ]
+      }
+      if (nrow(out) > 0) {
+        message("Matched genus in comprehensive table")
+        return(out)
+      }
+    }
+
+  }
+
+  if (is.null(level) || tolower(level) == "species"){
+
+    if (is.null(data) || data == "abridged"){
+
+      # search the abridged table
+      if (tolower(match)=="complete"){
+        out <- abridged[
+          !is.na(abridged[["Species"]]) &
+            (abridged[["Species"]] == string)
+          , ]
+      } else {
+        out <- abridged[
+          !is.na(abridged[["Species"]]) &
+            grepl(string, abridged[["Species"]], fixed=TRUE)
+          , ]
+      }
+
+      # return if there's any match
+      if (nrow(out) > 0) {
+        message("Matched species in abridged table")
+        return(out)
+      }
+    }
+
+    if (is.null(data) || tolower(data) == "comprehensive"){
+      # search the full table
+      if (tolower(match)=="complete"){
+        out <- Rubisco_kinetics[
+          !is.na(Rubisco_kinetics[["Species"]]) &
+            (Rubisco_kinetics[["Species"]] == string)
+          , ]
+      } else {
+        out <- Rubisco_kinetics[
+          !is.na(Rubisco_kinetics[["Species"]]) &
+            grepl(string, Rubisco_kinetics[["Species"]], fixed=TRUE)
+          , ]
+      }
+
+      if (nrow(out) > 0) {
+        message("Matched species in comprehensive table")
+        return(out)
+      }
+    }
+  }
+
+  warning("No entry found")
+  return(NULL)
+
 }
