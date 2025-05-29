@@ -1,5 +1,8 @@
+#' Rubisco alias table
+"Rubisco_aliases"
+
 #' Abridged Rubisco kinetics data
-"abridged"
+"Rubisco_abridged"
 
 #' Comprehensive Rubisco kinetics data
-"Rubisco_kinetics"
+"Rubisco_25C"

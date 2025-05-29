@@ -254,7 +254,7 @@ modify_enzyme <- function(
 #' @examples
 #' biuncialis <- Enzyme("biuncialis_prins_2016") # retrieved from abridged database
 #' # specify enzyme using species name
-#' vavilovii <- Enzyme("vavilovii", "Species", data="comprehensive")
+#' vavilovii <- Enzyme("vavilovii", "species", data="comprehensive")
 Enzyme <- function(id_name, id_col="identifier", enzyme_name=NULL, data=NULL){
 
   if (is.null(enzyme_name)){ enzyme_name = id_name }
@@ -262,16 +262,16 @@ Enzyme <- function(id_name, id_col="identifier", enzyme_name=NULL, data=NULL){
   # translate name to the actual database
   if (is.character(data)){
     if (data == "abrdiged"){
-      data <- abridged
+      data <- Rubisco_abridged
     } else if (data=="comprehensive"){
-      data <- Rubisco_kinetics
+      data <- Rubisco_25C
     }
   }
 
   # work through abridged then Rubisco_kinetics if data=NULL
   if (is.null(data)){
 
-    data_sub <- abridged
+    data_sub <- Rubisco_abridged
 
     if (!is.null(id_col)){
       data_sub <- data_sub[
@@ -281,7 +281,7 @@ Enzyme <- function(id_name, id_col="identifier", enzyme_name=NULL, data=NULL){
 
     if (nrow(data_sub) == 0){
 
-      data_sub <- Rubisco_kinetics
+      data_sub <- Rubisco_25C
 
       if (!is.null(id_col)){
         data_sub <- data_sub[
@@ -328,6 +328,110 @@ Enzyme <- function(id_name, id_col="identifier", enzyme_name=NULL, data=NULL){
   }
 }
 
+#' Search for data of Rubisco enzyme alias from the database
+#'
+#' Data is pulled either from the abridged table or the comprehensive table,
+#' both of which are included in this package
+#'
+#' @param string a string to search for in the database
+#' @param data the source data to search from. Can be "abridged", "comprehensive",
+#'   or NULL. If NULL, the search will proceed from abridged to comprehensive
+#'   until a match is found
+#' @param match whether to require complete match. Can be "complete" or "partial"
+#' @returns a dataframe containing matching entries.
+search_alias <- function(string, data=NULL, match="complete"){
+
+  # search the alias table
+  if (tolower(match)=="complete"){
+    lookup <- Rubisco_aliases[
+      !is.na(Rubisco_aliases[["alternate_name"]]) &
+        (tolower(Rubisco_aliases[["alternate_name"]]) == tolower(string))
+      , ]
+  } else {
+    lookup <- Rubisco_aliases[
+      !is.na(Rubisco_aliases[["alternate_name"]]) &
+        grepl(tolower(string), tolower(Rubisco_aliases[["alternate_name"]]), fixed=TRUE)
+      , ]
+  }
+
+  if (nrow(lookup) == 0){
+    # warning("No matching alias found")
+    return(NULL)
+  }
+
+  message(paste0("Matched aliases: ", paste(lookup$alternate_name, collapse=", ")))
+
+  if (is.null(data) || tolower(data)=="abridged"){
+
+    out <- data.frame()
+
+    for (i in seq(1, nrow(lookup))){
+      src <- Rubisco_abridged
+      entry = lookup[i, ]
+      src <- src[
+        !is.na(src[["genus"]]) &
+          (src[["genus"]] == entry$genus_database)
+      , ]
+      if (!is.na(entry$species_database)){
+        src <- src[
+          !is.na(src[["species"]]) &
+            (src[["species"]] == entry$species_database)
+        , ]
+      }
+      if (!is.na(entry$subspecies_database)){
+        src <- src[
+          !is.na(src[["subspecies"]]) &
+            (src[["subspecies"]] == entry$subspecies_database)
+        , ]
+      }
+      out <- rbind(out, src)
+    }
+
+    if (nrow(out) > 0){
+      message("Data found in abridged table")
+      return(out)
+    }
+
+  }
+
+  if (is.null(data) || tolower(data)=="comprehensive"){
+
+    out <- data.frame()
+
+    for (i in seq(1, nrow(lookup))){
+      src <- Rubisco_25C
+      entry = lookup[i, ]
+      src <- src[
+        !is.na(src[["genus"]]) &
+          (src[["genus"]] == entry$genus_database)
+      , ]
+      if (!is.na(entry$species_database)){
+        src <- src[
+          !is.na(src[["species"]]) &
+            (src[["species"]] == entry$species_database)
+        , ]
+      }
+      if (!is.na(entry$subspecies_database)){
+        src <- src[
+          !is.na(src[["subspecies"]]) &
+            (src[["subspecies"]] == entry$subspecies_database)
+        , ]
+      }
+      out <- rbind(out, src)
+  }
+
+    if (nrow(out) > 0){
+      message("Data found in comprehensive table")
+      return(out)
+    }
+
+  }
+  
+  # warning("No entry found")
+  return(NULL)
+
+}
+
 
 #' Search for data of Rubisco enzyme from the database
 #'
@@ -352,7 +456,10 @@ search_enzyme <- function(string, level=NULL, data=NULL, match="complete"){
   out <- data.frame()
 
   # First search for alias in abridged table
-  if (is.null(level) || tolower(level) == "alias"){;}
+  if (is.null(level) || tolower(level) == "alias"){
+    result <- search_alias(string, data, match)
+    if (!is.null(result)){ return(result) }
+  }
 
   if (is.null(level) || tolower(level) == "genus"){
 
@@ -360,14 +467,14 @@ search_enzyme <- function(string, level=NULL, data=NULL, match="complete"){
 
       # search the abridged table
       if (tolower(match)=="complete"){
-        out <- abridged[
-          !is.na(abridged[["Genus"]]) &
-            (abridged[["Genus"]] == string)
+        out <- Rubisco_abridged[
+          !is.na(Rubisco_abridged[["genus"]]) &
+            (Rubisco_abridged[["genus"]] == string)
           , ]
       } else {
-        out <- abridged[
-          !is.na(abridged[["Genus"]]) &
-            grepl(string, abridged[["Genus"]], fixed=TRUE)
+        out <- Rubisco_abridged[
+          !is.na(Rubisco_abridged[["genus"]]) &
+            grepl(string, Rubisco_abridged[["genus"]], fixed=TRUE)
           , ]
       }
 
@@ -381,14 +488,14 @@ search_enzyme <- function(string, level=NULL, data=NULL, match="complete"){
     if (is.null(data) || tolower(data) == "comprehensive"){
       # search the full table
       if (tolower(match)=="complete"){
-        out <- Rubisco_kinetics[
-          !is.na(Rubisco_kinetics[["Genus"]]) &
-            (Rubisco_kinetics[["Genus"]] == string)
+        out <- Rubisco_25C[
+          !is.na(Rubisco_25C[["genus"]]) &
+            (Rubisco_25C[["genus"]] == string)
           , ]
       } else {
-        out <- Rubisco_kinetics[
-          !is.na(Rubisco_kinetics[["Genus"]]) &
-            grepl(string, Rubisco_kinetics[["Genus"]], fixed=TRUE)
+        out <- Rubisco_25C[
+          !is.na(Rubisco_25C[["genus"]]) &
+            grepl(string, Rubisco_25C[["genus"]], fixed=TRUE)
           , ]
       }
       if (nrow(out) > 0) {
@@ -405,14 +512,14 @@ search_enzyme <- function(string, level=NULL, data=NULL, match="complete"){
 
       # search the abridged table
       if (tolower(match)=="complete"){
-        out <- abridged[
-          !is.na(abridged[["Species"]]) &
-            (abridged[["Species"]] == string)
+        out <- Rubisco_abridged[
+          !is.na(Rubisco_abridged[["species"]]) &
+            (Rubisco_abridged[["species"]] == string)
           , ]
       } else {
-        out <- abridged[
-          !is.na(abridged[["Species"]]) &
-            grepl(string, abridged[["Species"]], fixed=TRUE)
+        out <- Rubisco_abridged[
+          !is.na(Rubisco_abridged[["species"]]) &
+            grepl(string, Rubisco_abridged[["species"]], fixed=TRUE)
           , ]
       }
 
@@ -426,14 +533,14 @@ search_enzyme <- function(string, level=NULL, data=NULL, match="complete"){
     if (is.null(data) || tolower(data) == "comprehensive"){
       # search the full table
       if (tolower(match)=="complete"){
-        out <- Rubisco_kinetics[
-          !is.na(Rubisco_kinetics[["Species"]]) &
-            (Rubisco_kinetics[["Species"]] == string)
+        out <- Rubisco_25C[
+          !is.na(Rubisco_25C[["species"]]) &
+            (Rubisco_25C[["species"]] == string)
           , ]
       } else {
-        out <- Rubisco_kinetics[
-          !is.na(Rubisco_kinetics[["Species"]]) &
-            grepl(string, Rubisco_kinetics[["Species"]], fixed=TRUE)
+        out <- Rubisco_25C[
+          !is.na(Rubisco_25C[["species"]]) &
+            grepl(string, Rubisco_25C[["species"]], fixed=TRUE)
           , ]
       }
 

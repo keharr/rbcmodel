@@ -32,5 +32,5 @@ Create an Enzyme instance by looking up the relevant data in database
 \examples{
 biuncialis <- Enzyme("biuncialis_prins_2016") # retrieved from abridged database
 # specify enzyme using species name
-vavilovii <- Enzyme("vavilovii", "Species", data="comprehensive")
+vavilovii <- Enzyme("vavilovii", "species", data="comprehensive")
 }
