@@ -1,0 +1,120 @@
+identifier,genus,species,subspecies,kcat dH,Kc dH,Ko dH,S dH,Form,Taxonomy,Note,short_ref
+1,Thalassiosira,weissflogii,,54.0507,,,,1D,Diatoms,,Young unpublished
+2,Thalassiosira,oceanica,,57.6962,,,,1D,Diatoms,,Young unpublished
+3,Fragilariopsis,cylindrus,,38.325,,,,1D,Diatoms,,Young unpublished
+4,Thermococcus,kodakariensis,,37.1,,,,3,Archaea,From Ezaki et al. 1999,Galmés 2015
+5,Thermochromatium,tepidum,,44,,,,,Proteobacteria,From Heda & Madigan 1988,Galmés 2015
+6,Allochromatium,vinosum,,57.9,,,,,Proteobacteria,From Heda & Madigan 1988,Galmés 2015
+7,Thiobacillus,endosymbiont,,39.7,,,,,Proteobacteria,From Stein and Felbeck 1993,Galmés 2015
+8,Thiomicrospira,thyasirae,,42,,,,,Proteobacteria,From Cook et al. 1991,Galmés 2015
+9,Cyanidium,caldarium,,76.3,,,,1D,Red algae,From Ford 1979,Galmés 2015
+10,Anabaena,variabilis,,57.3,,,,1Bc,Cyanobacteria,From Badger 1980,Galmés 2015
+11,Parathermosynechococcus,lividus,,35.2,,,,1Bc,Cyanobacteria,From Sheridan & Ulik 1976,Galmés 2015
+12,Synechococcus,strain a-1,,27.8,,,,1Bc,Cyanobacteria,From Yaguchi et al. 1992; probably related to Thermosynechococcus,Galmés 2015
+13,Chlamydomonas,reinhardtii,,24.4,,,,1B,Green algae,From Devos et al. 1998,Galmés 2015
+14,Chlorella,emersonii,,29,,,,1B,Green algae,From Ford 1979,Galmés 2015
+15,Chloromonas,strain ANT1,,26.4,,,,1B,Green algae,From Devos et al. 1998,Galmés 2015
+16,Chloromonas,strain ANT3,,26.9,,,,1B,Green algae,From Devos et al. 1998,Galmés 2015
+17,Alopecurus,alpinus,,62.5,,,,1B,C3 plants,From Tieszen & Sigurdson 1973,Galmés 2015
+18,Arctagrostis,latifolia,,50.5,,,,1B,C3 plants,From Tieszen & Sigurdson 1973,Galmés 2015
+19,Atriplex,glabriuscula,,69.3,,,,1B,C3 plants,From Badger & Collatz 1977,Galmés 2015
+20,Chenopodium,album,,52.9,,,,1B,C3 plants,From Sage et al. 1995,Galmés 2015
+21,Dupontia,fisheri,,55.8,,,,1B,C3 plants,From Tieszen & Sigurdson 1973,Galmés 2015
+22,Espeletia,schultzii,,45.1,,,,1B,C3 plants,From Castrillo 1995,Galmés 2015
+23,Pinus,sylvestris,,57.3,,,,1B,C3 plants,From Gezelius 1975,Galmés 2015
+24,Poa,arctica,,60.1,,,,1B,C3 plants,From Sage et al. 2002,Galmés 2015
+25,Poa,pratensis,,50.8,,,,1B,C3 plants,From Sage et al. 2002,Galmés 2015
+26,Solanum,tuberosum,,54.6,,,,1B,C3 plants,From Sage et al. 2002,Galmés 2015
+27,Spinacia,oleracea,,46.2,,,,1B,C3 plants,From Badger & Andrews 1974,Galmés 2015
+28,Triticum,aestivum,,58.1,,,,1B,C3 plants,From Makino et al. 1988,Galmés 2015
+29,Agropyron,smithii,,54.7,,,,1B,C3 plants,From Monson et al. 1982,Galmés 2015
+30,Arachis,hypogaea,,60.6,,,,1B,C3 plants,From Sage et al. 2002,Galmés 2015
+31,Astragalus,flavus,,84.4,,,,1B,C3 plants,From Weber et al. 1977,Galmés 2015
+32,Astragalus,rafaelensis,,78.8,,,,1B,C3 plants,From Weber et al. 1977,Galmés 2015
+33,Capsicum,chinense,,54.5,,,,1B,C3 plants,From Sage et al. 2002,Galmés 2015
+34,Flaveria,pringlei,,50.4,,,,1B,C3 plants,From Sage et al. 2002,Galmés 2015
+35,Glycine,max,,47.7,,,,1B,C3 plants,From Bowes et al. 1972,Galmés 2015
+36,Gossypium,hirsutum,,59.4,,,,1B,C3 plants,From Sage et al. 2002,Galmés 2015
+37,Nicotiana,tabacum,,51,,,,1B,C3 plants,From Crafts-Brandner & Salvucci 2000,Galmés 2015
+38,Oryza,sativa,,60.3,,,,1B,C3 plants,From Makino et al. 1988,Galmés 2015
+39,Pueraria,lobata,,63.8,,,,1B,C3 plants,From Sage et al. 2002,Galmés 2015
+40,Solanum,lycopersicum,,72.8,,,,1B,C3 plants,From Weber et al. 1977,Galmés 2015
+41,Stanleya,pinnata,,78.1,,,,1B,C3 plants,From Weber et al. 1977,Galmés 2015
+42,Trifolium,repens,,86.1,,,,1B,C3 plants,From Lenherr et al. 1985,Galmés 2015
+43,Amaranthus,retroflexus,,60.4,,,,1B,C4 plants,From Sage et al. 2002,Galmés 2015
+44,Andropogon,gerardii,,51.8,,,,1B,C4 plants,From Tieszen & Sigurdson 1973,Galmés 2015
+45,Bouteloua,gracilis,,51.8,,,,1B,C4 plants,From Pittermann & Sage 2000,Galmés 2015
+46,Cynodon,dactylon,,52.3,,,,1B,C4 plants,From Sage et al. 2002,Galmés 2015
+47,Digitaria,sanguinalis,,46.6,,,,1B,C4 plants,From Sage et al. 2002,Galmés 2015
+48,Flaveria,trinervia,,50.4,,,,1B,C4 plants,From Sage et al. 2002,Galmés 2015
+49,Muhlenbergia,montana,,52.7,,,,1B,C4 plants,From Sage et al. 2002,Galmés 2015
+50,Portulaca,oleracea,,53.7,,,,1B,C4 plants,From Sage et al. 2002,Galmés 2015
+51,Sorghum,bicolor,,58.1,,,,1B,C4 plants,From Tieszen & Sigurdson 1973,Galmés 2015
+52,Zoysia,japonica,,49.8,,,,1B,C4 plants,From Sage et al. 2002,Galmés 2015
+53,Rhodospirillum,rubrum,,,,,-18.8,2,Proteobacteria,From Jordan & Ogren 1984,Galmés 2016
+54,Thermosynechococcus,elongatus,BP-1,,,,-43,1B,Cyanobacteria,From Gubernator et al. 2008,Galmés 2016
+55,Synechococcus,elongatus,6301,,,,-11.7,1Bc,Cyanobacteria,From Zhu et al. 1998,Galmés 2016
+56,Galdieria,partita,Tokara,,,,-38.7,1D,Red algae,From Uemura et al. 1997,Galmés 2016
+57,Chaetoceros,socialis,,,,,-18.7,1D,Diatoms,From Haslam et al. 2005,Galmés 2016
+58,Skeletonema,costatum,,,,,-28.1,1D,Diatoms,From Haslam et al. 2005,Galmés 2016
+59,Thalassiosira,antarctica,,,,,-20.3,1D,Diatoms,From Haslam et al. 2005,Galmés 2016
+60,Thalassiosira,hyalina,,,,,-18.1,1B,C3 plants,From Haslam et al. 2005,Galmés 2016
+61,Atriplex,glabriuscula,,,32.4,34.6,-12.1,1B,C3 plants,From Badger & Collatz 1977,Galmés 2016
+62,Avena,sativa,cv. Forridena,,44.2,,-18.4,1B,C3 plants,From Hermida-Carrera et al. 2016,Galmés 2016
+63,Hordeum,vulgare,vulgare cv. Morex,,34.6,,-17.4,1B,C3 plants,From Hermida-Carrera et al. 2016,Galmés 2016
+64,Lysimachia,minoricensis,,,,,-21.4,1B,C3 plants,From Galmés et al. 2005,Galmés 2016
+65,Mentha,aquatica,,,,,-21.4,1B,C3 plants,From Galmés et al. 2005,Galmés 2016
+66,Spinacia,oleracea,,,,,-19.8,1B,C3 plants,From Uemura et al. 1997,Galmés 2016
+67,Spinacia,oleracea,,,,,-17.6,1B,C3 plants,From Zhu et al. 1998,Galmés 2016
+68,Spinacia,oleracea,,,50.2,0,-20.5,1B,C3 plants,From Jordan & Ogren 1984,Galmés 2016
+69,Spinacia,oleracea,cv. Torai,,,,-14.7,1B,C3 plants,From Yamori et al. 2006,Galmés 2016
+70,Triticum,aestivum,,,,,-20.5,1B,C3 plants,From Haslam et al. 2005,Galmés 2016
+71,Triticum,aestivum,cv. Cajeme?,,41.3,,-19.7,1B,C3 plants,From Hermida-Carrera et al. 2016,Galmés 2016
+72,Urtica,atrovirens,bianorii,,,,-21.1,1B,C3 plants,From Galmés et al. 2005,Galmés 2016
+73,Beta,maritima,marcosii,,,,-22,1B,C3 plants,From Galmés et al. 2005,Galmés 2016
+74,Beta,maritima,maritima,,,,-22.4,1B,C3 plants,From Galmés et al. 2005,Galmés 2016
+75,Diplotaxis,ibicensis,,,,,-24.9,1B,C3 plants,From Galmés et al. 2005,Galmés 2016
+76,Flaveria,cronquistii,,,51.8,,-19.5,1B,C3 plants,From Perdomo et al. 2015,Galmés 2016
+77,Flaveria,pringlei,,,,,-18.9,1B,C3 plants,From Zhu et al. 1998,Galmés 2016
+78,Flaveria,pringlei,,,38.6,,-20.8,1B,C3 plants,From Perdomo et al. 2015,Galmés 2016
+79,Hypericum,balearicum,,,,,-22.6,1B,C3 plants,From Galmés et al. 2005,Galmés 2016
+80,Kundmannia,sicula,,,,,-23.2,1B,C3 plants,From Galmés et al. 2005,Galmés 2016
+81,Limonium,gibertii,,,,,-24.1,1B,C3 plants,From Galmés et al. 2005,Galmés 2016
+82,Limonium,magallufianum,,,,,-24.3,1B,C3 plants,From Galmés et al. 2005,Galmés 2016
+83,Pistacia,lentiscus,,,,,-22,1B,C3 plants,From Galmés et al. 2005,Galmés 2016
+84,Rhamnus,alaternus,,,,,-22.8,1B,C3 plants,From Galmés et al. 2005,Galmés 2016
+85,Rhamnus,ludovici-salvatoris,,,,,-24,1B,C3 plants,From Galmés et al. 2005,Galmés 2016
+86,Trifolium,repens,,,48.9,9.3,-18,1B,C3 plants,Native ecotype; from Lehnherr et al. 1985,Galmés 2016
+87,Urtica,membranacea,,,,,-20.4,1B,C3 plants,From Galmés et al. 2005,Galmés 2016
+88,Flaveria,angustifolia,,,44,,-21.6,1B,C3-C4 plants,From Perdomo et al. 2015,Galmés 2016
+89,Flaveria,floridana,,,44.1,,-20.4,1B,C3-C4 plants,From Perdomo et al. 2015,Galmés 2016
+90,Amaranthus,hybridus,,,,,-27.9,1B,C4 plants,From Jordan & Ogren 1984,Galmés 2016
+91,Flaveria,bidentis,,,31.6,,-20,1B,C4 plants,From Perdomo et al. 2015,Galmés 2016
+92,Flaveria,trinervia,,,31.7,,-21.4,1B,C4 plants,From Perdomo et al. 2015,Galmés 2016
+93,Saccharum,officinarum,,,35.8,,-23,1B,C4 plants,From Hermida-Carrera et al. 2016,Galmés 2016
+94,Setaria,viridis,,,51.8,-4,-21.3,1B,C4 plants,From Boyd et al. 2015,Galmés 2016
+95,Zea,mays,cv. Carella,,22.9,,-20.1,1B,C4 plants,From Hermida-Carrera et al. 2016,Galmés 2016
+96,Anabaena,variabilis,M3,,38.8,,,1Bc,Cyanobacteria,From Badger 1980,Galmés 2016
+97,Espeletia,schultzii,,,23.7,,,1B,C3 plants,From Castrillo 1995,Galmés 2016
+98,Glycine,max,cv. Wayne,,37,-5.5,,1B,C3 plants,From Laing et al. 1974,Galmés 2016
+99,Oryza,sativa,indica x japonica hybrid,,58.4,,,1B,C3 plants,From Wei et al. 1994,Galmés 2016
+100,Flaveria,angustifolia,,50.8,48.2,,-25.6,1B,C3-C4 plants,,Perdomo 2015
+101,Flaveria,bidentis,,47.6,35.6,,-20.3,1B,C4 plants,,Perdomo 2015
+102,Flaveria,cronquistii,,54.1,56.7,,-22.2,1B,C3 plants,,Perdomo 2015
+103,Flaveria,floridana,,52.5,43.1,,-20.7,1B,C3-C4 plants,,Perdomo 2015
+104,Flaveria,pringlei,,53.9,41.6,,-20.1,1B,C3 plants,,Perdomo 2015
+105,Flaveria,trinervia,,48.8,35.6,,-20.8,1B,C4 plants,,Perdomo 2015
+106,Deschampsia,antarctica,,78.8,,,-15.9,1B,C3 plants,,Saez 2017
+107,Colobanthus,quitensis,,98.3,,,-19.3,1B,C3 plants,,Saez 2017
+108,,,,,,,,,,,Sharwood et al. 2016 (Temperature responses of Rubisco from Paniceae grasses…)
+109,,,,,,,,,,,Orr et al. 2016
+110,,,,,,,,,,,Prins et al. 2016
+111,,,,,,,,,,,Laing et al. 1974
+112,Average,1B,plant,58.1,41.1,26.7,-21.5,1B,,Ko from in vivo estimates; all others average Streptophyta presented in Galmes 2016,this study
+113,Average,1B,C3 plants (warm),64.5,46.1,26.7,-22,1B,C3 plants,Ko from in vivo estimates; all others average C3 warm Streptophyta presented in Galmes 2016,this study
+114,Average,1B,C3 plants (cool),55.3,40.5,26.7,-19.9,1B,C3 plants,Ko from in vivo estimates; all others average C3 cool Streptophyta presented in Galmes 2016,this study
+115,Average,1B,C4 plants,52.8,34.7,26.7,-22.3,1B,C4 plants,Ko from in vivo estimates; all others average C4 Streptophyta presented in Galmes 2016,this study
+116,Average,1A,proteo,47.2,40.8,26.7,-21.8,1A,Proteobacteria,kcat from average of 3/4 reported proteobacteria values; Kc average of all available values; Ko from in vivo estimates; Sc/o from average of all form I values,this study
+117,Average,1Ac,cyano,40.1,38.8,26.7,-27.4,1Ac,Cyanobacteria,Ko from in vivo estimates; all others average Cyanobacteria presented in Galmes 2016,this study
+118,Average,1Bc,,40.1,38.8,26.7,-27.4,1Bc,Cyanobacteria,Ko from in vivo estimates; all others average Cyanobacteria presented in Galmes 2016,this study
+119,Average,2,,52.9,40.8,26.7,-18.8,2,Proteobacteria,kcat from average of all values; Kc average of all values; Ko from in vivo estimates; Sc/o from R. rubrum,this study

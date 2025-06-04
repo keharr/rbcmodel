@@ -34,12 +34,15 @@ kinetics_T_dep <- function(std, delta_H, temp = 25) {
 #'
 #' @param enzyme An 'enzyme' object. (See enzyme class for more info.)
 #' @param DHScale A 'DHScale' object. (See DHScale class for more info.)
-#' @param pathway One of 'gross', 'canon', or 'alt'. This option allows you to
+#' @param pathway One of 'gross', 'canon', 'diatom', or 'alt'. This option allows you to
 #'   pick a stoichiometry for the phosphoglycolate salvage (PGS) pathway. If you
 #'   do not want to incorporate PGS, use the 'gross' option, while 'canon'
 #'   applies the C2 cycle/glycerate pathway stoichiometry (1 CO2 for
-#'   every 2 2-phosphoglycolate created). 'Alt' corresponds to the oxalyl-CoA or
+#'   every 2 2-phosphoglycolate created). 'alt' corresponds to the oxalyl-CoA or
 #'   malate cycle pathways (2 CO2 for every 2-phosphoglycolate created).
+#'   'diatom' corresponds to the proposed diatom-specific pathways, which do
+#'   not return 2-PG to the Calvin Cycle, but incorporate it directly into
+#'   biomass with the exception of 1 CO2 for every 2-phosphoglycolate created. 
 #' @returns A new function that models carbon output with three variables: CO2
 #'   (in uM), O2 (in uM), and temperature (in celsius).
 #' @export
@@ -51,8 +54,8 @@ kinetics_T_dep <- function(std, delta_H, temp = 25) {
 CO2_dependence <- function(enzyme, DHScale, pathway) {
 
   # check validity of pathway argument
-  if (is.null(pathway) || !pathway %in% c("gross", "canon", "alt")) {
-    stop("'pathway' argument must be one of: 'gross','canon', or 'alt'")
+  if (is.null(pathway) || !pathway %in% c("gross", "canon", "diatom", "alt")) {
+    stop("'pathway' argument must be one of: 'gross','canon', 'diatom', or 'alt'")
   }
 
   # validate input
@@ -91,6 +94,10 @@ CO2_dependence <- function(enzyme, DHScale, pathway) {
   } else if (pathway == "alt") {
     out_func <- function(CO2 ,O2, temp) {
       kcat(temp) * (CO2 / (CO2 + kc(temp) + kc(temp) * (O2 / ko(temp)))) * (1 - 2 * O2 / (s(temp) * CO2))
+    }
+  } else if (pathway == "diatom") {
+    out_func <- function(CO2, O2, temp) {
+      kcat(temp) * (CO2 / (CO2 + kc(temp) + kc(temp) * (O2 / ko(temp)))) * (1 - O2 / (s(temp) * CO2))
     }
   }
 
