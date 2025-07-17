@@ -5,7 +5,7 @@
 \alias{Rubisco_aliases}
 \title{Rubisco alias table}
 \format{
-An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 67 rows and 4 columns.
+An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 72 rows and 4 columns.
 }
 \usage{
 Rubisco_aliases

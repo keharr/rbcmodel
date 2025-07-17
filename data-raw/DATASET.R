@@ -62,12 +62,12 @@ Rubisco_kinetics_cols = readr::cols(
 )
 
 Rubisco_aliases <- readr::read_csv(
-  "inst/extdata/alias_table.csv",
+  "inst/extdata/Rubisco_kinetics_alias.csv",
   col_types = alias_cols
 )
 
 Rubisco_abridged <- readr::read_csv(
-  "inst/extdata/abridged_table.csv",
+  "inst/extdata/Rubisco_kinetics_abridged.csv",
   col_types = abridged_cols
 )
 

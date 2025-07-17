@@ -14,6 +14,7 @@ modify_enzyme(
   Kc_T = NULL,
   Ko_T = NULL,
   S_T = NULL,
+  PGS = NULL,
   name = NULL
 )
 }
@@ -35,6 +36,9 @@ modify_enzyme(
 \item{Ko_T}{if not NULL, the Ko_T value for the new instance}
 
 \item{S_T}{if not NULL, the S_T value for the new instance}
+
+\item{PGS}{if not NULL, the default phosphoglycolate salvage (PGS) pathway
+for the new instance}
 
 \item{name}{if not NULL, the identifier ("name") for the new instance}
 }

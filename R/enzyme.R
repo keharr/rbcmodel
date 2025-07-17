@@ -29,6 +29,8 @@
 #' @param Kc_T The temperature (in celsius) at which Kc_val is measured.
 #' @param Ko_T The temperature (in celsius) at which Ko_val is measured.
 #' @param S_T The temperature (in celsius) at which S_val is measured.
+#' @param PGS The default phosphoglycolate salvage (PGS) pathway of the enzyme.
+#'   Can be NA.
 #' @param name An identifier ("name") of the enzyme instance.
 #' @returns A new enzyme instance.
 #' @export
@@ -37,7 +39,7 @@
 new_enzyme <- function(
   kcat_val, Kc_val, Ko_val, S_val, temp = 25,
   kcat_T = NULL, Kc_T = NULL, Ko_T = NULL, S_T = NULL,
-  name = ""
+  PGS=NA, name = ""
 ) {
 
   # initialize kinetic values
@@ -46,7 +48,8 @@ new_enzyme <- function(
     kcat_val = kcat_val,
     Kc_val = Kc_val,
     Ko_val = Ko_val,
-    S_val = S_val
+    S_val = S_val,
+    PGS = tolower(PGS)
   )
 
   # if common temperature is supplied, associate it with
@@ -92,8 +95,18 @@ new_enzyme <- function(
 #' try(check_enzyme(bad_enzyme)) # produces error
 check_enzyme <- function(the_enzyme) {
 
+  PGS_allowed = c("gross", "canon", "alt", "diatom")
+
   if (!is.character(the_enzyme$name)) {
     stop("The name of the enzyme must be a valid string", call. = FALSE)
+  }
+  if (!((the_enzyme$PGS %in% PGS_allowed) || is.na(the_enzyme$PGS))){
+    stop(
+      paste0(
+        'PGS must be NA or one of ', 
+        paste(PGS_allowed, collapse=", ")
+      ), call. = FALSE
+    )
   }
   if (!is.numeric(the_enzyme$kcat_val)) {
     stop("The value of kcat_val must be numeric", call. = FALSE)
@@ -167,6 +180,11 @@ print.enzyme <- function(x, unicode = TRUE, ...) {
     "  S = ", the_enzyme$S_val,
     " @ T_S = ", the_enzyme$S_T, T_unit, "\n"
   ))
+  if (is.na(the_enzyme$PGS)){
+    cat(paste0('  PGS = NA\n'))
+  } else {
+    cat(paste0('  PGS = "', the_enzyme$PGS, '"\n'))
+  }
 }
 
 #' Create a new instance of S3 class 'enzyme' starting from a previous instance
@@ -186,6 +204,8 @@ print.enzyme <- function(x, unicode = TRUE, ...) {
 #' @param Kc_T if not NULL, the Kc_T value for the new instance
 #' @param Ko_T if not NULL, the Ko_T value for the new instance
 #' @param S_T if not NULL, the S_T value for the new instance
+#' @param PGS if not NULL, the default phosphoglycolate salvage (PGS) pathway
+#'   for the new instance
 #' @param name if not NULL, the identifier ("name") for the new instance
 #' @returns a new instance of the S3 class 'enzyme'.
 #' @export
@@ -197,7 +217,8 @@ print.enzyme <- function(x, unicode = TRUE, ...) {
 modify_enzyme <- function(
   the_enzyme,
   kcat_val = NULL, Kc_val = NULL, Ko_val = NULL, S_val = NULL,
-  kcat_T = NULL, Kc_T = NULL, Ko_T = NULL, S_T = NULL, name = NULL
+  kcat_T = NULL, Kc_T = NULL, Ko_T = NULL, S_T = NULL, 
+  PGS = NULL, name = NULL
 ) {
 
   # NOTE: recall that R copy on edit
@@ -227,6 +248,9 @@ modify_enzyme <- function(
   if (!is.null(S_T)) {
     the_enzyme$S_T <- S_T
   }
+  if (!is.null(PGS)) {
+    the_enzyme$PGS <- PGS
+  }
   if (!is.null(name)) {
     the_enzyme$name <- name
   }
@@ -248,7 +272,7 @@ modify_enzyme <- function(
 #'   if no entry is found the comprehensive table is searched.
 #'   NOTE: if a custom data.frame is supplied, it is assumed to have columns
 #'   named "kcat_val", "Kc_val", "Ko_val", and "S_val". In addition, it may
-#'   have optional columns named "temp", "kcat_T", "Kc_T", "Ko_T", and "S_T"
+#'   have optional columns "temp", "kcat_T", "Kc_T", "Ko_T", "S_T", and "PGS"
 #' @returns a new Enzyme instance
 #' @export
 #' @examples
@@ -261,7 +285,7 @@ Enzyme <- function(id_name, id_col="identifier", enzyme_name=NULL, data=NULL){
 
   # translate name to the actual database
   if (is.character(data)){
-    if (data == "abrdiged"){
+    if (data == "abridged"){
       data <- Rubisco_abridged
     } else if (data=="comprehensive"){
       data <- Rubisco_25C
@@ -305,25 +329,31 @@ Enzyme <- function(id_name, id_col="identifier", enzyme_name=NULL, data=NULL){
     stop("Multiple entries found. Abort.")
   }
 
-  cols <- colnames(data)
+  cols <- colnames(data_sub)
 
   if ("kcat_T" %in% cols){ kcat_T = data_sub$kcat_T } else { kcat_T = NULL}
   if ("Kc_T" %in% cols){ Kc_T = data_sub$Kc_T } else { Kc_T = NULL }
   if ("Ko_T" %in% cols){ Ko_T = data_sub$Ko_T } else { Ko_T = NULL }
   if ("S_T" %in% cols){ S_T = data_sub$S_T } else { S_T = NULL }
+  if ("PGS" %in% cols){ PGS = data_sub$PGS } else { PGS = NA }
+
+  if (is.na(kcat_T)) {kcat_T = NULL}
+  if (is.na(Kc_T)) {Kc_T = NULL}
+  if (is.na(Ko_T)) {Ko_T = NULL}
+  if (is.na(S_T)) {S_T = NULL}
 
   if ("temp" %in% cols){
     return(new_enzyme(
       data_sub$kcat_val, data_sub$Kc_val, data_sub$Ko_val, data_sub$S_val,
       data_sub$temp,
       kcat_T = kcat_T, Kc_T = Kc_T, Ko_T = Ko_T, S_T = S_T,
-      name = enzyme_name
+      PGS = PGS, name = enzyme_name
     ))
   } else {
     return(new_enzyme(
       data_sub$kcat_val, data_sub$Kc_val, data_sub$Ko_val, data_sub$S_val,
       kcat_T = kcat_T, Kc_T = Kc_T, Ko_T = Ko_T, S_T = S_T,
-      name = enzyme_name
+      PGS = PGS, name = enzyme_name
     ))
   }
 }

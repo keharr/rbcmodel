@@ -11,12 +11,15 @@ CO2_dependence(enzyme, DHScale, pathway)
 
 \item{DHScale}{A 'DHScale' object. (See DHScale class for more info.)}
 
-\item{pathway}{One of 'gross', 'canon', or 'alt'. This option allows you to
+\item{pathway}{One of 'gross', 'canon', 'diatom', or 'alt'. This option allows you to
 pick a stoichiometry for the phosphoglycolate salvage (PGS) pathway. If you
 do not want to incorporate PGS, use the 'gross' option, while 'canon'
 applies the C2 cycle/glycerate pathway stoichiometry (1 CO2 for
-every 2 2-phosphoglycolate created). 'Alt' corresponds to the oxalyl-CoA or
-malate cycle pathways (2 CO2 for every 2-phosphoglycolate created).}
+every 2 2-phosphoglycolate created). 'alt' corresponds to the oxalyl-CoA or
+malate cycle pathways (2 CO2 for every 2-phosphoglycolate created).
+'diatom' corresponds to the proposed diatom-specific pathways, which do
+not return 2-PG to the Calvin Cycle, but incorporate it directly into
+biomass with the exception of 1 CO2 for every 2-phosphoglycolate created.}
 }
 \value{
 A new function that models carbon output with three variables: CO2

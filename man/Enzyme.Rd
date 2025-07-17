@@ -21,7 +21,7 @@ NULL, or a data.frame. If NULL, the abridged table is first searched and
 if no entry is found the comprehensive table is searched.
 NOTE: if a custom data.frame is supplied, it is assumed to have columns
 named "kcat_val", "Kc_val", "Ko_val", and "S_val". In addition, it may
-have optional columns named "temp", "kcat_T", "Kc_T", "Ko_T", and "S_T"}
+have optional columns "temp", "kcat_T", "Kc_T", "Ko_T", "S_T", and "PGS"}
 }
 \value{
 a new Enzyme instance
