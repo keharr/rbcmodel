@@ -1,4 +1,4 @@
-identifier,genus,species,subspecies,kcat dH,Kc dH,Ko dH,S dH,Form,Taxonomy,Note,short_ref
+identifier,genus,species,subspecies,kcat_dH,Kc_dH,Ko_dH,S_dH,Form,Taxonomy,Note,short_ref
 1,Thalassiosira,weissflogii,,54.0507,,,,1D,Diatoms,,Young unpublished
 2,Thalassiosira,oceanica,,57.6962,,,,1D,Diatoms,,Young unpublished
 3,Fragilariopsis,cylindrus,,38.325,,,,1D,Diatoms,,Young unpublished
@@ -110,11 +110,3 @@ identifier,genus,species,subspecies,kcat dH,Kc dH,Ko dH,S dH,Form,Taxonomy,Note,
 109,,,,,,,,,,,Orr et al. 2016
 110,,,,,,,,,,,Prins et al. 2016
 111,,,,,,,,,,,Laing et al. 1974
-112,Average,1B,plant,58.1,41.1,26.7,-21.5,1B,,Ko from in vivo estimates; all others average Streptophyta presented in Galmes 2016,this study
-113,Average,1B,C3 plants (warm),64.5,46.1,26.7,-22,1B,C3 plants,Ko from in vivo estimates; all others average C3 warm Streptophyta presented in Galmes 2016,this study
-114,Average,1B,C3 plants (cool),55.3,40.5,26.7,-19.9,1B,C3 plants,Ko from in vivo estimates; all others average C3 cool Streptophyta presented in Galmes 2016,this study
-115,Average,1B,C4 plants,52.8,34.7,26.7,-22.3,1B,C4 plants,Ko from in vivo estimates; all others average C4 Streptophyta presented in Galmes 2016,this study
-116,Average,1A,proteo,47.2,40.8,26.7,-21.8,1A,Proteobacteria,kcat from average of 3/4 reported proteobacteria values; Kc average of all available values; Ko from in vivo estimates; Sc/o from average of all form I values,this study
-117,Average,1Ac,cyano,40.1,38.8,26.7,-27.4,1Ac,Cyanobacteria,Ko from in vivo estimates; all others average Cyanobacteria presented in Galmes 2016,this study
-118,Average,1Bc,,40.1,38.8,26.7,-27.4,1Bc,Cyanobacteria,Ko from in vivo estimates; all others average Cyanobacteria presented in Galmes 2016,this study
-119,Average,2,,52.9,40.8,26.7,-18.8,2,Proteobacteria,kcat from average of all values; Kc average of all values; Ko from in vivo estimates; Sc/o from R. rubrum,this study

@@ -34,8 +34,9 @@ kinetics_T_dep <- function(std, delta_H, temp = 25) {
 #'
 #' @param enzyme An 'enzyme' object. (See enzyme class for more info.)
 #' @param DHScale A 'DHScale' object. (See DHScale class for more info.)
-#' @param pathway One of 'gross', 'canon', 'diatom', or 'alt'. This option allows you to
-#'   pick a stoichiometry for the phosphoglycolate salvage (PGS) pathway. If you
+#' @param PGS One of 'gross', 'canon', 'diatom', or 'alt'. This option allows you to
+#'   pick a stoichiometry for the phosphoglycolate salvage (PGS) pathway. If NULL, the 
+#'   choice is inferred from the default PGS of the enzyme instance. If you
 #'   do not want to incorporate PGS, use the 'gross' option, while 'canon'
 #'   applies the C2 cycle/glycerate pathway stoichiometry (1 CO2 for
 #'   every 2 2-phosphoglycolate created). 'alt' corresponds to the oxalyl-CoA or
@@ -51,16 +52,24 @@ kinetics_T_dep <- function(std, delta_H, temp = 25) {
 #' bacIA_DHScale <- new_DHScale(47.2,40.8,26.7,-21.8,name="bacIA")
 #' pro_model <- CO2_dependence(pro_enzyme, bacIA_DHScale, "canon") # sets up model
 #' pro_model(126,54,15) # prints carbon fixation at 15 deg C, 126 uM CO2, 54 uM O2
-CO2_dependence <- function(enzyme, DHScale, pathway) {
+CO2_dependence <- function(enzyme, DHScale, PGS) {
 
-  # check validity of pathway argument
-  if (is.null(pathway) || !pathway %in% c("gross", "canon", "diatom", "alt")) {
-    stop("'pathway' argument must be one of: 'gross','canon', 'diatom', or 'alt'")
-  }
+  PGS_allowed <- c("gross", "canon", "alt", "diatom")
 
   # validate input
   check_enzyme(enzyme)
   check_DHScale(DHScale)
+
+  # extract PGS value from the enzyme instance if no PGS specified in call
+  if (is.null(PGS)) { PGS = enzyme$PGS }
+
+  # check validity of PGS argument
+  if (is.null(PGS) || is.na(PGS) || !(PGS %in% PGS_allowed)) {
+    stop(
+      paste0('PGS must be NA or one of ', paste(PGS_allowed, collapse=", ")),
+      call. = FALSE
+    )
+  }
 
   # unpack all data from enzyme and DHScale
   kcat_val <- enzyme$kcat_val
@@ -82,20 +91,20 @@ CO2_dependence <- function(enzyme, DHScale, pathway) {
   ko <- kinetics_T_dep(Ko_val, Ko_dH, Ko_T)
   s <- kinetics_T_dep(S_val, S_dH, S_T)
 
-  # use different formula depending on the pathway chosen
-  if (pathway == "gross") {
+  # use different formula depending on the PGS pathway chosen
+  if (PGS == "gross") {
     out_func <- function(CO2, O2, temp) {
       kcat(temp) * CO2 / (CO2 + kc(temp) + kc(temp) * (O2 / ko(temp)))
     }
-  } else if (pathway == "canon") {
+  } else if (PGS == "canon") {
     out_func <- function(CO2, O2, temp) {
       kcat(temp) * (CO2 / (CO2 + kc(temp) + kc(temp) * (O2 / ko(temp)))) * (1 - O2 / (2 * s(temp) * CO2))
     }
-  } else if (pathway == "alt") {
+  } else if (PGS == "alt") {
     out_func <- function(CO2 ,O2, temp) {
       kcat(temp) * (CO2 / (CO2 + kc(temp) + kc(temp) * (O2 / ko(temp)))) * (1 - 2 * O2 / (s(temp) * CO2))
     }
-  } else if (pathway == "diatom") {
+  } else if (PGS == "diatom") {
     out_func <- function(CO2, O2, temp) {
       kcat(temp) * (CO2 / (CO2 + kc(temp) + kc(temp) * (O2 / ko(temp)))) * (1 - O2 / (s(temp) * CO2))
     }

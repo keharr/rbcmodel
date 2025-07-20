@@ -95,17 +95,15 @@ new_enzyme <- function(
 #' try(check_enzyme(bad_enzyme)) # produces error
 check_enzyme <- function(the_enzyme) {
 
-  PGS_allowed = c("gross", "canon", "alt", "diatom")
+  PGS_allowed <- c("gross", "canon", "alt", "diatom")
 
   if (!is.character(the_enzyme$name)) {
     stop("The name of the enzyme must be a valid string", call. = FALSE)
   }
   if (!((the_enzyme$PGS %in% PGS_allowed) || is.na(the_enzyme$PGS))){
     stop(
-      paste0(
-        'PGS must be NA or one of ', 
-        paste(PGS_allowed, collapse=", ")
-      ), call. = FALSE
+      paste0('PGS must be NA or one of ', paste(PGS_allowed, collapse=", ")),
+      call. = FALSE
     )
   }
   if (!is.numeric(the_enzyme$kcat_val)) {
@@ -281,7 +279,7 @@ modify_enzyme <- function(
 #' vavilovii <- Enzyme("vavilovii", "species", data="comprehensive")
 Enzyme <- function(id_name, id_col="identifier", enzyme_name=NULL, data=NULL){
 
-  if (is.null(enzyme_name)){ enzyme_name = id_name }
+  if (is.null(enzyme_name)){ enzyme_name <- id_name }
 
   # translate name to the actual database
   if (is.character(data)){
@@ -289,6 +287,8 @@ Enzyme <- function(id_name, id_col="identifier", enzyme_name=NULL, data=NULL){
       data <- Rubisco_abridged
     } else if (data=="comprehensive"){
       data <- Rubisco_25C
+    } else {
+      stop(paste0("Unknown database string '", data, "'"), call. = FALSE)
     }
   }
 

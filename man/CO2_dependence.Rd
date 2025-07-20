@@ -4,15 +4,16 @@
 \alias{CO2_dependence}
 \title{Function factory to model an enzyme's carbon output}
 \usage{
-CO2_dependence(enzyme, DHScale, pathway)
+CO2_dependence(enzyme, DHScale, PGS)
 }
 \arguments{
 \item{enzyme}{An 'enzyme' object. (See enzyme class for more info.)}
 
 \item{DHScale}{A 'DHScale' object. (See DHScale class for more info.)}
 
-\item{pathway}{One of 'gross', 'canon', 'diatom', or 'alt'. This option allows you to
-pick a stoichiometry for the phosphoglycolate salvage (PGS) pathway. If you
+\item{PGS}{One of 'gross', 'canon', 'diatom', or 'alt'. This option allows you to
+pick a stoichiometry for the phosphoglycolate salvage (PGS) pathway. If NULL, the
+choice is inferred from the default PGS of the enzyme instance. If you
 do not want to incorporate PGS, use the 'gross' option, while 'canon'
 applies the C2 cycle/glycerate pathway stoichiometry (1 CO2 for
 every 2 2-phosphoglycolate created). 'alt' corresponds to the oxalyl-CoA or

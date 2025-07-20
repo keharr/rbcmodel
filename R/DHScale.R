@@ -92,10 +92,10 @@ print.DHScale <- function(x, unicode = TRUE, ...) {
     DH_char2 <- "{Delta H}"
   }
   cat(paste0(DH_char, ' scaling "', the_DHScale$name, '":\n'))
-  cat(paste0("  ", DH_char2, "_kcat = ", the_DHScale$kcat_dH, "kJ/mol\n"))
-  cat(paste0("  ", DH_char2, "_Kc = ", the_DHScale$Kc_dH, "kJ/mol\n"))
-  cat(paste0("  ", DH_char2, "_Ko = ", the_DHScale$Ko_dH, "kJ/mol\n"))
-  cat(paste0("  ", DH_char2, "_S = ", the_DHScale$S_dH, "kJ/mol\n"))
+  cat(paste0("  ", DH_char2, "_kcat = ", the_DHScale$kcat_dH, " kJ/mol\n"))
+  cat(paste0("  ", DH_char2, "_Kc = ", the_DHScale$Kc_dH, " kJ/mol\n"))
+  cat(paste0("  ", DH_char2, "_Ko = ", the_DHScale$Ko_dH, " kJ/mol\n"))
+  cat(paste0("  ", DH_char2, "_S = ", the_DHScale$S_dH, " kJ/mol\n"))
 }
 
 #' Create a new instance of S3 class 'DHScale', starting from a previous
@@ -148,4 +148,66 @@ modify_DHScale <- function(
   
   # return the modified instance
   the_DHScale
+}
+
+#' Create an DHScale instance by looking up the relevant data in database
+#'
+#' @param id_name the name of identifier used to pull out a single record
+#'   out of the database
+#' @param id_col the name of the column from which the id_name will be searched
+#'   for within the database
+#' @param scale_name the name of the DHScale instance. If NULL the value is
+#'   defaulted to id_name
+#' @param data the database to search from. Can be "averaged", NULL, or a 
+#'   data.frame. If NULL or "averaged", the averaged table is searched.
+#'   NOTE: if a custom data.frame is supplied, it is assumed to have columns
+#'   named "kcat_dH", "Kc_dH", "Ko_dH", and "S_dH".
+#' @returns a new DHScale instance
+#' @export
+#' @examples
+#' cyano <- DHScale("cyano_1Ac") # retrieved from abridged database
+DHScale <- function(id_name, id_col="identifier", scale_name=NULL, data=NULL){
+
+  if (is.null(scale_name)){ scale_name <- id_name }
+
+  # translate name to the actual database
+  if (is.character(data)){
+    if (data == "averaged"){
+      data <- temp_dep_averaged
+    } else {
+      stop(paste0("Unknown database string '", data, "'"), call. = FALSE)
+    }
+  }
+
+  # NULL is (currently) interpreted as the same as "average"
+  if (is.null(data)){
+    data <- temp_dep_averaged
+  }
+
+  if (!is.null(id_col)){ # now handle the non-NULL case
+
+    data_sub <- data[
+      !is.na(data[[id_col]]) & data[[id_col]] == id_name
+      , ]
+
+  } else {
+
+    data_sub <- data
+
+  }
+
+  if (nrow(data_sub) == 0){
+    stop("No entry found. Abort.")
+  } else if (nrow(data_sub) > 1) {
+    print(data_sub)
+    stop("Multiple entries found. Abort.")
+  }
+
+  cols <- colnames(data_sub)
+
+  return(new_DHScale(
+    data_sub$kcat_dH, data_sub$Kc_dH, data_sub$Ko_dH, data_sub$S_dH,
+    name = scale_name
+  ))
+
 }
