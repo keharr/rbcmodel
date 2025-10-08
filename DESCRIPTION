@@ -15,7 +15,7 @@ Description: 'rbcmodel' collects published kinetics of Rubisco and uses these
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Imports: 
     plot3D
 Depends: 

@@ -13,6 +13,7 @@ plot_slice_3D(
   contour_col = "black",
   xlabel = "",
   ylabel = "",
+  clabel = c("Carbon", "(C/s)"),
   lwd = 2,
   ...
 )
@@ -25,7 +26,7 @@ are drawn, as a single numeric vector}
 
 \item{dims}{Length 3 integer vector, e.g., c(1,2,4), that specify the
 horizontal, vertical, and contour/color variables of the plot. If NULL,
-the 1st element of the slice is treated as horizontal coordiate, the
+the 1st element of the slice is treated as horizontal coordinate, the
 2nd element is treated as vertical coordinate, and the last element is
 treated as the dependent variable. Note that the horizontal coordinate
 should ALWAYS correspond the first index of the two-dimension arrays,
@@ -46,6 +47,8 @@ dependent variable, and which white is anchored at 0.}
 
 \item{ylabel}{The label for the vertical axis}
 
+\item{clabel}{The label for the color bar. Defaults to c("Carbon", "(C/s)")}
+
 \item{lwd}{The linewidth of contour lines}
 
 \item{...}{Addtional arguments are passed to plot3D::image2D(), which is the
@@ -65,7 +68,7 @@ variables form the horizontal and the vertical axes.
 # create 3D slices
 f <- function(x, y, z) { x + y * z }
 g1 <- make_4D_grid(f, seq(1, 3, 0.1), seq(-2, 2, 0.2), seq(4, 10, 0.2))
-s1 <- slice_4D_grid(g1, 2, 2) 
+s1 <- slice_4D_grid(g1, 2, 2)
 # plot the 3D slice
 plot_slice_3D(s1, contours=seq(5, 25, 2.5), dims=c(1, 3, 4))
 }
