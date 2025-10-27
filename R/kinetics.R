@@ -1,4 +1,4 @@
-#' Function factory for calculating temperture-dependent kinetics
+#' Function factory for calculating temperature-dependent kinetics
 #'
 #' Calculates the non-supplied constant (c) for an Arrhenius-type temperature
 #' scaling function (as seen in Galmés et al. 2016). Uses measured values and
@@ -35,7 +35,7 @@ kinetics_T_dep <- function(std, delta_H, temp = 25) {
 #' @param enzyme An 'enzyme' object. (See enzyme class for more info.)
 #' @param DHScale A 'DHScale' object. (See DHScale class for more info.)
 #' @param PGS One of 'gross', 'canon', 'diatom', or 'alt'. This option allows you to
-#'   pick a stoichiometry for the phosphoglycolate salvage (PGS) pathway. If NULL, the 
+#'   pick a stoichiometry for the phosphoglycolate salvage (PGS) pathway. If NULL, the
 #'   choice is inferred from the default PGS of the enzyme instance. If you
 #'   do not want to incorporate PGS, use the 'gross' option, while 'canon'
 #'   applies the C2 cycle/glycerate pathway stoichiometry (1 CO2 for
@@ -43,7 +43,7 @@ kinetics_T_dep <- function(std, delta_H, temp = 25) {
 #'   malate cycle pathways (2 CO2 for every 2-phosphoglycolate created).
 #'   'diatom' corresponds to the proposed diatom-specific pathways, which do
 #'   not return 2-PG to the Calvin Cycle, but incorporate it directly into
-#'   biomass with the exception of 1 CO2 for every 2-phosphoglycolate created. 
+#'   biomass with the exception of 1 CO2 for every 2-phosphoglycolate created.
 #' @returns A new function that models carbon output with three variables: CO2
 #'   (in uM), O2 (in uM), and temperature (in celsius).
 #' @export
@@ -52,7 +52,7 @@ kinetics_T_dep <- function(std, delta_H, temp = 25) {
 #' bacIA_DHScale <- new_DHScale(47.2,40.8,26.7,-21.8,name="bacIA")
 #' pro_model <- CO2_dependence(pro_enzyme, bacIA_DHScale, "canon") # sets up model
 #' pro_model(126,54,15) # prints carbon fixation at 15 deg C, 126 uM CO2, 54 uM O2
-CO2_dependence <- function(enzyme, DHScale, PGS) {
+CO2_dependence <- function(enzyme, DHScale, PGS=NULL) {
 
   PGS_allowed <- c("gross", "canon", "alt", "diatom")
 
@@ -127,7 +127,7 @@ CO2_dependence <- function(enzyme, DHScale, PGS) {
 #'   the two models.
 #' @export
 #' @examples
-#' pro_enzyme <- new_enzyme(6.6, 144, 394, 10.8, name="pro") 
+#' pro_enzyme <- new_enzyme(6.6, 144, 394, 10.8, name="pro")
 #' bacIA_DHScale <- new_DHScale(47.2,40.8,26.7,-21.8,name="bacIA")
 #' pro_model <- CO2_dependence(pro_enzyme, bacIA_DHScale, "canon") #first model
 #' tmrIA_DHScale <- modify_DHScale(bacIA_DHScale,kcat_dH=32,name="tmr_IA")
@@ -135,7 +135,7 @@ CO2_dependence <- function(enzyme, DHScale, PGS) {
 #' tmr_vs_pro <- CO2_comparison(pro_model, tmrIA_model) #creating the comparison
 #' print(tmr_vs_pro) # prints the comparison equation
 #' # prints the amount for which the tmrIA_model is faster than the pro_model
-#' tmr_vs_pro(126,54,15) 
+#' tmr_vs_pro(126,54,15)
 #'
 CO2_comparison <- function(model1, model2) {
 

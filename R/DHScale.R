@@ -123,7 +123,7 @@ print.DHScale <- function(x, unicode = TRUE, ...) {
 #' print(tmrIA_DHScale) # printout modified DHScale info
 #'
 modify_DHScale <- function(
-  the_DHScale, kcat_dH = NULL, Kc_dH = NULL, Ko_dH = NULL, S_dH = NULL, 
+  the_DHScale, kcat_dH = NULL, Kc_dH = NULL, Ko_dH = NULL, S_dH = NULL,
   name = NULL
 ) {
 
@@ -145,7 +145,7 @@ modify_DHScale <- function(
   if (!is.null(name)) {
     the_DHScale$name <- name
   }
-  
+
   # return the modified instance
   the_DHScale
 }
@@ -158,7 +158,7 @@ modify_DHScale <- function(
 #'   for within the database
 #' @param scale_name the name of the DHScale instance. If NULL the value is
 #'   defaulted to id_name
-#' @param data the database to search from. Can be "averaged", NULL, or a 
+#' @param data the database to search from. Can be "averaged", NULL, or a
 #'   data.frame. If NULL or "averaged", the averaged table is searched.
 #'   NOTE: if a custom data.frame is supplied, it is assumed to have columns
 #'   named "kcat_dH", "Kc_dH", "Ko_dH", and "S_dH".
@@ -174,6 +174,8 @@ DHScale <- function(id_name, id_col="identifier", scale_name=NULL, data=NULL){
   if (is.character(data)){
     if (data == "averaged"){
       data <- temp_dep_averaged
+    } else if (data == "abridged"){
+      data <- temp_dep_abridged
     } else {
       stop(paste0("Unknown database string '", data, "'"), call. = FALSE)
     }
@@ -209,5 +211,199 @@ DHScale <- function(id_name, id_col="identifier", scale_name=NULL, data=NULL){
     data_sub$kcat_dH, data_sub$Kc_dH, data_sub$Ko_dH, data_sub$S_dH,
     name = scale_name
   ))
+
+}
+
+#' Search for temperature dependence DHScale from the database
+#'
+#' Data is pulled either from the averaged table or the abridged table,
+#' both of which are included in this package
+#'
+#' @param string a string to search for in the database
+#' @param level the level at which to search. Can be "species", "genus",
+#'   "taxonomy", "form", or NULL. If NULL, the search will proceed from genus
+#'   to species to taxonomy to form until a match is found
+#' @param data the source data to search from. Can be "averaged", "abridged",
+#'   or NULL. If NULL, the search will proceed from abridged to averaged
+#'   until a match is found
+#' @param match whether to require complete match. Can be "complete" or "partial"
+#' @returns a tibble containing matching entries.
+#' @export
+#' @examples
+#' Aegilops <- search_enzyme("Aegilops", level="genus") # complete genus search
+#' print(Aegilops) # printout search results
+search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
+
+  out <- data.frame()
+
+  #if form search, check that it's an allowable form
+  form_allowed <- c("1A","1Ac","1B","1Bc","1C","1D","2","2_3","3")
+
+  if (!is.null(level)) {
+    if(!(string %in% form_allowed) & tolower(level)=="form"){
+    stop(
+      paste0('Form must be one of ', paste(form_allowed, collapse=", ")),
+      call. = FALSE
+    )}
+  }
+
+  # First search for species in abridged table
+  if (is.null(level) || tolower(level) == "genus"){
+
+    if (is.null(data) || tolower(data) == "abridged"){
+
+      # search the abridged table
+      if (tolower(match)=="complete"){
+        out <- temp_dep_abridged[
+          !is.na(temp_dep_abridged[["genus"]]) &
+            (temp_dep_abridged[["genus"]] == string)
+          , ]
+      } else {
+        out <- temp_dep_abridged[
+          !is.na(temp_dep_abridged[["genus"]]) &
+            grepl(string, temp_dep_abridged[["genus"]], fixed=TRUE)
+          , ]
+      }
+
+      # return if there's any match
+      if (nrow(out) > 0) {
+        message("Matched genus in abridged table")
+        return(out)
+      }
+    }
+
+    if (!is.null(level) & !is.null(data)) {
+      if (tolower(level) == "genus" & tolower(data) == "average"){
+        warning("Genus-specific data is not found in averages table")
+        return(NULL)
+      }
+    }
+
+  }
+
+  if (is.null(level) || tolower(level) == "species"){
+
+    if (is.null(data) || data == "abridged"){
+
+      # search the abridged table
+      if (tolower(match)=="complete"){
+        out <- temp_dep_abridged[
+          !is.na(temp_dep_abridged[["species"]]) &
+            (temp_dep_abridged[["species"]] == string)
+          , ]
+      } else {
+        out <- temp_dep_abridged[
+          !is.na(temp_dep_abridged[["species"]]) &
+            grepl(string, temp_dep_abridged[["species"]], fixed=TRUE)
+          , ]
+      }
+
+      # return if there's any match
+      if (nrow(out) > 0) {
+        message("Matched species in abridged table")
+        return(out)
+      }
+    }
+
+    if (!is.null(level) & !is.null(data)) {
+      if (tolower(level) == "species" & tolower(data) == "average"){
+          warning("Species-specific data is not found in averages table")
+          return(NULL)
+      }
+    }
+  }
+
+  if (is.null(level) || tolower(level) == "taxonomy"){
+
+    if (is.null(data) || tolower(data) == "abridged"){
+
+      # search the abridged table
+      if (tolower(match)=="complete"){
+        out <- temp_dep_abridged[
+          !is.na(temp_dep_abridged[["Taxonomy"]]) &
+            (temp_dep_abridged[["Taxonomy"]] == string)
+          , ]
+      } else {
+        out <- temp_dep_abridged[
+          !is.na(temp_dep_abridged[["Taxonomy"]]) &
+            grepl(string, temp_dep_abridged[["Taxonomy"]], fixed=TRUE)
+          , ]
+      }
+
+      # return if there's any match
+      if (nrow(out) > 0) {
+        message("Matched taxonomy in abridged table")
+        return(out)
+      }
+    }
+
+    if (is.null(data) || tolower(data) == "average"){
+      # search the full table
+      if (tolower(match)=="complete"){
+        out <- temp_dep_averaged[
+          !is.na(temp_dep_averaged[["Taxonomy"]]) &
+            (temp_dep_averaged[["Taxonomy"]] == string)
+          , ]
+      } else {
+        out <- temp_dep_averaged[
+          !is.na(temp_dep_averaged[["Taxonomy"]]) &
+            grepl(string, temp_dep_averaged[["Taxonomy"]], fixed=TRUE)
+          , ]
+      }
+      if (nrow(out) > 0) {
+        message("Matched taxonomy in averages table")
+        return(out)
+      }
+    }
+
+  }
+
+  if (is.null(level) || tolower(level) == "form"){
+
+    if (is.null(data) || tolower(data) == "abridged"){
+
+      # search the abridged table
+      if (tolower(match)=="complete"){
+        out <- temp_dep_abridged[
+          !is.na(temp_dep_abridged[["Form"]]) &
+            (temp_dep_abridged[["Form"]] == string)
+          , ]
+      } else {
+        out <- temp_dep_abridged[
+          !is.na(temp_dep_abridged[["Form"]]) &
+            grepl(string, temp_dep_abridged[["Form"]], fixed=TRUE)
+          , ]
+      }
+
+      # return if there's any match
+      if (nrow(out) > 0) {
+        message("Matched form in abridged table")
+        return(out)
+      }
+    }
+
+    if (is.null(data) || tolower(data) == "average"){
+      # search the full table
+      if (tolower(match)=="complete"){
+        out <- temp_dep_averaged[
+          !is.na(temp_dep_averaged[["Form"]]) &
+            (temp_dep_averaged[["Form"]] == string)
+          , ]
+      } else {
+        out <- temp_dep_averaged[
+          !is.na(temp_dep_averaged[["Form"]]) &
+            grepl(string, temp_dep_averaged[["Form"]], fixed=TRUE)
+          , ]
+      }
+      if (nrow(out) > 0) {
+        message("Matched form in averages table")
+        return(out)
+      }
+    }
+
+  }
+
+  warning("No entry found")
+  return(NULL)
 
 }

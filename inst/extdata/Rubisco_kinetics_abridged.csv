@@ -1,4 +1,4 @@
-identifier,genus,species,subspecies,kcat_val,kcat_T,Kc_val,Kc_T,Ko_val,Ko_T,S_val,S_T,temp,form,PGS,taxonomy,note
+﻿identifier,genus,species,subspecies,kcat_val,kcat_T,Kc_val,Kc_T,Ko_val,Ko_T,S_val,S_T,temp,form,PGS,taxonomy,note
 biuncialis_prins_2016,Aegilops,biuncialis,,3.2,,16.8,,470,,96.3,,25,1B,canon,C3 plants,Prins 2016
 comosa_prins_2016,Aegilops,comosa,,2.86,,13.5,,360,,106,,25,1B,canon,C3 plants,Prins 2016
 cylindrica_prins_2016,Aegilops,cylindrica,,3.68,,13.7,,451,,109,,25,1B,canon,C3 plants,Prins 2016
@@ -14,14 +14,14 @@ stolonifera_orr_2016,Agrostis,stolonifera,,5.2,,25.3,,802,,105,,25,1B,canon,C3 p
 vinosum_jordan_1985,Allochromatium,vinosum,,6.7,,37,,290,,41,,25,1A,,Gammaproteobacteria,Jordan 1985
 caudatus_kubien_2008,Amaranthus,caudatus,,4.14,,18.2,,289,,77.5,,25,1B,canon,C4 plants,Kubien 2008
 bracteata_orr_2016,Amphicarpaea,bracteata,,4,,29,,693,,97.5,,25,1B,canon,C3 plants,Orr 2016
-variabilis_badger_1980,Anabaena,variabilis,,2.6931,,293,,1080,,33.31583093,,25,1Bc,canon,Cyanobacteria,Badger 1980
-fulgidus_kreel_2015,Archaeoglobus,fulgidus,,23.1,,51,,5,,4,,83,3,gross,Archaea,Kreel 2015
+variabilis_badger_1980,Anabaena,variabilis,,2.6931,,293,,1080,,33.31583093,,25,1Bc,,Cyanobacteria,Badger 1980
+fulgidus_kreel_2015,Archaeoglobus,fulgidus,,23.1,,51,,5,,4,,83,3,,Archaea,Kreel 2015
 latifolia_orr_2016,Arctagrostis,latifolia,,5.8,,21,,497,,105,,25,1B,canon,C3 plants,Orr 2016
 myriantha_orr_2016,Artemisia,myriantha,,3.1,,26.4,,844,,110,,25,1B,canon,C3 plants,Orr 2016
 a_vulgaris_orr_2016,Artemisia,vulgaris,,3.9,,31.9,,626,,105,,25,1B,canon,C3 plants,Orr 2016
 glabriuscula_badger_1977,Atriplex,glabriuscula,,13.7,,27,,328,,66.30662535,,25,1B,canon,C3 plants,Badger & Collatz 1977
 a_sativa_hermida_2016,Avena,sativa,,2.3,,10.8,,382,,99.9,,25,1B,canon,C3 plants,Hermida-Carrera 2016
-bathyomphala_valeg�rd_2018,Bacterosira,bathyomphala,,4.543,,81,,1300,,87,,25,1D,diatom,Diatoms,Valeg�rd et al 2018
+bathyomphala_valegård_2018,Bacterosira,bathyomphala,,4.543,,81,,1300,,87,,25,1D,,Diatoms,Valegård et al 2018
 b_vulgaris_hermida_2016,Beta,vulgaris,,2,,10.8,,357,,101,,25,1B,canon,C3 plants,Hermida-Carrera 2016
 b_vulgaris_orr_2016,Beta,vulgaris,,3.8,,17,,401,,97.8,,25,1B,canon,C3 plants,Orr 2016
 distachyon_prins_2016,Brachypodium,distachyon,,2.05,,11.9,,396,,111,,25,1B,canon,C3 plants,Prins 2016
@@ -34,24 +34,24 @@ inexpansa_orr_2016,Calamagrostis,inexpansa,,3.3,,18.8,,608,,111,,25,1B,canon,C3 
 nutkaensis_orr_2016,Calamagrostis,nutkaensis,,3.1,,20.1,,601,,109,,25,1B,canon,C3 plants,Orr 2016
 annuum_hermida_2016,Capsicum,annuum,,1.9,,9.6,,243,,96,,25,1B,canon,C3 plants,Hermida-Carrera 2016
 ciliaris_sharwood_2016,Cenchrus,ciliaris,,6,,19,,470,,69.9,,25,1B,canon,C4 plants,Sharwood 2016
-calcitrans1_young_2016,Chaetoceros,calcitrans,CCMP1315,2.6,,25,,413,,57,,25,1D,diatom,Diatoms,Young 2016
-calcitrans2_young_2016,Chaetoceros,calcitrans,CS-178,3.4,,31,,490,,75,,25,1D,diatom,Diatoms,Young 2016
-muelleri_young_2016,Chaetoceros,muelleri,,2.4,,23,,425,,96,,25,1D,diatom,Diatoms,Young 2016
+calcitrans1_young_2016,Chaetoceros,calcitrans,CCMP1315,2.6,,25,,413,,57,,25,1D,,Diatoms,Young 2016
+calcitrans2_young_2016,Chaetoceros,calcitrans,CS-178,3.4,,31,,490,,75,,25,1D,,Diatoms,Young 2016
+muelleri_young_2016,Chaetoceros,muelleri,,2.4,,23,,425,,96,,25,1D,,Diatoms,Young 2016
 album_kubien_2008,Chenopodium,album,,2.91,,11.2,,415,,78.7,,25,1B,canon,C3 plants,Kubien 2008
 murale_orr_2016,Chenopodium,murale,,4.4,,23.8,,354,,109,,25,1B,canon,C3 plants,Orr 2016
 petiolare_orr_2016,Chenopodium,petiolare,,4.4,,25.6,,589,,98.5,,25,1B,canon,C3 plants,Orr 2016
-reinhardtii_chen_1988,Chlamydomonas,reinhardtii,,1.85,,29,,412,,62,,25,1B,canon,Green algae,Chen 1988
-reinhardtii_corrected_average,Chlamydomonas,reinhardtii,,2.3,,30.9,,484.5,,66.1,,25,1B,canon,Green algae,methodology-corrected average from I�iguez et al. 2021 across multiple strains
-reinhardtii_genkov_2009,Chlamydomonas,reinhardtii,,2.427,,31,,527,,60,,25,1B,canon,Green algae,Genkov and Spreitzer 2009
-reinhardtii_satagopan_2008,Chlamydomonas,reinhardtii,,2.274,,34,,417,,61,,25,1B,canon,Green algae,Satagopan and Spreitzer 2008
+reinhardtii_chen_1988,Chlamydomonas,reinhardtii,,1.85,,29,,412,,62,,25,1B,,Green algae,Chen 1988
+reinhardtii_corrected_average,Chlamydomonas,reinhardtii,,2.3,,30.9,,484.5,,66.1,,25,1B,,Green algae,methodology-corrected average from Iñiguez et al. 2021 across multiple strains
+reinhardtii_genkov_2009,Chlamydomonas,reinhardtii,,2.427,,31,,527,,60,,25,1B,,Green algae,Genkov and Spreitzer 2009
+reinhardtii_satagopan_2008,Chlamydomonas,reinhardtii,,2.274,,34,,417,,61,,25,1B,,Green algae,Satagopan and Spreitzer 2008
 indicum_orr_2016,Chrysanthellum,indicum,,4.7,,28.1,,598,,82.4,,25,1B,canon,C4 plants,Orr 2016
 ecirrhosus_orr_2016,Citrullus,ecirrhosus,,3.1,,18.9,,544,,99.9,,25,1B,canon,C3 plants,Orr 2016
 lanatus_orr_2016,Citrullus,lanatus,,2.5,,19.4,,510,,107,,25,1B,canon,C3 plants,Orr 2016
 arabica_hermida_2016,Coffea,arabica,,2.1,,11,,238,,98.7,,25,1B,canon,C3 plants,Hermida-Carrera 2016
 maxima_hermida_2016,Cucurbita,maxima,,2.2,,9,,228,,98.4,,25,1B,canon,C3 plants,Hermida-Carrera 2016
-cylindrotheca_read_1992b,Cylindrotheca,sp,,0.97,,33,,631,,107.1,,25,1D,diatom,Diatoms,Read 1992b
-cylindrotheca_read_1994,Cylindrotheca,sp,,0.78,,31,,1290,,106,,25,1D,diatom,Diatoms,Read 1994
-fusiformis_read_1994,Cylindrotheca,fusiformis,,1.95,,36,,568,,111,,25,1D,diatom,Diatoms,Read 1994
+cylindrotheca_read_1992b,Cylindrotheca,sp,,0.97,,33,,631,,107.1,,25,1D,,Diatoms,Read 1992b
+cylindrotheca_read_1994,Cylindrotheca,sp,,0.78,,31,,1290,,106,,25,1D,,Diatoms,Read 1994
+fusiformis_read_1994,Cylindrotheca,fusiformis,,1.95,,36,,568,,111,,25,1D,,Diatoms,Read 1994
 dactylon_carmo_2010,Cynodon,dactylon,,4,,21,,402,,89.2,,25,1B,canon,C4 plants,Carmo-Silva 2010
 danthonioides_orr_2016,Deschampsia,danthonioides,,4.5,,22.3,,580,,108,,25,1B,canon,C3 plants,Orr 2016
 cinereum_orr_2016,Desmodium,cinereum,,3,,12.8,,403,,97.5,,25,1B,canon,C3 plants,Orr 2016
@@ -86,8 +86,8 @@ trinervia_kubien_2008,Flaveria,trinervia,,4.42,,17.9,,671,,77,,25,1B,canon,C4 pl
 vaginata_kubien_2008,Flaveria,vaginata,,3.78,,21.4,,880,,78.7,,25,1B,canon,C4-like plants,Kubien 2008
 suffruticosa_orr_2016,Flueggea,suffruticosa,,3.4,,19.2,,547,,101,,25,1B,canon,C3 plants,Orr 2016
 vulgare_orr_2016,Foeniculum,vulgare,,4.4,,20.7,,512,,94.3,,25,1B,canon,C3 plants,Orr 2016
-cylindrus_young_2016,Fragilariopsis,cylindrus,,3.5,,64,,667,,77,,25,1D,diatom,Diatoms,Young 2016
-sulphuraria_whitney_2001,Galdieria,sulphuraria,,1.2,,3.3,,374,,166,,25,1D,canon,Red algae,Whitney 2001
+cylindrus_young_2016,Fragilariopsis,cylindrus,,3.5,,64,,667,,77,,25,1D,,Diatoms,Young 2016
+sulphuraria_whitney_2001,Galdieria,sulphuraria,,1.2,,3.3,,374,,166,,25,1D,,Red algae,Whitney 2001
 g_canescens_orr_2016,Glycine,canescens,,2.6,,17.2,,587,,97.1,,25,1B,canon,C3 plants,Orr 2016
 max_hermida_2016,Glycine,max,,1.5,,8.6,,292,,97,,25,1B,canon,C3 plants,Hermida-Carrera 2016
 max_orr_2016,Glycine,max,,2.5,,13.2,,660,,99.6,,25,1B,canon,C3 plants,Orr 2016
@@ -121,10 +121,10 @@ esculenta_orr_2016,Manihot,esculenta,,2.4,,15,,566,,105,,25,1B,canon,C3 plants,O
 m_sativa_hermida_2016,Medicago,sativa,,1.7,,9.7,,373,,95.6,,25,1B,canon,C3 plants,Hermida-Carrera 2016
 maximus_sharwood_2016,Megathyrsus,maximus,,5.3,,13.9,,265,,80.3,,25,1B,canon,C4 plants,Sharwood 2016
 annua_orr_2016,Mercurialis,annua,,3.4,,17,,417,,95.7,,25,1B,canon,C3 plants,Orr 2016
-burtonii_alonso_2009,Methanococcoides,burtonii,,2,,130,,2.5,,1.18,,25,2_3,gross,Archaea,Alonso et al. 2009
-burtonii_wilson_2016,Methanococcoides,burtonii,,0.6,,56.9,,11.2,,1.3,,25,2_3,gross,Archaea,Wilson 2016
+burtonii_alonso_2009,Methanococcoides,burtonii,,2,,130,,2.5,,1.18,,25,2_3,,Archaea,Alonso et al. 2009
+burtonii_wilson_2016,Methanococcoides,burtonii,,0.6,,56.9,,11.2,,1.3,,25,2_3,,Archaea,Wilson 2016
 velutina_orr_2016,Musa,velutina,,3.2,,19,,564,,111,,25,1B,canon,C3 plants,Orr 2016
-tabacum_corrected_average,Nicotiana,tabacum,,2.4,,10.9,,382.4,,83.5,,25,1B,canon,C3 plants,methodology-corrected average from I�iguez et al. 2021 across multiple cultivars
+tabacum_corrected_average,Nicotiana,tabacum,,2.4,,10.9,,382.4,,83.5,,25,1B,canon,C3 plants,methodology-corrected average from Iñiguez et al. 2021 across multiple cultivars
 tabacum_occhialini_2015,Nicotiana,tabacum,,3.9,,9,,292,,91.2,,25,1B,canon,C3 plants,Occhialini 2015
 tabacum_orr_2016,Nicotiana,tabacum,,4.4,,21.2,,452,,96.4,,25,1B,canon,C3 plants,Orr 2016
 tabacum_sharwood_2016,Nicotiana,tabacum,,3.1,,9.7,,283,,82.6,,25,1B,canon,C3 plants,Sharwood 2016
@@ -132,7 +132,7 @@ tabacum_sharwood_2017,Nicotiana,tabacum,,3.1,,9.4,,236,,82.3,,25,1B,canon,C3 pla
 tabacum_whitney_2001,Nicotiana,tabacum,,3.4,,10.7,,295,,82,,25,1B,canon,C3 plants,Whitney 2001
 tabacum_whitney_2011,Nicotiana,tabacum,,3.2,,12.6,,274,,81,,25,1B,canon,C3 plants,Whitney 2011
 tabacum_young_2016,Nicotiana,tabacum,,3.1,,9.7,,283,,82,,25,1B,canon,C3 plants,Young 2016
-luteus_read_1994,Olisthodiscus,luteus,,0.83,,59,,692,,100,,25,1D,canon,Brown algae,Read 1994
+luteus_read_1994,Olisthodiscus,luteus,,0.83,,59,,692,,100,,25,1D,,Brown algae,Read 1994
 barthii/glaberrima_orr_2016,Oryza,barthii/glaberrima,,2.5,,14,,479,,107,,25,1B,canon,C3 plants,Orr 2016
 eichingeri_orr_2016,Oryza,eichingeri,,2.5,,14.1,,612,,107,,25,1B,canon,C3 plants,Orr 2016
 glaberrima_orr_2016,Oryza,glaberrima,,2.7,,14.9,,586,,105,,25,1B,canon,C3 plants,Orr 2016
@@ -156,19 +156,19 @@ monticola_sharwood_2016,Panicum,monticola,,5.3,,18.2,,543,,79.4,,25,1B,canon,C4 
 phragmitoides_orr_2016,Panicum,phragmitoides,,2.8,,25.1,,687,,107,,25,1B,canon,C4 plants,Orr 2016
 virgatum_sharwood_2016,Panicum,virgatum,,3.3,,12.7,,271,,82.6,,25,1B,canon,C4 plants,Sharwood 2016
 dilatatum_carmo_2010,Paspalum,dilatatum,,3.6,,19.9,,415,,88,,25,1B,canon,C4 plants,Carmo-Silva 2010
-lutheri_heureux_2017,Pavlova,lutheri,,2.5,,14.5,,1150,,125,,25,1D,canon,Haptophytes,Heureux 2017
-tricornutum_whitney_2001,Phaeodactylum,tricornutum,,3.4,,27.9,,467,,113,,25,1D,diatom,Diatoms,Whitney 2001
-tricornutum1_young_2016,Phaeodactylum,tricornutum,CS-29,3.3,,41,,664,,116,,25,1D,diatom,Diatoms,Young 2016
-tricornutum2_young_2016,Phaeodactylum,tricornutum,UTEX 642,3.2,,36,,592,,108,,25,1D,diatom,Diatoms,Young 2016
+lutheri_heureux_2017,Pavlova,lutheri,,2.5,,14.5,,1150,,125,,25,1D,,Haptophytes,Heureux 2017
+tricornutum_whitney_2001,Phaeodactylum,tricornutum,,3.4,,27.9,,467,,113,,25,1D,,Diatoms,Whitney 2001
+tricornutum1_young_2016,Phaeodactylum,tricornutum,CS-29,3.3,,41,,664,,116,,25,1D,,Diatoms,Young 2016
+tricornutum2_young_2016,Phaeodactylum,tricornutum,UTEX 642,3.2,,36,,592,,108,,25,1D,,Diatoms,Young 2016
 carteri_orr_2016,Phaseolus,carteri,,3.2,,14.2,,422,,84.5,,25,1B,canon,C3 plants,Orr 2016
 coccineus_orr_2016,Phaseolus,coccineus,,3.9,,15.6,,491,,104,,25,1B,canon,C3 plants,Orr 2016
 lunatus_orr_2016,Phaseolus,lunatus,,3.2,,17.3,,537,,101,,25,1B,canon,C3 plants,Orr 2016
 p_vulgaris_hermida_2016,Phaseolus,vulgaris,,1.7,,7.8,,325,,99.7,,25,1B,canon,C3 plants,Hermida-Carrera 2016
 p_vulgaris_orr_2016,Phaseolus,vulgaris,,3.5,,20.2,,463,,105,,25,1B,canon,C3 plants,Orr 2016
-carterae_heureux_2017,Pleurochrysis,carterae,,3.3,,17.7,,366,,102,,25,1D,canon,Haptophytes,Heureux 2017
+carterae_heureux_2017,Pleurochrysis,carterae,,3.3,,17.7,,366,,102,,25,1D,,Haptophytes,Heureux 2017
 palustris_orr_2016,Poa,palustris,,4.2,,19.2,,562,,112,,25,1B,canon,C3 plants,Orr 2016
-cruentum_read_1994,Porphyridium,cruentum,,1.59,,22,,1570,,129,,25,1D,canon,Red algae,Read 1994
-marinus_shih_2016,Prochlorococcus,marinus,,6.58,,309,,1400,,59.9,,25,1Ac,canon,Cyanobacteria,Shih 2016
+cruentum_read_1994,Porphyridium,cruentum,,1.59,,22,,1570,,129,,25,1D,,Red algae,Read 1994
+marinus_shih_2016,Prochlorococcus,marinus,,6.58,,309,,1400,,59.9,,25,1Ac,,Cyanobacteria,Shih 2016
 distans_orr_2016,Puccinellia,distans,,5.4,,22.2,,488,,104,,25,1B,canon,C3 plants,Orr 2016
 lemmonii_orr_2016,Puccinellia,lemmonii,,5.2,,28.1,,1120,,102,,25,1B,canon,C3 plants,Orr 2016
 maritima_orr_2016,Puccinellia,maritima,,5.4,,20.8,,676,,106,,25,1B,canon,C3 plants,Orr 2016
@@ -176,47 +176,47 @@ nuttalliana_orr_2016,Puccinellia,nuttalliana,,4,,25.2,,717,,105,,25,1B,canon,C3 
 montana_orr_2016,Pueraria,montana,,2.7,,20.9,,679,,101,,25,1B,canon,C3 plants,Orr 2016
 sphaeroides_zhou_2019,Rhodobacter,sphaeroides,,3.7,,60,,1724,,58,,25,1C,,Alphaproteobacteria,Zhou 2019
 palustris_satagopan_2014,Rhodopseudomonas,palustris,,4.9,,104,,277,,12,,30,2,,Alphaproteobacteria,Satagopan 2014
-rubrum_corrected_average,Rhodospirillum,rubrum,,4.3,,78.4,,241.7,,11.3,,25,2,,Alphaproteobacteria,methodology-corrected average from I�iguez et al. 2021 across multiple strains
+rubrum_corrected_average,Rhodospirillum,rubrum,,4.3,,78.4,,241.7,,11.3,,25,2,,Alphaproteobacteria,methodology-corrected average from Iñiguez et al. 2021 across multiple strains
 rubrum_mueller_2007,Rhodospirillum,rubrum,,12.3,,149,,159,,9,,25,2,,Alphaproteobacteria,Mueller-Cajar 2007
 rubrum_satagopan_2014,Rhodospirillum,rubrum,,4.3,,125,,143,,13,,30,2,,Alphaproteobacteria,Satagopan 2014
 officinarum_hermida_2016,Saccharum,officinarum,,3.9,,26.3,,1256,,82.2,,25,1B,canon,C4 plants,Hermida-Carrera 2016
 cereale_prins_2016,Secale,cereale,,3.23,,20.2,,472,,91.5,,25,1B,canon,C3 plants,Prins 2016
 viridis_boyd_2015,Setaria,viridis,,5.44,,31.22,,359,,58.41,,25,1B,canon,C4 plants,Boyd 2015
 viridis_sharwood_2016,Setaria,viridis,,5.9,,18.1,,619,,72.7,,25,1B,canon,C4 plants,Sharwood 2016
-marinoi_valeg�rd_2018,Skeletonema,marinoi,,4.665,,48,,1810,,96,,25,1D,diatom,Diatoms,Valeg�rd et al 2018
+marinoi_valegård_2018,Skeletonema,marinoi,,4.665,,48,,1810,,96,,25,1D,,Diatoms,Valegård et al 2018
 lycopersicum_hermida_2016,Solanum,lycopersicum,,2.3,,9.7,,363,,92.4,,25,1B,canon,C3 plants,Hermida-Carrera 2016
 tuberosum_hermida_2016,Solanum,tuberosum,,2,,9.6,,295,,95.4,,25,1B,canon,C3 plants,Hermida-Carrera 2016
 stenocarpa_orr_2016,Sphenostylis,stenocarpa,,2.8,,17.4,,574,,93.6,,25,1B,canon,C3 plants,Orr 2016
-oleracea_corrected_average,Spinacia,oleracea,,1.9,,11.9,,478.8,,87.2,,25,1B,canon,C3 plants,methodology-corrected average from I�iguez et al. 2021 across multiple cultivars
+oleracea_corrected_average,Spinacia,oleracea,,1.9,,11.9,,478.8,,87.2,,25,1B,canon,C3 plants,methodology-corrected average from Iñiguez et al. 2021 across multiple cultivars
 s_oleracea_hermida_2016,Spinacia,oleracea,,2.4,,14.1,,284,,97,,25,1B,canon,C3 plants,Hermida-Carrera 2016
 oleracea_jordan_1984,Spinacia,oleracea,,1.719,,11,,500,,88,,25,1B,canon,C3 plants,Jordan 1984
 oleracea_kubien_2008,Spinacia,oleracea,,3.2,,12.1,,574,,79.8,,25,1B,canon,C3 plants,Kubien 2008
 oleracea_zhu_1998,Spinacia,oleracea,,2.7,,11,,520,,92,,25,1B,canon,C3 plants,Zhu 1998
 laxum_sharwood_2016,Steinchisma,laxum,,2.3,,7.7,,419,,91.4,,25,1B,canon,C3 plants,Sharwood 2016
-elongatus_mueller_2008,Synechococcus,elongatus,,11.8,,200,,199,,41.5,,25,1Bc,canon,Cyanobacteria,Mueller-Cajar 2008
-elongatus_occhialini_2015,Synechococcus,elongatus,,14.4,,172,,585,,43,,25,1Bc,canon,Cyanobacteria,Occhialini 2015
-elongatus_read_1992b,Synechococcus,elongatus,,2.57,,142,,664,,41,,25,1Bc,canon,Cyanobacteria,Read 1992b
-elongatus_read_1994,Synechococcus,elongatus,,3.71,,167,,529,,41,,25,1Bc,canon,Cyanobacteria,Read 1994
-elongatus_shih_2016,Synechococcus,elongatus,,9.78,,152,,1230,,50.3,,25,1Bc,canon,Cyanobacteria,Shih 2016
-syn_corrected_average,Synechococcus,sp,,7,,139.6,,690.3,,43.9,,25,1Bc,canon,Green algae,methodology-corrected average from I�iguez et al. 2021 across multiple strains
-syn_zhu_1998,Synechococcus,sp,,6.6,,81,,460,,47,,25,1Bc,canon,Cyanobacteria,Zhu 1998
+elongatus_mueller_2008,Synechococcus,elongatus,,11.8,,200,,199,,41.5,,25,1Bc,,Cyanobacteria,Mueller-Cajar 2008
+elongatus_occhialini_2015,Synechococcus,elongatus,,14.4,,172,,585,,43,,25,1Bc,,Cyanobacteria,Occhialini 2015
+elongatus_read_1992b,Synechococcus,elongatus,,2.57,,142,,664,,41,,25,1Bc,,Cyanobacteria,Read 1992b
+elongatus_read_1994,Synechococcus,elongatus,,3.71,,167,,529,,41,,25,1Bc,,Cyanobacteria,Read 1994
+elongatus_shih_2016,Synechococcus,elongatus,,9.78,,152,,1230,,50.3,,25,1Bc,,Cyanobacteria,Shih 2016
+syn_corrected_average,Synechococcus,sp,,7,,139.6,,690.3,,43.9,,25,1Bc,,Green algae,methodology-corrected average from Iñiguez et al. 2021 across multiple strains
+syn_zhu_1998,Synechococcus,sp,,6.6,,81,,460,,47,,25,1Bc,,Cyanobacteria,Zhu 1998
 candida_orr_2016,Tephrosia,candida,,2.2,,15.9,,481,,97.8,,25,1B,canon,C3 plants,Orr 2016
 purpurea_orr_2016,Tephrosia,purpurea,,2.2,,12.4,,333,,103,,25,1B,canon,C3 plants,Orr 2016
 rhodesica_orr_2016,Tephrosia,rhodesica,,2.2,,13.7,,565,,91.6,,25,1B,canon,C3 plants,Orr 2016
-hyalina_valeg�rd_2018,Thalassiosira,hyalina,,4.101,,50,,1640,,99,,25,1D,diatom,Diatoms,Valeg�rd et al 2018
-nordenskioeldii_valeg�rd_2018,Thalassiosira,nordenskioeldii,,4.658,,122,,1420,,82,,25,1D,diatom,Diatoms,Valeg�rd et al 2018
-oceanica_young_2016,Thalassiosira,oceanica,,2.4,,65,,954,,80,,25,1D,diatom,Diatoms,Young 2016
-weissflogii_young_2016,Thalassiosira,weissflogii,,3.2,,65,,2030,,79,,25,1D,diatom,Diatoms,Young 2016
-kodakarensis_kreel_2015,Thermococcus,kodakarensis,,16.6,,79,,43,,6,,83,3,gross,Archaea,Kreel 2015
-kodakarensis_yoshida_2007,Thermococcus,kodakarensis,,0.25,,52.3,,900,,11,,25,3,gross,Archaea,Yoshida 2007
+hyalina_valegård_2018,Thalassiosira,hyalina,,4.101,,50,,1640,,99,,25,1D,,Diatoms,Valegård et al 2018
+nordenskioeldii_valegård_2018,Thalassiosira,nordenskioeldii,,4.658,,122,,1420,,82,,25,1D,,Diatoms,Valegård et al 2018
+oceanica_young_2016,Thalassiosira,oceanica,,2.4,,65,,954,,80,,25,1D,,Diatoms,Young 2016
+weissflogii_young_2016,Thalassiosira,weissflogii,,3.2,,65,,2030,,79,,25,1D,,Diatoms,Young 2016
+kodakarensis_kreel_2015,Thermococcus,kodakarensis,,16.6,,79,,43,,6,,83,3,,Archaea,Kreel 2015
+kodakarensis_yoshida_2007,Thermococcus,kodakarensis,,0.25,,52.3,,900,,11,,25,3,,Archaea,Yoshida 2007
 denitrificans_IA_hernandez_1996,Thiobacillus,denitrificans,,1.9,,138,,1640,,42.7,,25,1Aq,,Betaproteobacteria,Hernandez 1996
 denitrificans_II_hernandez_1996,Thiobacillus,denitrificans,,3.5,,256,,619,,13.3,,25,2,,Betaproteobacteria,Hernandez 1996
-lutea_heureux_2017,Tisochrysis,lutea,,2.2,,24.1,,800,,89,,25,1D,canon,Haptophytes,Heureux 2017
+lutea_heureux_2017,Tisochrysis,lutea,,2.2,,24.1,,800,,89,,25,1D,,Haptophytes,Heureux 2017
 Cando_prins_2016,Triticale,Cando,,3.62,,16.1,,384,,99.7,,25,1B,canon,C3 plants,Prins 2016
 Rotego_prins_2016,Triticale,Rotego,,3.46,,15.1,,369,,96.8,,25,1B,canon,C3 plants,Prins 2016
 Talentro_prins_2016,Triticale,Talentro,,3.36,,15.8,,436,,95.2,,25,1B,canon,C3 plants,Prins 2016
 aestivum_carmo_2010,Triticum,aestivum,,3,,10.9,,341,,100,,25,1B,canon,C3 plants,Carmo-Silva 2010
-aestivum_corrected_average,Triticum,aestivum,,2.7,,11.9,,428.9,,96.3,,25,1B,canon,C3 plants,methodology-corrected average from I�iguez et al. 2021 across multiple cultivars
+aestivum_corrected_average,Triticum,aestivum,,2.7,,11.9,,428.9,,96.3,,25,1B,canon,C3 plants,methodology-corrected average from Iñiguez et al. 2021 across multiple cultivars
 aestivum_hermida_2016,Triticum,aestivum,,2.2,,11.3,,620,,100,,25,1B,canon,C3 plants,Hermida-Carrera 2016
 aestivum_orr_2016,Triticum,aestivum,,4.9,,20.1,,658,,100,,25,1B,canon,C3 plants,Orr 2016
 aestivum_zhu_1998,Triticum,aestivum,,2.5,,14,,730,,98,,25,1B,canon,C3 plants,Zhu 1998
@@ -234,26 +234,26 @@ timonovum_prins_2016,Triticum,timonovum,,3.48,,16.8,,495,,101,,25,1B,canon,C3 pl
 timopheevii_prins_2016,Triticum,timopheevii,,3.43,,16.2,,429,,102,,25,1B,canon,C3 plants,Prins 2016
 mosambicensis_sharwood_2016,Urochloa,mosambicensis,,5.7,,14.8,,464,,82.5,,25,1B,canon,C4 plants,Sharwood 2016
 panicoides_sharwood_2016,Urochloa,panicoides,,5.6,,15.4,,444,,78.3,,25,1B,canon,C4 plants,Sharwood 2016
-mays_corrected_average,Zea,mays,,3.7,,21,,444.1,,87.7,,25,1B,canon,C4 plants,methodology-corrected average from I�iguez et al. 2021 across multiple cultivars
+mays_corrected_average,Zea,mays,,3.7,,21,,444.1,,87.7,,25,1B,canon,C4 plants,methodology-corrected average from Iñiguez et al. 2021 across multiple cultivars
 mays_hermida_2016,Zea,mays,,4.1,,31.6,,784,,87.3,,25,1B,canon,C4 plants,Hermida-Carrera 2016
 mays_kubien_2008,Zea,mays,,4.05,,21.2,,157,,74.9,,25,1B,canon,C4 plants,Kubien 2008
 mays_young_2016,Zea,mays,,5.5,,19,,397,,88,,25,1B,canon,C4 plants,Young 2016
 japonica_carmo_2010,Zoysia,japonica,,4.4,,18.5,,403,,84.1,,25,1B,canon,C4 plants,Carmo-Silva 2010
-average_Iac,Average,1Ac,,7.77,,282,,1310,,53,,25,1Ac,canon,Cyanobacteria/Gammaproteobacteria,this package
+average_Iac,Average,1Ac,,7.77,,282,,1310,,53,,25,1Ac,,Cyanobacteria/Gammaproteobacteria,this package
 average_Iaq,Average,1Aq,,6.13,,59,,965,,43,,25,1Aq,,Proteobacteria,this package
 average_IB,Average,1B,,3.31,,19.3,,470,,93,,25,1B,canon,Plants/Algae,this package
 average_C3_IB,Average,1B,,2.99,,16.6,,457,,98,,25,1B,canon,C3 plants,this package
 average_C4_IB,Average,1B,,4.47,,30.5,,521,,83,,25,1B,canon,C4 plants,this package
-average_algae_IB,Average,1B,,2.39,,33.3,,495,,62,,25,1B,canon,Green algae,this package
-average_Ibc,Average,1Bc,,8.89,,168,,714,,44,,25,1Bc,canon,Cyanobacteria,this package
+average_algae_IB,Average,1B,,2.39,,33.3,,495,,62,,25,1B,,Green algae,this package
+average_Ibc,Average,1Bc,,8.89,,168,,714,,44,,25,1Bc,,Cyanobacteria,this package
 average_IC,Average,1C,,3.56,,48,,1282,,64,,25,1C,,Proteobacteria,this package
-average_ID,Average,1D,,2.46,,35.8,,948,,111,,25,1D,canon,Brown/red Algae,this package
-average_diatom_ID,Average,1D,,3.09,,51.9,,987,,91,,25,1D,diatom,Diatoms,this package
+average_ID,Average,1D,,2.46,,35.8,,948,,111,,25,1D,,Brown/red Algae,this package
+average_diatom_ID,Average,1D,,3.09,,51.9,,987,,91,,25,1D,,Diatoms,this package
 average_2,Average,II,,6.12,,116,,351,,11,,25,2,,Proteobacteria,this package
 average_CAM_IB,Average,1B,,3.83,,13,,315,,89,,25,1B,canon,CAM plants,this package
-composite_vinosum,Allochromatium,vinosum,,5.3,,32.6,,290,,43,,25,1Aq,,Gammaproteobacteria,"composite: kcat from I�iguez et al. 2021 methodology-corrected average across multiple cultivars, other kinetics averages from collected studies"
-composite_thaliana,Arabidopsis,thaliana,,3.2,,9.9,,333,,98,,25,1B,canon,C3 plants,"composite: kcat from I�iguez et al. 2021 methodology-corrected average across multiple cultivars, Kc and Ko from Galm�s et al. 2014, specificity from this package's avg. C3 plant kinetics"
-composite_glycine_max,Glycine,max,,1.5,,10.8,,496,,93,,25,1B,canon,C3 plants,"composite: kcat, Kc, Ko from I�iguez et al. 2021 methodology-corrected average; specificity average of collected studies"
-composite_annuus,Helianthus,annuus,,1.7,,9.4,,457,,98,,25,1B,canon,C3 plants,"composite: kcat from I�iguez et al. 2021 method-corrected average, Kc from Makino et al. 1985, Ko from this package's avg. C3 plant, specificity average of collected studies"
-composite_sativa,Oryza,sativa,,1.8,,9.5,,332,,107,,25,1B,canon,C3 plants,"composite: kcat, Kc, Ko from I�iguez et al. 2021 methodology-corrected average; specificity average of collected studies"
-composite_vulgaris,Phaseolus,vulgaris,,2.4,,14,,394,,102,,25,1B,canon,C3 plants,"composite: kcat from I�iguez et al. 2021 method-corrected average; Kc, Ko, specificity average of Hermida-Carrera et al. 2016 & Orr et al. 2016"
+composite_vinosum,Allochromatium,vinosum,,5.3,,32.6,,290,,43,,25,1Aq,,Gammaproteobacteria,"composite: kcat from Iñiguez et al. 2021 methodology-corrected average across multiple cultivars, other kinetics averages from collected studies"
+composite_thaliana,Arabidopsis,thaliana,,3.2,,9.9,,333,,98,,25,1B,canon,C3 plants,"composite: kcat from Iñiguez et al. 2021 methodology-corrected average across multiple cultivars, Kc and Ko from Galmés et al. 2014, specificity from this package's avg. C3 plant kinetics"
+composite_glycine_max,Glycine,max,,1.5,,10.8,,496,,93,,25,1B,canon,C3 plants,"composite: kcat, Kc, Ko from Iñiguez et al. 2021 methodology-corrected average; specificity average of collected studies"
+composite_annuus,Helianthus,annuus,,1.7,,9.4,,457,,98,,25,1B,canon,C3 plants,"composite: kcat from Iñiguez et al. 2021 method-corrected average, Kc from Makino et al. 1985, Ko from this package's avg. C3 plant, specificity average of collected studies"
+composite_sativa,Oryza,sativa,,1.8,,9.5,,332,,107,,25,1B,canon,C3 plants,"composite: kcat, Kc, Ko from Iñiguez et al. 2021 methodology-corrected average; specificity average of collected studies"
+composite_vulgaris,Phaseolus,vulgaris,,2.4,,14,,394,,102,,25,1B,canon,C3 plants,"composite: kcat from Iñiguez et al. 2021 method-corrected average; Kc, Ko, specificity average of Hermida-Carrera et al. 2016 & Orr et al. 2016"
