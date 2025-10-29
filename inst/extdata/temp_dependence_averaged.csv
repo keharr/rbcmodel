@@ -1,4 +1,4 @@
-﻿identifier,genus,species,subspecies,kcat dH,Kc dH,Ko dH,S dH,Form,Taxonomy,Note,short_ref
+﻿identifier,genus,species,subspecies,kcat_dH,Kc_dH,Ko_dH,S_dH,Form,Taxonomy,Note,short_ref
 average_1B_plant,Average,1B,plant,58.1,41.1,26.7,-21.5,1B,,Ko from in vivo estimates; all others average Streptophyta presented in Galmes 2016,this study
 average_1B_C3_warm,Average,1B,C3 plants (warm),64.5,46.1,26.7,-22,1B,C3 plants,Ko from in vivo estimates; all others average C3 warm Streptophyta presented in Galmes 2016,this study
 average_1B_C3_cool,Average,1B,C3 plants (cool),55.3,40.5,26.7,-19.9,1B,C3 plants,Ko from in vivo estimates; all others average C3 cool Streptophyta presented in Galmes 2016,this study

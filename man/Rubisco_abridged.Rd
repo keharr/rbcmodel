@@ -5,7 +5,7 @@
 \alias{Rubisco_abridged}
 \title{Abridged Rubisco kinetics data}
 \format{
-An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 258 rows and 17 columns.
+An object of class \code{data.frame} with 258 rows and 17 columns.
 }
 \usage{
 Rubisco_abridged

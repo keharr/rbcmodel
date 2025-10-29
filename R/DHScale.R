@@ -227,10 +227,10 @@ DHScale <- function(id_name, id_col="identifier", scale_name=NULL, data=NULL){
 #'   or NULL. If NULL, the search will proceed from abridged to averaged
 #'   until a match is found
 #' @param match whether to require complete match. Can be "complete" or "partial"
-#' @returns a tibble containing matching entries.
+#' @returns a dataframe containing matching entries.
 #' @export
 #' @examples
-#' Aegilops <- search_enzyme("Aegilops", level="genus") # complete genus search
+#' Aegilops <- search_DHScale("Aegilops", level="genus") # complete genus search
 #' print(Aegilops) # printout search results
 search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
 
@@ -240,7 +240,7 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
   form_allowed <- c("1A","1Ac","1B","1Bc","1C","1D","2","2_3","3")
 
   if (!is.null(level)) {
-    if(!(string %in% form_allowed) & tolower(level)=="form"){
+    if(tolower(level)=="form" & !(string %in% form_allowed)){
     stop(
       paste0('Form must be one of ', paste(form_allowed, collapse=", ")),
       call. = FALSE
@@ -268,6 +268,7 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       # return if there's any match
       if (nrow(out) > 0) {
         message("Matched genus in abridged table")
+        rownames(out) <- NULL
         return(out)
       }
     }
@@ -301,6 +302,7 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       # return if there's any match
       if (nrow(out) > 0) {
         message("Matched species in abridged table")
+        rownames(out) <- NULL
         return(out)
       }
     }
@@ -333,6 +335,7 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       # return if there's any match
       if (nrow(out) > 0) {
         message("Matched taxonomy in abridged table")
+        rownames(out) <- NULL
         return(out)
       }
     }
@@ -352,6 +355,7 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       }
       if (nrow(out) > 0) {
         message("Matched taxonomy in averages table")
+        rownames(out) <- NULL
         return(out)
       }
     }
@@ -378,6 +382,7 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       # return if there's any match
       if (nrow(out) > 0) {
         message("Matched form in abridged table")
+        rownames(out) <- NULL
         return(out)
       }
     }
@@ -397,6 +402,7 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       }
       if (nrow(out) > 0) {
         message("Matched form in averages table")
+        rownames(out) <- NULL
         return(out)
       }
     }

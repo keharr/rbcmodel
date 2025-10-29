@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{kinetics_T_dep}
 \alias{kinetics_T_dep}
-\title{Function factory for calculating temperture-dependent kinetics}
+\title{Function factory for calculating temperature-dependent kinetics}
 \usage{
 kinetics_T_dep(std, delta_H, temp = 25)
 }

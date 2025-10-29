@@ -4,7 +4,7 @@
 \alias{CO2_dependence}
 \title{Function factory to model an enzyme's carbon output}
 \usage{
-CO2_dependence(enzyme, DHScale, PGS)
+CO2_dependence(enzyme, DHScale, PGS = NULL)
 }
 \arguments{
 \item{enzyme}{An 'enzyme' object. (See enzyme class for more info.)}

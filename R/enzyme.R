@@ -419,6 +419,7 @@ search_alias <- function(string, data=NULL, match="complete"){
 
     if (nrow(out) > 0){
       message("Data found in abridged table")
+      rownames(out) <- NULL
       return(out)
     }
 
@@ -452,6 +453,7 @@ search_alias <- function(string, data=NULL, match="complete"){
 
     if (nrow(out) > 0){
       message("Data found in comprehensive table")
+      rownames(out) <- NULL
       return(out)
     }
 
@@ -468,15 +470,15 @@ search_alias <- function(string, data=NULL, match="complete"){
 #' Data is pulled either from the abridged table or the comprehensive table,
 #' both of which are included in this package
 #'
-#' @param string a string to search for in the database
+#' @param string a string to search for in the database (case insensitive)
 #' @param level the taxonomic level to search. Can be "alias", "genus", "species",
-#'   or NULL. If NULL, the search will proceed from alias to genus to species
-#'   until a match is found
+#'   "form", "taxonomy", or NULL. If NULL, the search will proceed from alias to 
+#'   genus to species to taxonomy to form until a match is found
 #' @param data the source data to search from. Can be "abridged", "comprehensive",
 #'   or NULL. If NULL, the search will proceed from abridged to comprehensive
 #'   until a match is found
 #' @param match whether to require complete match. Can be "complete" or "partial"
-#' @returns a tibble containing matching entries.
+#' @returns a dataframe containing matching entries.
 #' @export
 #' @examples
 #' Aegilops <- search_enzyme("Aegilops", level="genus") # complete genus search
@@ -499,18 +501,19 @@ search_enzyme <- function(string, level=NULL, data=NULL, match="complete"){
       if (tolower(match)=="complete"){
         out <- Rubisco_abridged[
           !is.na(Rubisco_abridged[["genus"]]) &
-            (Rubisco_abridged[["genus"]] == string)
+            (tolower(Rubisco_abridged[["genus"]]) == tolower(string))
           , ]
       } else {
         out <- Rubisco_abridged[
           !is.na(Rubisco_abridged[["genus"]]) &
-            grepl(string, Rubisco_abridged[["genus"]], fixed=TRUE)
+            grepl(tolower(string), tolower(Rubisco_abridged[["genus"]]), fixed=TRUE)
           , ]
       }
 
       # return if there's any match
       if (nrow(out) > 0) {
         message("Matched genus in abridged table")
+        rownames(out) <- NULL
         return(out)
       }
     }
@@ -520,16 +523,17 @@ search_enzyme <- function(string, level=NULL, data=NULL, match="complete"){
       if (tolower(match)=="complete"){
         out <- Rubisco_25C[
           !is.na(Rubisco_25C[["genus"]]) &
-            (Rubisco_25C[["genus"]] == string)
+            (tolower(Rubisco_25C[["genus"]]) == tolower(string))
           , ]
       } else {
         out <- Rubisco_25C[
           !is.na(Rubisco_25C[["genus"]]) &
-            grepl(string, Rubisco_25C[["genus"]], fixed=TRUE)
+            grepl(tolower(string), tolower(Rubisco_25C[["genus"]]), fixed=TRUE)
           , ]
       }
       if (nrow(out) > 0) {
         message("Matched genus in comprehensive table")
+        rownames(out) <- NULL
         return(out)
       }
     }
@@ -544,41 +548,145 @@ search_enzyme <- function(string, level=NULL, data=NULL, match="complete"){
       if (tolower(match)=="complete"){
         out <- Rubisco_abridged[
           !is.na(Rubisco_abridged[["species"]]) &
-            (Rubisco_abridged[["species"]] == string)
+            (tolower(Rubisco_abridged[["species"]]) == tolower(string))
           , ]
       } else {
         out <- Rubisco_abridged[
           !is.na(Rubisco_abridged[["species"]]) &
-            grepl(string, Rubisco_abridged[["species"]], fixed=TRUE)
+            grepl(tolower(string), tolower(Rubisco_abridged[["species"]]), fixed=TRUE)
           , ]
       }
 
       # return if there's any match
       if (nrow(out) > 0) {
         message("Matched species in abridged table")
+        rownames(out) <- NULL
         return(out)
       }
     }
 
     if (is.null(data) || tolower(data) == "comprehensive"){
+
       # search the full table
       if (tolower(match)=="complete"){
         out <- Rubisco_25C[
           !is.na(Rubisco_25C[["species"]]) &
-            (Rubisco_25C[["species"]] == string)
+            (tolower(Rubisco_25C[["species"]]) == tolower(string))
           , ]
       } else {
         out <- Rubisco_25C[
           !is.na(Rubisco_25C[["species"]]) &
-            grepl(string, Rubisco_25C[["species"]], fixed=TRUE)
+            grepl(tolower(string), tolower(Rubisco_25C[["species"]]), fixed=TRUE)
           , ]
       }
 
       if (nrow(out) > 0) {
         message("Matched species in comprehensive table")
+        rownames(out) <- NULL
         return(out)
       }
     }
+  }
+
+
+  if (is.null(level) || tolower(level) == "taxonomy"){
+
+    if (is.null(data) || data == "abridged"){
+
+     # search the abridged table
+      if (tolower(match)=="complete"){
+        out <- Rubisco_abridged[
+          !is.na(Rubisco_abridged[["taxonomy"]]) &
+            (tolower(Rubisco_abridged[["taxonomy"]]) == tolower(string))
+          , ]
+      } else {
+        out <- Rubisco_abridged[
+          !is.na(Rubisco_abridged[["taxonomy"]]) &
+            grepl(tolower(string), tolower(Rubisco_abridged[["taxonomy"]]), fixed=TRUE)
+          , ]
+      }
+
+      # return if there's any match
+      if (nrow(out) > 0) {
+        message("Matched taxonomy in abridged table")
+        rownames(out) <- NULL
+        return(out)
+      }
+    }
+
+    if (is.null(data) || tolower(data) == "comprehensive"){
+
+      # search the full table
+      if (tolower(match)=="complete"){
+        out <- Rubisco_25C[
+          !is.na(Rubisco_25C[["taxonomy"]]) &
+            (tolower(Rubisco_25C[["taxonomy"]]) == tolower(string))
+          , ]
+      } else {
+        out <- Rubisco_25C[
+          !is.na(Rubisco_25C[["taxonomy"]]) &
+            grepl(tolower(string), tolower(Rubisco_25C[["taxonomy"]]), fixed=TRUE)
+          , ]
+      }
+
+      if (nrow(out) > 0) {
+        message("Matched taxonomy in comprehensive table")
+        rownames(out) <- NULL
+        return(out)
+      }
+
+    }
+
+  }
+
+  if (is.null(level) || tolower(level) == "form"){
+
+    if (is.null(data) || data == "abridged"){
+
+     # search the abridged table
+      if (tolower(match)=="complete"){
+        out <- Rubisco_abridged[
+          !is.na(Rubisco_abridged[["form"]]) &
+            (tolower(Rubisco_abridged[["form"]]) == tolower(string))
+          , ]
+      } else {
+        out <- Rubisco_abridged[
+          !is.na(Rubisco_abridged[["form"]]) &
+            grepl(tolower(string), tolower(Rubisco_abridged[["form"]]), fixed=TRUE)
+          , ]
+      }
+
+      # return if there's any match
+      if (nrow(out) > 0) {
+        message("Matched form in abridged table")
+        rownames(out) <- NULL
+        return(out)
+      }
+    }
+
+    if (is.null(data) || tolower(data) == "comprehensive"){
+
+      # search the full table
+      if (tolower(match)=="complete"){
+        out <- Rubisco_25C[
+          !is.na(Rubisco_25C[["form"]]) &
+            (tolower(Rubisco_25C[["form"]]) == tolower(string))
+          , ]
+      } else {
+        out <- Rubisco_25C[
+          !is.na(Rubisco_25C[["form"]]) &
+            grepl(tolower(string), tolower(Rubisco_25C[["form"]]), fixed=TRUE)
+          , ]
+      }
+
+      if (nrow(out) > 0) {
+        message("Matched form in comprehensive table")
+        rownames(out) <- NULL
+        return(out)
+      }
+
+    }
+
   }
 
   warning("No entry found")

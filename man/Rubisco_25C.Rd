@@ -5,7 +5,7 @@
 \alias{Rubisco_25C}
 \title{Comprehensive Rubisco kinetics data}
 \format{
-An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 869 rows and 31 columns.
+An object of class \code{data.frame} with 869 rows and 31 columns.
 }
 \usage{
 Rubisco_25C

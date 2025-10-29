@@ -22,7 +22,7 @@ Creates a combined model that compares two different enzymes. Requires the
 input of two models output from the CO2_dependence equation.
 }
 \examples{
-pro_enzyme <- new_enzyme(6.6, 144, 394, 10.8, name="pro") 
+pro_enzyme <- new_enzyme(6.6, 144, 394, 10.8, name="pro")
 bacIA_DHScale <- new_DHScale(47.2,40.8,26.7,-21.8,name="bacIA")
 pro_model <- CO2_dependence(pro_enzyme, bacIA_DHScale, "canon") #first model
 tmrIA_DHScale <- modify_DHScale(bacIA_DHScale,kcat_dH=32,name="tmr_IA")
@@ -30,6 +30,6 @@ tmrIA_model <- CO2_dependence(pro_enzyme, tmrIA_DHScale, "canon") #second model
 tmr_vs_pro <- CO2_comparison(pro_model, tmrIA_model) #creating the comparison
 print(tmr_vs_pro) # prints the comparison equation
 # prints the amount for which the tmrIA_model is faster than the pro_model
-tmr_vs_pro(126,54,15) 
+tmr_vs_pro(126,54,15)
 
 }

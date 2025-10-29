@@ -5,7 +5,7 @@
 \alias{temp_dep_abridged}
 \title{Abridged Delta H temperature scaling data}
 \format{
-An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 111 rows and 12 columns.
+An object of class \code{data.frame} with 111 rows and 12 columns.
 }
 \usage{
 temp_dep_abridged

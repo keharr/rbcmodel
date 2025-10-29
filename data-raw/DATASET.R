@@ -63,7 +63,6 @@ Rubisco_kinetics_cols = readr::cols(
 
 temp_averaged_cols = readr::cols(
   identifier = readr::col_character(),
-  category = readr::col_character(),
   kcat_dH = readr::col_double(),
   Kc_dH = readr::col_double(),
   Ko_dH = readr::col_double(),
@@ -76,7 +75,7 @@ temp_averaged_cols = readr::cols(
 
 temp_abridged_cols = readr::cols(
   identifier = readr::col_character(),
-  genus = readr::col_character(), 
+  genus = readr::col_character(),
   species = readr::col_character(),
   subspecies = readr::col_character(),
   kcat_dH = readr::col_double(),
@@ -93,29 +92,34 @@ Rubisco_aliases <- readr::read_csv(
   "inst/extdata/Rubisco_kinetics_alias.csv",
   col_types = Rubisco_alias_cols
 )
+Rubisco_aliases <- as.data.frame(Rubisco_aliases)
 
 Rubisco_abridged <- readr::read_csv(
   "inst/extdata/Rubisco_kinetics_abridged.csv",
   col_types = Rubisco_abridged_cols
 )
+Rubisco_abridged <- as.data.frame(Rubisco_abridged)
 
 Rubisco_25C <- readr::read_csv(
   "inst/extdata/Rubisco_kinetics_25C.csv",
   col_types = Rubisco_kinetics_cols,
   na = c("", "na", "nf", "NA")
 )
+Rubisco_25C <- as.data.frame(Rubisco_25C)
 
 temp_dep_averaged <- readr::read_csv(
   "inst/extdata/temp_dependence_averaged.csv",
   col_types = temp_averaged_cols,
   na = c("", "NA")
 )
+temp_dep_averaged <- as.data.frame(temp_dep_averaged)
 
 temp_dep_abridged <- readr::read_csv(
   "inst/extdata/temp_dependence_abridged.csv",
   col_types = temp_abridged_cols,
   na = c("", "NA")
 )
+temp_dep_abridged <- as.data.frame(temp_dep_abridged)
 
 usethis::use_data(Rubisco_aliases, overwrite=TRUE)
 usethis::use_data(Rubisco_abridged, overwrite=TRUE)
@@ -123,7 +127,7 @@ usethis::use_data(Rubisco_25C, overwrite=TRUE)
 usethis::use_data(temp_dep_averaged, overwrite=TRUE)
 usethis::use_data(temp_dep_abridged, overwrite=TRUE)
 usethis::use_data(
-  Rubisco_aliases, Rubisco_abridged, Rubisco_25C, 
+  Rubisco_aliases, Rubisco_abridged, Rubisco_25C,
   temp_dep_averaged,
   internal=TRUE, overwrite=TRUE
 )
