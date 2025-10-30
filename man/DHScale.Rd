@@ -28,5 +28,5 @@ a new DHScale instance
 Create an DHScale instance by looking up the relevant data in database
 }
 \examples{
-cyano <- DHScale("cyano_1Ac") # retrieved from abridged database
+cyano <- DHScale("average_1B_C4") # retrieved from abridged database
 }

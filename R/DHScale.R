@@ -165,7 +165,7 @@ modify_DHScale <- function(
 #' @returns a new DHScale instance
 #' @export
 #' @examples
-#' cyano <- DHScale("cyano_1Ac") # retrieved from abridged database
+#' cyano <- DHScale("average_1B_C4") # retrieved from abridged database
 DHScale <- function(id_name, id_col="identifier", scale_name=NULL, data=NULL){
 
   if (is.null(scale_name)){ scale_name <- id_name }
@@ -273,9 +273,12 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       }
     }
 
+	print(level)
+	print(data)
+
     if (!is.null(level) & !is.null(data)) {
-      if (tolower(level) == "genus" & tolower(data) == "average"){
-        warning("Genus-specific data is not found in averages table")
+      if (tolower(data) == "averaged"){
+        warning("Genus-specific data is absent in averages table")
         return(NULL)
       }
     }
@@ -308,9 +311,9 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
     }
 
     if (!is.null(level) & !is.null(data)) {
-      if (tolower(level) == "species" & tolower(data) == "average"){
-          warning("Species-specific data is not found in averages table")
-          return(NULL)
+      if (tolower(data) == "averaged"){
+        warning("Species-specific data is absent in averages table")
+        return(NULL)
       }
     }
   }

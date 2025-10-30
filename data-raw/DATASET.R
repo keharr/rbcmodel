@@ -128,6 +128,6 @@ usethis::use_data(temp_dep_averaged, overwrite=TRUE)
 usethis::use_data(temp_dep_abridged, overwrite=TRUE)
 usethis::use_data(
   Rubisco_aliases, Rubisco_abridged, Rubisco_25C,
-  temp_dep_averaged,
+  temp_dep_averaged, temp_dep_abridged,
   internal=TRUE, overwrite=TRUE
 )

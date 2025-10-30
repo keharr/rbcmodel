@@ -9,6 +9,10 @@
 #' @param grid_slice The 3D slice to be plotted
 #' @param contours The values of dependent variable at which the contours
 #'   are drawn, as a single numeric vector. If NULL no contours are produced.
+#' @param cmin The lower bound for the color mapping. If NULL defaults to the
+#'   minimum value of the contour/color variable.
+#' @param cmax The upper bound for the color mapping. If NULL defaults to the
+#'   maximum value of the contour/color variable.
 #' @param dims Length 3 integer vector, e.g., c(1,2,4), that specify the
 #'   horizontal, vertical, and contour/color variables of the plot. If NULL,
 #'   the 1st element of the slice is treated as horizontal coordinate, the
@@ -17,10 +21,6 @@
 #'   should ALWAYS correspond the first index of the two-dimension arrays,
 #'   and the vertical coordinates should ALWAYS be the second index. (Use
 #'   transpose_3D_slice() to modify which variables are horizontal/vertical)
-#' @param cmin The lower bound for the color mapping. If NULL defaults to the
-#'   minimum value of the contour/color variable.
-#' @param cmax The upper bound for the color mapping. If NULL defaults to the
-#'   maximum value of the contour/color variable.
 #' @param colors The vector of colors used for rendering the false color
 #'   tiles of the plot. If the string "default" is supplied instead, the
 #'   default blue-white-red color scale is used, where the color is bluer
@@ -44,7 +44,7 @@
 #' # plot the 3D slice
 #' plot_slice_3D(s1, contours=seq(5, 25, 2.5), dims=c(1, 3, 4))
 plot_slice_3D <- function(
-  grid_slice, contours, dims = NULL, cmin = NULL, cmax = NULL, 
+  grid_slice, contours, cmin = NULL, cmax = NULL, dims = NULL,
   colors = "default", NA_color = "grey", contour_col = "black",
   xlabel = "", ylabel = "", clabel=c("Carbon", "(C/s)"), lwd = 2, ...
 ) {
@@ -61,13 +61,13 @@ plot_slice_3D <- function(
 
   # lower and upper bounds for the color fill
   if (is.null(cmax)){
-    upper <- max(z)
+    upper <- max(z, na.rm=TRUE)
   } else {
     upper <- cmax
   }
   
   if (is.null(cmin)){
-    lower <- min(z)
+    lower <- min(z, na.rm=TRUE)
   } else {
     lower <- cmin
   }

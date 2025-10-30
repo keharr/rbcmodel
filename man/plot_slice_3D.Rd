@@ -7,9 +7,9 @@
 plot_slice_3D(
   grid_slice,
   contours,
-  dims = NULL,
   cmin = NULL,
   cmax = NULL,
+  dims = NULL,
   colors = "default",
   NA_color = "grey",
   contour_col = "black",
@@ -26,6 +26,12 @@ plot_slice_3D(
 \item{contours}{The values of dependent variable at which the contours
 are drawn, as a single numeric vector. If NULL no contours are produced.}
 
+\item{cmin}{The lower bound for the color mapping. If NULL defaults to the
+minimum value of the contour/color variable.}
+
+\item{cmax}{The upper bound for the color mapping. If NULL defaults to the
+maximum value of the contour/color variable.}
+
 \item{dims}{Length 3 integer vector, e.g., c(1,2,4), that specify the
 horizontal, vertical, and contour/color variables of the plot. If NULL,
 the 1st element of the slice is treated as horizontal coordinate, the
@@ -34,12 +40,6 @@ treated as the dependent variable. Note that the horizontal coordinate
 should ALWAYS correspond the first index of the two-dimension arrays,
 and the vertical coordinates should ALWAYS be the second index. (Use
 transpose_3D_slice() to modify which variables are horizontal/vertical)}
-
-\item{cmin}{The lower bound for the color mapping. If NULL defaults to the
-minimum value of the contour/color variable.}
-
-\item{cmax}{The upper bound for the color mapping. If NULL defaults to the
-maximum value of the contour/color variable.}
 
 \item{colors}{The vector of colors used for rendering the false color
 tiles of the plot. If the string "default" is supplied instead, the
