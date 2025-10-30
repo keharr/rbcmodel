@@ -273,9 +273,6 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       }
     }
 
-	print(level)
-	print(data)
-
     if (!is.null(level) & !is.null(data)) {
       if (tolower(data) == "averaged"){
         warning("Genus-specific data is absent in averages table")
