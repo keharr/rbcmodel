@@ -44,7 +44,7 @@
 #' # plot the 3D slice
 #' plot_slice_3D(s1, contours=seq(5, 25, 2.5), dims=c(1, 3, 4))
 plot_slice_3D <- function(
-  grid_slice, contours, cmin = NULL, cmax = NULL, dims = NULL,
+  grid_slice, contours = NULL, cmin = NULL, cmax = NULL, dims = NULL,
   colors = "default", NA_color = "grey", contour_col = "black",
   xlabel = "", ylabel = "", clabel=c("Carbon", "(C/s)"), lwd = 2, ...
 ) {
@@ -65,7 +65,7 @@ plot_slice_3D <- function(
   } else {
     upper <- cmax
   }
-  
+
   if (is.null(cmin)){
     lower <- min(z, na.rm=TRUE)
   } else {
@@ -73,6 +73,7 @@ plot_slice_3D <- function(
   }
 
   # resolve default color
+  if (length(colors) == 1) {
   if (colors == "default") {
     if (upper <= 0){ # color range negative, use segment of blue-white
       colors <- plot3D::ramp.col(col = c("blue", "white"), n = 125)
@@ -94,6 +95,7 @@ plot_slice_3D <- function(
         colors <- colors[1:c_cut]
       }
     }
+  }
   }
 
   # plot with color fill based on values...

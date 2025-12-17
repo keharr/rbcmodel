@@ -20,184 +20,336 @@ devtools::load_all()
 ```
 
 ## Abstract
-R package rbcmodel is a package to simulate Rubisco carbon fixation rates from the basic Rubisco kinetic parameters (*k*~cat,c~, K~o~, K~c~, and S~C/O~), given an O~2~ and CO~2~ concentration and a temperature. Enzymes can be modeled by themselves or in comparison with other enzymes. The effect of temperature is calculated from the temperature dependence of each kinetic parameter, usually represented as ΔH. The effect of Rubisco's oxygenation reaction is also modeled, which effectively reduces the rate of CO~2~ fixation due to the subsequent need for phosphoglycolate salvage. As there are several different phosphoglycolate salvage pathways, each with a different CO~2~ cost per O~2~ fixed, Rubisco carbon fixation rates are simulated with appropriate phosphoglycolate salvage stoichiometries. In addition to the rate functionality, this package also includes a searchable data library of collected Rubisco kinetics and temperature dependences.
+R package `rbcmodel` is a package to simulate Rubisco carbon fixation rates from the basic Rubisco kinetic parameters (*k*~cat,c~, K~o~, K~c~, and S~C/O~), given an O~2~ and CO~2~ concentration and a temperature. Enzymes can be modeled by themselves or in comparison with other enzymes. The effect of temperature is calculated from the temperature dependence of each kinetic parameter, usually represented as ΔH. The effect of Rubisco's oxygenation reaction is also modeled, which effectively reduces the rate of CO~2~ fixation due to the subsequent need for phosphoglycolate salvage. As there are several different phosphoglycolate salvage pathways, each with a different CO~2~ cost per O~2~ fixed, Rubisco carbon fixation rates are simulated with appropriate phosphoglycolate salvage stoichiometries. In addition to the rate functionality, this package also includes a searchable data library of collected Rubisco kinetics and temperature dependences.
 
 # 1. Introduction
-I should probably mention my own paper here
 
+The enzyme Rubisco, ribulose-1,5-bisphosphate carboxylase/oxygenase, is one of the most common enzymes on the planet. In the Calvin-Benson-Bassham cycle (the most common carbon fixation pathway, found in plants, algae, cyanobacteria, and chemolithoautotrophic bacteria), Rubisco catalyzes the rate-limiting step, in which CO~2~ is added to a five-carbon organic sugar to form two 3-phosphoglycerate molecules. Thus, Rubisco is directly responsible for the conversion of inorganic carbon to organic carbon.
 
-# 2. The database
-## 2.1 Abridged table: the curated kinetics data
-This table is the first table to be searched by enzyme search functions, unless otherwise specified. It has ~260 entries, including data from enzymes where all of the kinetics were determined by the same study. For many model species, methodology-corrected averages are also available from Iñiguez et al. 2021 [1]. Where there are gaps in the reported enzyme kinetics from Iñiguez et al., composites have been constructed using averages from multiple other studies. Finally, there are average versions of each of the forms of Rubisco, with separate options for taxonomy (i.e., there is a plant/algae average form IB, but there are also separate average form IB enzymes for green algae and C3 plants). An entry in the abridged table looks like:
-```{r}
-search_enzyme("Triticum")[1,]
-```
+In addition to this reaction, Rubisco can also catalyze the addition of O~2~ to the same five-carbon organic sugar. This reaction produces 2-phosphoglycolate, a toxic molecule whose removal via a phosphoglycolate salvage (PGS) pathway results in the loss of recently fixed carbon. In plants, up to 49% of gross primary production can be lost via PGS (also called photorespiration) (9 from my paper).
 
-## 2.2 Full table
-The full table is a more comprehensive table, containing all of the studies from the abridged table but also including data from many more enzymes for which not all kinetics parameters have been determined (~870 entries). Mutant enzymes are also present in this table, unlike in the abridged table. In addition, the full table includes more data about the studies, including the pKa used for the calculations, the pH at which the data was collected, and the host species for heterologously-expressed proteins. An entry in the full table looks like:
-```{r}
-search_enzyme("Triticum",data="comprehensive")[1,]
-```
+There is a tremendous amount of sequence and quaternary structure diversity in the Rubisco enzymes found across the tree of life, which also translates to differences in the kinetics of its two reactions, the carboxylation reaction and the oxygenation reaction. The most commonly measured kinetic parameters are the carboxylation speed (*k*~cat,C~), the half-saturation constants for CO~2~ (K~c~) and O~2~ (K~o~), and the specificity for CO~2~ vs. O~2~ (S~C/O~). These parameters are used to qualitatively compare the carboxylation rates of Rubisco, with the K~o~ used to determine competitive inhibiton of the carboxylation reaction.
 
-If you choose to use an enzyme available in this table, it is more likely that you will need to combine kinetics from multiple sources or use one of the average enzymes from the abridged table as a starting point (see Section 2.2).
+The oxygenation reaction is often left out of the picture, yet its importance in the diversion of primary production can be significant. In order to quantitatively compare true carbon fixation rates by Rubisco, both of its reactions must be calculated.
 
-## 2.3 Temperature dependence tables
-Like with the kinetics, there are two different temperature dependence tables. One table ("abridged") includes ΔH values for particular enzymes, while the other table ("averages") includes only average ΔH values for taxonomic groups or forms of Rubisco.
+The carboxylation reaction rate of a Rubisco enzyme (RC) can be modeled for each active site under different CO2 and O2 concentrations using a competitive-inhibitor Michaelis-Menten equation as described in Flamholz et al. (8 from my paper) (equation 1):
+$$R_{C}=k_{cat,C}*\frac{[CO_{2}]}{[CO_{2}]+K_C+K_C*\frac{O_2}{K_O}}$$
+where R~C~ is the gross carboxylation rate of Rubisco, and [CO~2~] and [O~2~] are the concentrations of CO~2~ and O~2~, respectively. The oxygenation reaction rate (R~O~) is modeled the same way, but as the value for *k*~cat,O~ is not measured, we utilized a different commonly measured kinetic parameter: the specificity factor (S~C/O~), which is the ratio of the carboxylase/oxygenase reaction:
+$$S_{C/O}=\frac{k_{cat,C}}{K_O}*\frac{K_C}{k_{cat,O}}$$
+The relationship between S~C/O~ and R~C~/R~O~ can be described by the following equation, which can be rearranged to calculate R~O~:
+$$\frac{R_C}{R_O}=S_{C/O}*\frac{[CO_2]}{[O_2]}$$
+With the speeds of both R~C~ and R~O~, the net carboxylation rate can be calculated knowing the appropriate stoichiometry of the PGS pathway utilized by that Rubisco's organism:
 
-```{r}
-search_DHScale("Triticum",data="abridged")
-search_DHScale("1B",data="average")
-```
+| Stoichiometry | PGS Pathways |
+|:------:|------------------|
+| 2 R~O~ : 1 CO~2~ lost | C~2~ cycle, glycerate pathway |
+| 1 R~O~ : 2 CO~2~ lost | malate cycle, oxalyl-CoA decarboxylation, export from cell |
+| 1 R~O~ : 1 CO~2~ lost | diatom photorespiration |
 
-All K~O~ ΔH values in the averages table are the same, as reliable K~O~ values are few and far between since they are not measured directly. Our value here comes from the average of the three *in vivo* measurements reported in Galmés et al. 2016 [2], excepting *A. thaliana* as its correlation coefficient was much smaller than the other three. Where individual studies report K~O~ ΔH values, we have included them in the abridged table, but in general we recommend using our average K~O~ ΔH values.
+Enzyme kinetics also change with temperature, such that half-saturation constants typically increase while speed typically decreases. The temperature dependence of the four commonly measured kinetic parameters have been measured for a range of Rubisco enzymes, and can therefore be used to scale these parameters with temperature using an Arrhenius curve:
+$$x(T)=e^{c-\frac{\Delta H}{RT}}$$
 
-# 3. Creating an enzyme
-The first step of the basic rbcmodel workflow is to create an enzyme object, which can be done from the database included in the package, from custom data, or a combination of the two. The easiest option is to create it entirely from the database.
+This package automates these calculations, allowing for comparison of net carboxylation rates across a range of temperatures, CO~2~ and O~2~ concentrations, and across taxonomic groups.
 
-## 3.1 Searching Rubisco Kinetics
-Searching the database for the Rubisco kinetics for a particular species can be accomplished in a variety of ways:
+# 2. Creating an enzyme
+
+The first step of the basic `rbcmodel` workflow is to create an `enzyme` object, which can be done from the database included in the package, from custom data, or a combination of the two. The easiest option is to create it entirely from the database. For most users, that will mean finding an appropriate entry in the `abridged` table. For more information about the database provided in the package, see section XX.
+
+## 2.1 `search_enzyme()`: Searching Rubisco Kinetics
+
+Searching the database for the appropriate Rubisco kinetics for your enzyme of interest can be accomplished in a variety of ways:
 
 From a species name:
-```{r}
-search_enzyme("aestivum")
+```{r search_species}
+search_enzyme("aestivum")[1:5,]
 ```
 
 From a genus name:
-```{r}
-search_enzyme("Triticum")
+```{r search_genus}
+search_enzyme("Triticum")[1:5,]
 ```
 
 From a common name:
-```{r}
-search_enzyme("wheat")
+```{r search_common}
+search_enzyme("wheat")[1:5,]
 ```
 
 From a partial name:
-```{r}
+```{r search_partial}
 search_enzyme("Trit",match="partial")
 ```
 
-Note in the example above that the function finds a match in the alias table, and thus does not show other partial matches from the abridged or comprehensive tables. If you want to see all possible matches, consider using the level="genus" or "species" options after determining if there's an alias.
+Note in the example above that the function finds a match in the `alias` table, and thus does not show other partial matches from the `abridged` or `comprehensive` tables. If you want to see all possible partial matches, consider using the `level="genus"` or `level="species"` options.
 
-```{r}
-search_enzyme("Trit",match="partial",level="genus")
+```{r search_partial2}
+search_enzyme("Trit",match="partial",level="genus")[1:5,]
 ```
 
-You'll note the existence of the PGS column in the tables; this field is to tell you which phosphoglycolate salvage pathway to use. If it has an NA, the literature is unclear about what PGS pathway is used in this organism, and we typically recommend using the default, "canon", in this case, which is the best studied pathway as it is the version used in plants.
+You'll note the existence of the `PGS` column in the tables; this field is to tell you which phosphoglycolate salvage pathway to use. If it is `NA`, the literature is unclear about what PGS pathway is used in this organism, and we typically recommend using the default, `"canon"`, in this case, as is the best studied PGS pathway.
 
-## 3.2 Creating an enzyme from the database
+## 2.2 Creating an enzyme from the database: `Enzyme()` and `check_enzyme()`
+
 Now that you have the kinetics and the PGS pathway to use, you can make the enzyme. Using only database entries automates most of the creation.
 
-Using the identifier for the Iñiguez methodology-corrected wheat enzyme, we can create the enzyme object with the function Enzyme:
-``` {r}
+Using the identifier for the Iñiguez methodology-corrected wheat enzyme, we can create the `enzyme` object with the function `Enzyme`:
+``` {r create_wheat}
 Rbc_wheat <- Enzyme("aestivum_corrected_average",enzyme_name="wheat")
 ```
 
-If your enzyme is created from the comprehensive table, it may have missing values, so it is good practice to double-check that your enzyme has been created successfully with check_enzyme. check_enzyme will warn you if you have used an unacceptable PGS string, or failed to provide a numeric value for any of the kinetics parameters.
-``` {r}
+If your enzyme is created from the `comprehensive` table, it may have missing values, so it is good practice to double-check that your enzyme has been created successfully with `check_enzyme`. `check_enzyme` will warn you if you have used an unacceptable PGS string, or failed to provide a numeric value for any of the kinetics parameters.
+``` {r check_wheat}
 check_enzyme(Rbc_wheat)
 ```
 
-If necessary, adding missing values can be accomplished with modify_enzyme.
-```{r}
-Rbc_wheat_mod<-modify_enzyme(Rbc_wheat,kcat_val=100)
-Rbc_wheat_mod
-```
+For instructions for modifying parameters or creating an enzyme from scratch, see section XX.XX.
 
-## 3.3 Creating a custom enzyme
-This section is for more advanced users. [FINISH]
+# 3. Calculating Rates
 
-# 4. Calculating Rates
-Now that the enzyme object has been created, it can be combined with a temperature dependence scale and the PGS stoichiometry to model carbon fixation rates.
+Now that the `enzyme` object has been created, it can be combined with a temperature dependence scale and the PGS stoichiometry to model carbon fixation rates.
 
-## 4.1 Temperature Dependence
-We have provided many temperature dependence scales from the literature within the package, along with averages modified from Galmés et al. 2016 [2]. These scales can be searched as with the kinetics, using search_DHScale and DHScale instead of search_enzyme and Enzyme. Unlike with the kinetics, search_DHScale also supports searches using taxonomy or form.
-```{r}
+## 3.1 Creating a temperature dependence scale: `search_DHScale` and `DHScale`
+
+We have provided many temperature dependence scales from the literature within the package, along with averages modified from Galmés et al. 2016 [2]. These scales can be searched as with the kinetics, using `search_DHScale` and `DHScale` instead of `search_enzyme` and `Enzyme`. Unlike with the kinetics, `search_DHScale` also supports searches using taxonomy or form.
+```{r search_DH}
 search_DHScale("Triticum")
+search_DHScale("Cyanobacteria")
 ```
 
-As seen in our example above, none of the entries in the species-specific table are complete, and entries must be modified to include all parameters. We recommend filling in missing values with the average for the enzyme's taxonomic group, in this case the C3 plants from warm climes:
-```{r}
+As seen in our example above, none of the entries in the species-specific table are complete, and entries must be modified to include all parameters. We recommend filling in missing values with the average for the enzyme's taxonomic group. Averages are found in their own table, which can be searched using the `data="average"` option. In this case, we'll use the average for C3 plants from warm climes:
+```{r create_wheat_DH}
+#look for an appropriate average DHScale
 search_DHScale("1B",data="average")
+#create the wheat one from its known data
 wheat_DH<-DHScale("71",data="abridged")
-#specificity replaced with the average of the two available studies
+#modify scale to fill in missing values; specificity replaced with the average of the two available studies
 wheat_DH<-modify_DHScale(wheat_DH,kcat_dH=58.1,Ko_dH=26.7,S_dH=mean(c(-20.5,-19.7)))
 check_DHScale(wheat_DH)
 ```
 
-## 4.2 Creating a rate calculation object
-Combining the temperature dependence, the enzyme object, and a PGS stoichiometry using CO2_dependence creates a function that calculates the rate of carbon fixation given CO~2~, O~2~, and temperature. If the enzyme object has been created from a database entry with a PGS value or the PGS value was added later, it is unnecessary to include a PGS value in this function.
-```{r}
+## 3.2 `CO2_dependence()`: Calculating rate differences
+
+Combining the temperature dependence, the enzyme, and a PGS stoichiometry using the function `CO2_dependence` creates a function that calculates the rate of carbon fixation given CO~2~, O~2~, and temperature. If the enzyme has been created from a database entry with a PGS value or the PGS value was added later, it is unnecessary to include a PGS value in this function.
+```{r wheat_function}
 wheat_carbon<-CO2_dependence(Rbc_wheat,wheat_DH)
 ```
 
-When given a single CO~2~ (μmol), O~2~ (μmol), and temperature (°C), a CO2_dependence object will output a carbon fixation rate in carbon per second (C/s):
-```{r}
+When given a value for CO~2~ (μmol), O~2~ (μmol), and temperature (°C), a `CO2_dependence` object will output a carbon fixation rate in carbon per second (C/s):
+```{r wheat_rate}
 wheat_carbon(15,200,25)
 ```
 
-## 4.3 Plotting rates
-To determine the carbon fixation rate over many possible values, a 4D grid is created, where CO~2~, O~2~, and temperature are the three independent variables, while the enzyme carbon fixation rate is the dependent variable. This is accomplished through the function make_4D_grid, which requires the CO2 dependence object and three lists of values, one for each independent variable:
-```{r}
+# 4 Plotting rates
+
+## 4.1 `make_4D_grid()`: Extrapolating a `CO2_dependence` object over many values
+
+To determine the carbon fixation rate over many possible values, a 4D grid is created, where CO~2~, O~2~, and temperature are the three independent variables, and the enzyme carbon fixation rate is the dependent variable. This is accomplished through the function `make_4D_grid`, which requires the `CO2_dependence` object and three lists of values, one for each independent variable:
+```{r wheat_grid}
+#set up the lists of values for independent variables
 CO2_seq<-O2_seq<-seq(0,1000,by=10)
 temp_seq<-seq(0,40,by=.1)
+#make the grid
 wheat_grid<-make_4D_grid(wheat_carbon,CO2_seq,O2_seq,temp_seq,var_names=c("CO2","O2","T","wheat"))
 ```
+The CO~2~, O~2~, and temperature should always be listed in that order.
 
-However, plotting a 4D object in R can be quite difficult, so the plotting functions provided rely on a slice of the 4D object to create a 3D grid. For example, if I wish to view the carbon fixation rate at 25°C as a function of CO~2~ and O~2~:
-```{r}
+## 4.2 `slice_4D_grid()`: Slicing the grid for visualization
+
+Plotting a 4D object in R can be quite difficult, so the plotting functions provided rely on slicing the 4D object to create a 3D grid. The 4D object can be sliced at any of values supplied for the individual variables using `slice_4D_grid()`, which needs three things: a 4D grid to slice (`grid`), which independent variable you wish to slice (`dim`), and  the value at which to slice (`val`). `dim` will be 1 if you wish to use a constant CO~2~ value, 2 if you want a constant O~2~ value, and 3 if you want a constant temperature value.
+
+For example, if I wish to view the carbon fixation rate at 25°C as a function of CO~2~ and O~2~, I would make a 3D slice in my temperature variable (`dim=3`):
+```{r wheat_slice}
+#create the temperature slice at 25C from the grid
 s1<-slice_4D_grid(wheat_grid,dim=3,25)
-plot_slice_3D(s1,contours=seq(round(min(s1[[4]],na.rm=TRUE)),round(max(s1[[4]],na.rm=TRUE)),length.out=7),xlabel="CO2",ylabel="O2")
 ```
 
-The slice can be transposed, if you want to swap the x & y axes:
-```{r}
+A note about `val`: if you want to slice at a particular value, make sure it's on the list of values you supplied to `make_4D_grid`!
+
+## 4.3 `plot_slice_3D`: Plotting a 3D slice
+
+Now that we have a slice, we can use `plot_slice_3D` to see how the carbon fixation rate varies over two of our independent variables. `plot_slice_3D` has a few useful utilities, including the ability to place contours over your graph for easier evaluation of the changing colors.
+
+The most basic input to `plot_slice_3D` is just a slice. With no other inputs, it will plot the slice with an automatic color scale: blue negative values, white at 0, and red positive values, increasing saturation with increasing value. It sizes the legend to match, as seen in the plot of our slice from section 4.2:
+
+```{r plot_wheat_simple}
+plot_slice_3D(s1)
+```
+
+In this default configuration, it does not add contours or labels, and `NA` values (when O~2~ is 0 in either the `"canon"`, `diatom`, or `"alt"` PGS schemes), will be colored grey. Contours and labels can be provided using the `contours`, `xlabel`, and `ylabel`:
+```{r plot_wheat}
+#plot the slice with some contours
+plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel="CO2",ylabel="O2")
+```
+
+Further configuration options are detailed in the description of `plot_slice_3D` and illustrated in section XX.XX.
+
+## 4.4 `transpose_3D_slice()`: Swapping the x- & y-axes
+
+A slice at constant temperature will always have CO~2~ on the x-axis and O~2~ on the y-axis, just as a slice at constant O~2~ will always have CO~2~ on the x-axis and temperature on the y-axis, and so on. If you want to invert this you can use `transpose_3D_slice`:
+```{r transpose_wheat}
+#transpose the temperature slice we made
 s2<-transpose_3D_slice(s1)
-plot_slice_3D(s2,contours=seq(round(min(s1[[4]],na.rm=TRUE)),round(max(s1[[4]],na.rm=TRUE)),length.out=7),xlabel="O2",ylabel="CO2")
+#plot the new slice
+plot_slice_3D(s2,contours=c(1.5,2,2.5),xlabel="O2",ylabel="CO2")
 ```
 
 # 5. Comparing enzymes
-Up until this point, we have been considering a single enzyme. However, this package is also able to compare two Rubisco enzymes, producing a plot of the difference between the two enzymes' rates rather than the rate itself.
 
-We will compare wheat with spinach, another model enzyme. Both enzymes need to have a CO2_dependence object, so we first construct the one for spinach:
-```{r}
+Until this point, we have only been working with a single enzyme. This package is also able to compare two Rubisco enzymes, producing the difference between the two enzymes' rates rather than the rate itself.
+
+We will compare wheat with spinach, another model enzyme. Both enzymes need to have a `CO2_dependence` object, so we need to construct the one for spinach:
+```{r spinach}
 Rbc_spinach<-Enzyme("oleracea_corrected_average",enzyme_name="spinach")
 spinach_dH<-new_DHScale(46.2,50.2,26.7,-18.15,name="spinach")
 spinach_carbon<-CO2_dependence(Rbc_spinach,spinach_dH)
 ```
 
-...and then compare the two. Since wheat is listed first, positive values will mean wheat is faster, while negative values mean spinach is faster.
-```{r}
+...and then compare the two with `CO2_comparison`. Since wheat is listed first, positive values will mean wheat fixes more carbon under those conditions, while negative values mean spinach fixes more carbon.
+```{r compare}
+#create the comparison object
 wh_v_sp<-CO2_comparison(wheat_carbon,spinach_carbon)
+#the original carbon fixation rates of both enzymes
 wheat_carbon(15,200,25)
 spinach_carbon(15,200,25)
+#using the comparison object to calculate the difference between the enzymes
 wh_v_sp(15,200,25)
 ```
 
 A plot of the comparison is accomplished through the same method as a single enzyme alone:
-```{r}
+```{r plot_comparison}
+#create the grid
 wh_v_sp_grid<-make_4D_grid(wh_v_sp,CO2_seq,O2_seq,temp_seq,var_names=c("CO2","O2","T","wheat/spinach comp"))
-s1<-slice_4D_grid(wh_v_sp_grid,dim=3,25)
-plot_slice_3D(s1,contours=seq(round(min(s1[[4]],na.rm=TRUE)),round(max(s1[[4]],na.rm=TRUE)),length.out=7),xlabel="CO2",ylabel="O2")
+#slice at 25C
+s3<-slice_4D_grid(wh_v_sp_grid,dim=3,25)
+#plot the slice
+plot_slice_3D(s3,xlabel="CO2",ylabel="O2")
 ```
 
 According to our results, wheat fixes more carbon at all shown concentrations of CO~2~ and O~2~ at 25°C. This is not the case at 0°C, where spinach is faster across the whole parameter space (albeit at very small magnitudes).
-```{r}
-s2<-slice_4D_grid(wh_v_sp_grid,dim=3,0)
-#note that contours were changed from default due to small magnitude differences
-plot_slice_3D(s2,contours=seq(-0.05,-0.02,length.out=10),xlabel="CO2",ylabel="O2")
+```{r 0C_comparison}
+#slice at 0C
+s4<-slice_4D_grid(wh_v_sp_grid,dim=3,0)
+#plot 0C slice
+plot_slice_3D(s4,contours=NULL,xlabel="CO2",ylabel="O2")
 ```
 
 And in between, at 7°C, whether wheat or spinach is faster depends on the CO~2~ and O~2~ concentration.
-```{r}
-s3<-slice_4D_grid(wh_v_sp_grid,dim=3,7)
-plot_slice_3D(s3,contours=seq(-0.03,.03,length.out=7),xlabel="CO2",ylabel="O2")
+```{r 7C_comparison}
+#slice at 7C
+s5<-slice_4D_grid(wh_v_sp_grid,dim=3,7)
+#plot slice
+plot_slice_3D(s5,contours=seq(-0.03,.03,length.out=7),xlabel="CO2",ylabel="O2")
 ```
 
-The temperature switch in which enzyme has a higher carbon fixation rate could more easily be visualized by slicing O~2~ instead and allowing CO~2~ and temperature to change:
-```{r}
-s4<-slice_4D_grid(wh_v_sp_grid,dim=2,500)
-plot_slice_3D(s4,contours=c(-1,0,1,2,3,4),dims=c(1,3,4),xlabel="CO2",ylabel="T")
+The temperature switch in which enzyme has a higher carbon fixation rate can more easily be visualized by slicing O~2~ instead and allowing CO~2~ and temperature to change:
+```{r CO2vT_comparison}
+#slice O2 at 500uM
+s6<-slice_4D_grid(wh_v_sp_grid,dim=2,500)
+#plot slice
+plot_slice_3D(s6,contours=c(-1,0,1,2,3,4),dims=c(1,3,4),xlabel="CO2",ylabel="T")
+```
+
+# 6. The included database
+
+To allow users to access published data more easily, this package includes a meta-analysis of published Rubisco kinetics, including temperature dependences. They can be accessed through the `search_enzyme` and `search_DHScale` functions.
+
+## 6.1 Abridged table: the curated kinetics data
+
+The abridged table (~260 entries) is the first table to be searched by `search_enzyme`, unless otherwise specified. It only includes complete records, i.e. entries where all of the standard kinetic parameters (*k*~cat,c~, K~o~, K~c~, and S~C/O~) for a particular enzyme are included. Most of the 260 entries are studies that published all four parameters. For many model species, methodology-corrected averages are also available from Iñiguez et al. 2021 [1]. Where there are gaps in the reported enzyme kinetics from Iñiguez et al., composites have been constructed using averages from multiple other studies. Finally, there are average versions of each of the forms of Rubisco, with separate options for taxonomy (i.e., there is a plant/algae average form IB, but there are also separate average form IB enzymes for green algae and C3 plants). An entry in the abridged table looks like:
+```{r abridged}
+search_enzyme("Triticum")[1,]
+```
+
+## 6.2 Comprehensive table
+
+The comprehensive table (~870 entries) contains all of the entries from the abridged table but also includes data from many more enzymes for which not all kinetics parameters have been determined. Mutant enzymes are also present in this table, unlike in the abridged table. In addition, the full table includes more data about the studies, including the pKa used for the calculations, the pH at which the data was collected, and the host species for heterologously-expressed proteins. An entry in the comprehensive table looks like:
+```{r comprehensive}
+search_enzyme("Triticum",data="comprehensive")[1,]
+```
+
+If you choose to use an enzyme available in this table, it is more likely that you will need to combine kinetics from multiple sources or use one of the average enzymes from the abridged table as a starting point (see Section XX.XX).
+
+## 6.3 Temperature dependence tables
+
+Like with the kinetics, there are two different temperature dependence tables. One table, `abridged`, includes ΔH values for particular enzymes, while the other table, `average`, includes only average ΔH values for taxonomic groups or forms of Rubisco.
+
+```{r temp_tables}
+#an entry in the abridged DHScale table
+search_DHScale("Triticum",data="abridged")[1,]
+#an entry in the averages DHScale table
+search_DHScale("1B",data="average")[1,]
+```
+
+All K~O~ ΔH values in the averages table are the same, as reliable K~O~ values are few and far between since they are not measured directly. Our value here comes from the average of the three *in vivo* measurements reported in Galmés et al. 2016 [2], excepting *A. thaliana* as its correlation coefficient was much smaller than the other three. Where individual studies report K~O~ ΔH values, we have included them in the abridged table, but in general we recommend using our average K~O~ ΔH values.
+
+# 7. More advanced uses of `rbcmodel`
+
+## 7.1 Creating a custom enzyme
+
+While many basic uses of `rbcmodel` can be accomplished with only the abridged kinetics table entries, more advanced uses may require modifying an enzyme or creating one from scratch.
+
+### 7.1.1 `modify_enzyme()`: Modifying an enzyme
+
+Changing the value of a parameter for an enzyme created from an entry in one of the tables can be accomplished with `modify_enzyme()`. This works equally well for altering a value or for filling in a missing value.
+
+```{r modify_enzyme}
+#changing the wheat kcat
+Rbc_wheat
+Rbc_wheat_mod<-modify_enzyme(Rbc_wheat,kcat_val=100)
+Rbc_wheat_mod
+#adding missing Ko from an average & adding PGS
+Rcaps<-Enzyme("capsulatus_Horken_and_Tabita_1999")
+Rcaps
+search_enzyme("average")
+Rcaps<-modify_enzyme(Rcaps,Ko_val=1282,PGS="canon")
+Rcaps
+```
+
+### 7.1.2 Creating an enzyme from scratch using `new_enzyme()`
+
+Although the easiest way to create a usable `enzyme` object is to pull data from one of the studies presented in the table using `Enzyme`, it is also possible to create one completely from scratch using `new_enzyme`. In order for `new_enzyme` to create an object that can be used in `CO2_dependence`, it needs 9 inputs: a value for *k*~cat,c~, K~o~, K~c~, and S~C/O~, a temperature at which each of those were measured, and a PGS stoichiometry to use. The temperature can be input with the `temp` argument to set all of the temperatures at once, or else with individual arguments for each kinetic parameter. Use of any of the individual arguments will override the supplied `temp` value just for that parameter. A name can also be provided for the enzyme for more description than the object name provides.
+
+| Argument | Description | Default | Alternative Inputs |
+|----------|------------------|:-------:|-----------------|
+| kcat_val | Value of *k*~cat,c~ | None | Any number |
+| Kc_val | Value of K~c~ | None | Any number |
+| Ko_val | Value of K~o~ | None | Any number |
+| S_val | Value of S~C/O~ | None | Any number |
+| temp | Shared temperature for all kinetic parameters | 25 | Any number |
+| kcat_T | Measurement temperature for *k*~cat,c~ | None | Any number |
+| Kc_T | Measurement temperature for K~c~ | None | Any number |
+| Ko_T | Measurement temperature for K~o~ | None | Any number |
+| S_T | Measurement temperature for S~C/O~ | None | Any number |
+| PGS | PGS stoichiometry to use | None | "canon", "diatom", "gross", or "alt" |
+| name | Name of the enzyme | Empty | Any string |
+
+
+## 7.2 Manipulating the `plot_slice_3D` graph
+
+The default plots from `plot_slice_3D` can be manipulated in two ways. First, `plot_slice_3D` can pass unused variables to R's basic `plot` function, which enables any alteration that can be made to `plot` in `plot_slice_3D`. Second, `plot_slice_3D` has many variables with a specified default that can be customized:
+
+| Argument | Description | Default | Alternative Inputs |
+|----------|------------------|:-------:|-----------------|
+| cmin     | The minimum value of the color scale | `min(z)` | Any number |
+| cmax     | The maximum value of the color scale | `max(z)` | Any number |
+| colors   | The color scale used | `"default"` | Any list of hex codes |
+| NA_col   | The color used for NA values | `"grey"` | Any color word or hex code |
+| contour_col | The color used for contours | `"black"` | Any color word or hex code |
+| lwd      | Contour line width | `2` | Any number |
+| xlabel   | The label for the x-axis | Blank | Any string* |
+| ylabel   | The label for the y-axis | Blank | Any string* |
+| clabel   | The label for the color scale | Carbon (C/s) | Any string* |
+*`plot_slice_3D` uses the same formatting constraints as the base R `plot` function for labels, so some tricks used in other plotting packages (such as `ggplot2`) to get subscripts, superscripts, Greek letters, etc. may not work in `plot_slice_3D`.
+
+```{r customize_plot}
+#basic plot
+plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel="CO2",ylabel="O2")
+#plot the slice with a different color scale
+plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel="CO2",ylabel="O2",cmax=5)
+#plot the slice with a custom color palette
+green_ex<-plot3D::ramp.col(c("white","green"),n=125)
+plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel="CO2",ylabel="O2",colors=green_ex)
+#x-axis label with more complicated formatting
+plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel=expression(CO[2]~(mu*M)),ylabel="O2")
 ```
 
 # 6. Conclusion??
