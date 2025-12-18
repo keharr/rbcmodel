@@ -158,7 +158,7 @@ slice_4D_grid <- function(grid, dim, val, approx = TRUE, tol = 1e-3) {
     out <- list(
       x = grid[[1]][, , idx],
       y = grid[[2]][, , idx],
-      z = grid[[3]][, , idx],
+      z = grid[[3]][1, 1, idx],
       f = grid[[4]][, , idx]
     )
   }

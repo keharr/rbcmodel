@@ -256,12 +256,12 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       if (tolower(match)=="complete"){
         out <- temp_dep_abridged[
           !is.na(temp_dep_abridged[["genus"]]) &
-            (temp_dep_abridged[["genus"]] == string)
+            (tolower(temp_dep_abridged[["genus"]]) == tolower(string))
           , ]
       } else {
         out <- temp_dep_abridged[
           !is.na(temp_dep_abridged[["genus"]]) &
-            grepl(string, temp_dep_abridged[["genus"]], fixed=TRUE)
+            grepl(tolower(string), tolower(temp_dep_abridged[["genus"]]), fixed=TRUE)
           , ]
       }
 
@@ -284,18 +284,18 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
 
   if (is.null(level) || tolower(level) == "species"){
 
-    if (is.null(data) || data == "abridged"){
+    if (is.null(data) || tolower(data) == "abridged"){
 
       # search the abridged table
       if (tolower(match)=="complete"){
         out <- temp_dep_abridged[
           !is.na(temp_dep_abridged[["species"]]) &
-            (temp_dep_abridged[["species"]] == string)
+            (tolower(temp_dep_abridged[["species"]]) == tolower(string))
           , ]
       } else {
         out <- temp_dep_abridged[
           !is.na(temp_dep_abridged[["species"]]) &
-            grepl(string, temp_dep_abridged[["species"]], fixed=TRUE)
+            grepl(tolower(string), tolower(temp_dep_abridged[["species"]]), fixed=TRUE)
           , ]
       }
 
@@ -323,12 +323,12 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       if (tolower(match)=="complete"){
         out <- temp_dep_abridged[
           !is.na(temp_dep_abridged[["Taxonomy"]]) &
-            (temp_dep_abridged[["Taxonomy"]] == string)
+            (tolower(temp_dep_abridged[["Taxonomy"]]) == tolower(string))
           , ]
       } else {
         out <- temp_dep_abridged[
           !is.na(temp_dep_abridged[["Taxonomy"]]) &
-            grepl(string, temp_dep_abridged[["Taxonomy"]], fixed=TRUE)
+            grepl(tolower(string), tolower(temp_dep_abridged[["Taxonomy"]]), fixed=TRUE)
           , ]
       }
 
@@ -345,12 +345,12 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       if (tolower(match)=="complete"){
         out <- temp_dep_averaged[
           !is.na(temp_dep_averaged[["Taxonomy"]]) &
-            (temp_dep_averaged[["Taxonomy"]] == string)
+            (tolower(temp_dep_averaged[["Taxonomy"]]) == tolower(string))
           , ]
       } else {
         out <- temp_dep_averaged[
           !is.na(temp_dep_averaged[["Taxonomy"]]) &
-            grepl(string, temp_dep_averaged[["Taxonomy"]], fixed=TRUE)
+            grepl(tolower(string), tolower(temp_dep_averaged[["Taxonomy"]]), fixed=TRUE)
           , ]
       }
       if (nrow(out) > 0) {
@@ -370,12 +370,12 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       if (tolower(match)=="complete"){
         out <- temp_dep_abridged[
           !is.na(temp_dep_abridged[["Form"]]) &
-            (temp_dep_abridged[["Form"]] == string)
+            (tolower(temp_dep_abridged[["Form"]]) == tolower(string))
           , ]
       } else {
         out <- temp_dep_abridged[
           !is.na(temp_dep_abridged[["Form"]]) &
-            grepl(string, temp_dep_abridged[["Form"]], fixed=TRUE)
+            grepl(tolower(string), tolower(temp_dep_abridged[["Form"]]), fixed=TRUE)
           , ]
       }
 
@@ -392,12 +392,12 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       if (tolower(match)=="complete"){
         out <- temp_dep_averaged[
           !is.na(temp_dep_averaged[["Form"]]) &
-            (temp_dep_averaged[["Form"]] == string)
+            (tolower(temp_dep_averaged[["Form"]]) == tolower(string))
           , ]
       } else {
         out <- temp_dep_averaged[
           !is.na(temp_dep_averaged[["Form"]]) &
-            grepl(string, temp_dep_averaged[["Form"]], fixed=TRUE)
+            grepl(tolower(string), tolower(temp_dep_averaged[["Form"]]), fixed=TRUE)
           , ]
       }
       if (nrow(out) > 0) {
