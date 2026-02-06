@@ -15,8 +15,8 @@
 #'   maximum value of the contour/color variable.
 #' @param dims Length 3 integer vector, e.g., c(1,2,4), that specify the
 #'   horizontal, vertical, and contour/color variables of the plot. If NULL,
-#'   the 1st element of the slice is treated as horizontal coordinate, the
-#'   2nd element is treated as vertical coordinate, and the last element is
+#'   the function will attempt to automatically determine horizontal coordinate
+#'   and the vertical coordinate, while the last element of the slice is
 #'   treated as the dependent variable. Note that the horizontal coordinate
 #'   should ALWAYS correspond the first index of the two-dimension arrays,
 #'   and the vertical coordinates should ALWAYS be the second index. (Use
@@ -49,9 +49,28 @@ plot_slice_3D <- function(
   xlabel = "", ylabel = "", clabel=c("Carbon", "(C/s)"), lwd = 2, ...
 ) {
 
-  if (is.null(dims)) { # default: the first two members are x and y coordinates
-    x <- grid_slice[[1]]
-    y <- grid_slice[[2]]
+  if (is.null(dims)) { # default: automatically determine coordinates
+
+    tol = 1e-10
+    x <- NA
+    y <- NA
+
+    for (m in grid_slice){
+      if (is.matrix(m) && length(m) > 1){
+        mrange <- max(m) - min(m)
+        coldiffsum <- sum(abs(diff(m)))
+        rowdiffsum <- sum(abs(diff(t(m))))
+        if (rowdiffsum < tol * mrange && is.na(x)){
+          x <- m
+        }
+        if (coldiffsum < tol * mrange && is.na(y)){
+          y <- m
+        }
+      }
+    }
+    if ((length(x)==1 && is.na(x)) || (length(y)==1 && is.na(y))){
+      stop("Cannot determine horizontal and/or vertical coordinates.")
+    }
     z <- grid_slice[[length(grid_slice)]]
   } else { # customized: resolve x and y coordinates using dims
     x <- grid_slice[[dims[1]]]

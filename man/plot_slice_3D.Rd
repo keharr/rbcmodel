@@ -6,7 +6,7 @@
 \usage{
 plot_slice_3D(
   grid_slice,
-  contours,
+  contours = NULL,
   cmin = NULL,
   cmax = NULL,
   dims = NULL,
@@ -34,8 +34,8 @@ maximum value of the contour/color variable.}
 
 \item{dims}{Length 3 integer vector, e.g., c(1,2,4), that specify the
 horizontal, vertical, and contour/color variables of the plot. If NULL,
-the 1st element of the slice is treated as horizontal coordinate, the
-2nd element is treated as vertical coordinate, and the last element is
+the function will attempt to automatically determine horizontal coordinate
+and the vertical coordinate, while the last element of the slice is
 treated as the dependent variable. Note that the horizontal coordinate
 should ALWAYS correspond the first index of the two-dimension arrays,
 and the vertical coordinates should ALWAYS be the second index. (Use
