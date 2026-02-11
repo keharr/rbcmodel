@@ -58,7 +58,7 @@ last_non_NA <- function(x) {
 #' @param const_cols The columns to check for consistency. Error is thrown
 #'   if the values from the pulled entries are not identical for any such
 #'   columns.
-#' @param keep_merged Whether to keep the original entries that are pulled 
+#' @param keep_merged Whether to keep the original entries that are pulled
 #'   and merged.
 #' @param keep_unmerged Whether to keep the original entries that have NOT
 #'   been touched.
@@ -79,7 +79,7 @@ last_non_NA <- function(x) {
 #' try(merge_entries(df, "id", c(4, 3, 1), "last", const_cols="y")) # expects error
 merge_entries <- function(
   data, id_col, id_vals, method,
-  new_id = NA, const_cols = NULL, 
+  new_id = NA, const_cols = NULL,
   keep_merged = TRUE, keep_unmerged = TRUE
 ) {
 
@@ -116,7 +116,7 @@ merge_entries <- function(
       subdata, mean_if_num, na.rm = TRUE
     )
   } else if (method == "last") { # take last non-NA entry
-    subdata <- subdata[order(id_vals), ] # first, order as prescribed
+    subdata <- subdata[match(id_vals,subdata[[id_col]]), ] # first, order as prescribed
     new_row <- lapply(
       subdata, last_non_NA
     )
@@ -131,12 +131,12 @@ merge_entries <- function(
   if (keep_merged){
     new_row <- rbind(subdata, new_row)
   }
-  
+
   # bind untouched entries to the new dataframe
   if (keep_unmerged){
     data <- data[!(data[[id_col]] %in% id_vals), ]
     new_row <- rbind(data, new_row)
   }
-  
+
   new_row # return result
 }

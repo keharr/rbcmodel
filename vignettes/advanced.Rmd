@@ -1,0 +1,193 @@
+---
+title: "Advanced"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Advanced}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+#library(rbcmodel)
+devtools::load_all()
+```
+
+# Overview
+This vignette details many of the more complex uses of the functions included in this R package, outside of a typical workflow.
+
+# 1. Customizing an `Enzyme` or `DHScale` object
+
+While many basic uses of `rbcmodel` can be accomplished with only the abridged kinetics table entries, more advanced uses may require modifying an enzyme or temperature scale or creating one from scratch.
+
+## 1.1 `modify_enzyme()`: Modifying an enzyme
+
+Changing the value of a kinetics parameter for an enzyme created from an entry in one of the tables can be accomplished with `modify_enzyme()`. This works equally well for altering a value or for filling in a missing value.
+
+```{r modify_enzyme}
+#changing the wheat kcat
+Rbc_wheat <- Enzyme("aestivum_corrected_average",enzyme_name="wheat")
+Rbc_wheat
+Rbc_wheat_mod<-modify_enzyme(Rbc_wheat,kcat_val=100)
+Rbc_wheat_mod
+#adding missing Ko from an average & adding PGS
+Rcaps<-Enzyme("capsulatus_Horken_and_Tabita_1999")
+Rcaps
+search_enzyme("average")
+Rcaps<-modify_enzyme(Rcaps,Ko_val=1282,PGS="canon")
+Rcaps
+```
+
+## 1.2 Creating an enzyme from scratch using `new_enzyme()`
+
+Although the easiest way to create a usable `enzyme` object is to pull data from one of the studies presented in the table using `Enzyme()`, it is also possible to create one completely from scratch using `new_enzyme()`. To create an `enzyme` object that can be used in `CO2_dependence()`, the enzyme object needs 8 things: a value for *k*~cat,c~, K~c~, K~o~, and S~C/O~, and a temperature at which each of those were measured.
+By default, `new_enzyme()` considers the temperature of each of the measurements to be 25°C, so only a value for *k*~cat,c~, K~c~, K~o~, and S~C/O~ are required inputs for `new_enzyme()`. The default temperature can be changed with the `temp` argument to set all of the temperatures at once, or else with individual arguments for each kinetic parameter. Use of any of the individual arguments will override the supplied `temp` value just for that parameter. A PGS stoichiometry can be supplied here, or when using `CO2_dependence()`. A name can also be provided for the enzyme for more description than the object name provides.
+
+| Argument | Description | Default | Accepted Inputs |
+|----------|------------------|:-------:|-----------------|
+| kcat_val | Value of *k*~cat,c~ | (required) | Any number |
+| Kc_val | Value of K~c~ | (required) | Any number |
+| Ko_val | Value of K~o~ | (required) | Any number |
+| S_val | Value of S~C/O~ | (required) | Any number |
+| temp | Shared temperature for all kinetic parameters | 25 | Any number |
+| kcat_T | Measurement temperature for *k*~cat,c~ | NULL (default to `temp`) | Any number |
+| Kc_T | Measurement temperature for K~c~ | NULL (default to `temp`) | Any number |
+| Ko_T | Measurement temperature for K~o~ | NULL (default to `temp`) | Any number |
+| S_T | Measurement temperature for S~C/O~ | NULL (default to `temp`) | Any number |
+| PGS | PGS stoichiometry to use | NA | "canon", "diatom", "gross", or "alt" |
+| name | Name of the enzyme | `""` | Any string |
+
+```{r enzyme_examples}
+#example of from scratch
+myRbc1<-new_enzyme(kcat_val=10,Kc_val=40,Ko_val=500,S_val=23)
+myRbc1
+#example of mixed temps
+myRbc2<-new_enzyme(kcat_val=10,Kc_val=40,Ko_val=500,S_val=23,temp=22,S_T=30)
+myRbc2
+```
+
+## 1.3 Creating a temperature dependence scale from scratch with `new_DHScale()`
+
+As with creating a new enzyme, the easiest way to create a `DHScale` object is to use one of the options presented in the provided data, but if you wish to create one from scratch, you can use `new_DHScale()`. The function has four required arguments, which are the temperature scaling constants (ΔH) for each of *k*~cat,c~, K~c~, K~o~, and S~C/O~. As with `new_enzyme()`, `new_DHScale()` has an additional optional input, `name`, which can be any text string. `name` can be used to provide further information about the `DHScale` object that might not be contained within the name of the resulting object.
+Although a second constant (c) is measured and reported along with ΔH values, we calculate c during `CO2_dependence()`, from the `DHScale`'s ΔH for a particular kinetic parameter, the `Enzyme` object's value for that parameter, and the temperature it was measured at. That way, we ensure that the temperature scaling would actually produce the measured value:
+$$x(T)=e^{c-\frac{\Delta H}{RT}}$$
+$$c=ln{x(T)}+\frac{\Delta H}{RT}$$
+
+```{r DHScale_example}
+myDH<-new_DHScale(kcat_dH=110,Kc_dH=50,Ko_dH=27,S_dH=-40)
+myDH
+```
+
+## 1.4 Merging entries in the tables with `merge_entries()`
+
+Especially when working with the temperature dependence data or the incomplete entries in the `comprehensive` table, there may be multiple entries that are relevant to build an enzyme or temperature scale of interest. In this case, `merge_entries()` can be used to pull these data together.
+
+Let's say we are searching for a good temperature scale for *Synechococcus*. We find multiple single measurements, and two averages that are used for cyanobacteria. We can bind them into a single dataframe for convenience:
+
+```{r merge_example1}
+df1<-search_DHScale("Syn",match="partial")
+df1<-rbind(df1,search_DHScale("Cyanobacteria",data="average"))
+df1
+```
+
+Now, we want to create one entry that uses the 1Bc Cyanobacteria average as its base, and incorporates the other two measurements of *Synechococcus* temperature scaling. We can use `merge_entries()` to add a new entry that combines them:
+
+```{r merge_example2}
+df2<-merge_entries(df1,"identifier",c("average_1Bc","12","55"),method="last",new_id="Syn_merged")
+df2
+```
+
+Because in this case we only have single values we wish to replace, rather than wanting to take the average, we use `method="last"` to take the last non-NA value in a particular column. We therefore need to order the dataframe so that the average entry is first, and the other two follow. However, we don't have to actually manipulate the base dataframe - we can accomplish that by listing them in the correct order in the `id_vals` argument of `merge_entries()`. So that `merge_entries()` knows where to look, we must also specify the right column for those values in the `id_col` argument. For this reason, we recommend generally choosing `"identifier"` as the column, as every entry will have its own unique value in it. `new_id` is the new value of the column in the merged entry.
+
+If we only wanted the new, merged entry, and not any of the others, we could change `keep_merged` and `keep_unmerged` from their default values of `TRUE` to `FALSE`. `keep_merged` rebinds the pre-merged rows to the dataframe, and `keep_unmerged` rebinds the rows that did not correspond to the values that we listed.
+
+If instead we wanted to average the values, we could use `method="average"`, and it would produce an average of any non-NA numerical values. For text, it will replace non-matching entries with NA.
+
+```{r merge_example3}
+df3<-merge_entries(df1,"identifier",c("average_1Bc","12","55"),method="average",new_id="Syn_merged")
+df3
+```
+
+This dataframe can then be used as the base data for `DHScale()`:
+
+```{r merge_example4}
+Syn_scale<-DHScale("Syn_merged",data=df2)
+Syn_scale
+```
+
+This use of `merge_entries()` can also be applied to enzyme data, and `Enzyme()` similarly accepts a custom dataframe, specified in the same way. If we used a column other than `"identifier"` to specify our desired entries and provide a name for our merged entry, we would need to specify that in `DHScale()` or `Enzyme()`, using the `id_col` argument in either function.
+
+Further customization of merged entries can be done; for example, providing a list of columns that must be the same in order for the merge to occur. The following is a table of all the arguments that can be provided to `merge_entries()`:
+
+| Argument | Description | Default | Accepted Inputs |
+|----------|------------------|:-------:|-----------------|
+| data | The dataframe with the entries | (required) | Any dataframe |
+| id_col | The identifying column for the entries desired | (required) | Any string (i.e. "identifier") |
+| id_vals | The values of the desired entries in the identifying column | (required) | Any vector of values |
+| method | Which method to use for merging | (required) | "average" or "last" |
+| new_id | The new value of the merged entry in the identifying column | NA | Any single input, numerical or string |
+| const_cols | Columns whose values must be constant in the desired entries for the merge to occur | NULL | Any list of strings identifying the columns |
+| keep_merged | Whether to keep pre-merged entries | TRUE | TRUE or FALSE |
+| keep_unmerged | Whether to keep unmerged entries | TRUE | TRUE or FALSE |
+
+# 2. Manipulating the `plot_slice_3D()` graph
+
+For customization, `plot_slice_3D()` accepts the following named arguments. When the default is NULL, any default response from the function is listed in parentheses next to it. Furthermore, additional arguments whose name does not match the list will be passed to the `image2D()` function in the package `plot3D` used under the hood.
+
+| Argument | Description | Default | Accepted Inputs |
+|----------|------------------|:-------:|-----------------|
+| grid_slice | The 3D slice to plot | (required) | Any 3D slice created from `slice_4D_grid()` or `transpose_3D_slice()` |
+| contours | The values of the contour lines to be drawn | NULL (no contours) | Any vector of values |
+| contour_col | The color used for contours | `"black"` | Any color word or hex code |
+| lwd | Contour line width | `2` | Any number |
+| dims | Specification of which element of the grid is the horizontal, vertical, and contour/color variables of the plot | NULL (auto-detects)* | Integer vector, length 3. e.g., c(1,2,4) |
+| cmin | The minimum value of the color scale | NULL (`min(z)`) | Any number |
+| cmax | The maximum value of the color scale | NULL (`max(z)`) | Any number |
+| colors | The color scale used | `"default"` | Any list of hex codes |
+| NA_col | The color used for NA values | `"grey"` | Any color word or hex code |
+| xlabel | The label for the x-axis | `""` | Any string* |
+| ylabel | The label for the y-axis | `""` | Any string* |
+| clabel | The label for the color scale | `c("Carbon", "(C/s)")` | Any string* |
+*The function will attempt to automatically determine which variable should be the horizontal and the vertical values, and assume that the last element of the grid is the contour/color variable.
+**`plot_slice_3D()` uses the same formatting constraints as the base R `plot()` function for labels, so some tricks used in other plotting packages (such as `ggplot2`) to get subscripts, superscripts, Greek letters, etc. may not work in `plot_slice_3D()`.
+
+```{r customize_plot}
+#basic plot
+wheat_DH<-DHScale("71",data="abridged")
+wheat_DH<-modify_DHScale(wheat_DH,kcat_dH=58.1,Ko_dH=26.7,S_dH=mean(c(-20.5,-19.7)))
+wheat_carbon<-CO2_dependence(Rbc_wheat,wheat_DH)
+CO2_seq<-O2_seq<-seq(0,1000,by=10)
+temp_seq<-seq(0,40,by=.1)
+wheat_grid<-make_4D_grid(wheat_carbon,CO2_seq,O2_seq,temp_seq,var_names=c("CO2","O2","T","wheat"))
+s1<-slice_4D_grid(wheat_grid,dim=3,25)
+plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel="CO2",ylabel="O2")
+#plot the slice with a different color scale
+plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel="CO2",ylabel="O2",cmax=5)
+#plot the slice with a custom color palette
+green_ex<-plot3D::ramp.col(c("white","green"),n=125)
+plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel="CO2",ylabel="O2",colors=green_ex)
+#x-axis label with more complicated formatting
+plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel=expression(CO[2]~(mu*M)),ylabel="O2")
+#passing an unused variable to image2D()
+plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel="CO2",ylabel="O2",rasterImage=TRUE)
+```
+
+# 3. Other helpful functions
+
+## 3.1 `search_alias()`
+
+When searching for an appropriate set of reported kinetics for an enzyme of interest, it may be useful to search the `alias` table by itself before searching the kinetics data. In this case, you can use `search_alias()` to directly search this table.
+
+```{r search_alias_ex}
+search_alias("potato")
+```
+
+## 3.2 `permute_4D_grid()`
+
+Honestly I don't really understand what this is doing 100% - Wing-Ho, can you take over and explain when this would be helpful for the user?

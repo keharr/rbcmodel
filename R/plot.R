@@ -60,11 +60,11 @@ plot_slice_3D <- function(
         mrange <- max(m) - min(m)
         coldiffsum <- sum(abs(diff(m)))
         rowdiffsum <- sum(abs(diff(t(m))))
-        if (rowdiffsum < tol * mrange && is.na(x)){
-          x <- m
+        if (rowdiffsum < tol * mrange && length(x)==1){
+          if(is.na(x)){x <- m}
         }
-        if (coldiffsum < tol * mrange && is.na(y)){
-          y <- m
+        if (coldiffsum < tol * mrange && length(y)==1){
+          if(is.na(y)){y <- m}
         }
       }
     }
