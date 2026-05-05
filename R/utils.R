@@ -116,9 +116,9 @@ merge_entries <- function(
       subdata, mean_if_num, na.rm = TRUE
     )
   } else if (method == "last") { # take last non-NA entry
-    subdata <- subdata[match(id_vals,subdata[[id_col]]), ] # first, order as prescribed
+    subsubdata <- subdata[match(id_vals,subdata[[id_col]]), ] # first, order as prescribed
     new_row <- lapply(
-      subdata, last_non_NA
+      subsubdata, last_non_NA
     )
   } else {
     stop("Unknown method. No merging performed.")

@@ -64,6 +64,16 @@ check_DHScale <- function(the_DHScale) {
     stop("The value of S_dH must be numeric", call. = FALSE)
   }
 
+  if (the_DHScale$kcat_dH < 0) {
+    warning("Be mindful of negative values of kcat_dH", call. = FALSE)
+  }
+  if (the_DHScale$Kc_dH < 0) {
+    warning("Be mindful of negative values of Kc_dH", call. = FALSE)
+  }
+  if (the_DHScale$S_dH > 0) {
+    warning("Be mindful of positive values of S_dH", call. = FALSE)
+  }
+
   # return the DHScale if all tests are passed
   the_DHScale
 }

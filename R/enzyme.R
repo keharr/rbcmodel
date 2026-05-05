@@ -29,6 +29,7 @@
 #' @param Kc_T The temperature (in celsius) at which Kc_val is measured.
 #' @param Ko_T The temperature (in celsius) at which Ko_val is measured.
 #' @param S_T The temperature (in celsius) at which S_val is measured.
+#' @param T_max The upper thermal limit (in celsius) of the enzyme.
 #' @param PGS The default phosphoglycolate salvage (PGS) pathway of the enzyme.
 #'   Can be NA.
 #' @param name An identifier ("name") of the enzyme instance.
@@ -39,7 +40,7 @@
 new_enzyme <- function(
   kcat_val, Kc_val, Ko_val, S_val, temp = 25,
   kcat_T = NULL, Kc_T = NULL, Ko_T = NULL, S_T = NULL,
-  PGS=NA, name = ""
+  T_max = 55, PGS=NA, name = ""
 ) {
 
   # initialize kinetic values
@@ -49,6 +50,7 @@ new_enzyme <- function(
     Kc_val = Kc_val,
     Ko_val = Ko_val,
     S_val = S_val,
+    T_max = T_max,
     PGS = tolower(PGS)
   )
 
@@ -106,6 +108,8 @@ check_enzyme <- function(the_enzyme) {
       call. = FALSE
     )
   }
+
+  # check if values are numerical
   if (!is.numeric(the_enzyme$kcat_val)) {
     stop("The value of kcat_val must be numeric", call. = FALSE)
   }
@@ -129,6 +133,23 @@ check_enzyme <- function(the_enzyme) {
   }
   if (!is.numeric(the_enzyme$S_T)) {
     stop("The value of S_T must be numeric", call. = FALSE)
+  }
+  if (!is.numeric(the_enzyme$T_max)) {
+    stop("The value of T_max must be numeric", call. = FALSE)
+  }
+
+  # check the sign of parameters
+  if (the_enzyme$kcat_val < 0) {
+    stop("The value of kcat_val must be non-negative", call.= FALSE)
+  }
+  if (the_enzyme$Kc_val < 0) {
+    stop("The value of Kc_val must be non-negative", call.= FALSE)
+  }
+  if (the_enzyme$Ko_val < 0) {
+    stop("The value of Ko_val must be non-negative", call.= FALSE)
+  }
+  if (the_enzyme$S_val < 0) {
+    stop("The value of S_val must be non-negative", call.= FALSE)
   }
 
   # if pass, the object itself is returned
@@ -178,6 +199,9 @@ print.enzyme <- function(x, unicode = TRUE, ...) {
     "  S = ", the_enzyme$S_val,
     " @ T_S = ", the_enzyme$S_T, T_unit, "\n"
   ))
+  cat(paste0(
+    "  Upper thermal limit = ", the_enzyme$T_max, T_unit, "\n"
+  ))
   if (is.na(the_enzyme$PGS)){
     cat(paste0('  PGS = NA\n'))
   } else {
@@ -198,10 +222,13 @@ print.enzyme <- function(x, unicode = TRUE, ...) {
 #' @param Kc_val if not NULL, the Kc_val value for the new instance
 #' @param Ko_val if not NULL, the Ko_val value for the new instance
 #' @param S_val if not NULL, the S_val value for the new instance
+#' @param temp NOT USED. A warning is produced if this argument is used. 
+#'   Please set the temperature for each kinetic parameters separately
 #' @param kcat_T if not NULL, the kcat_T value for the new instance
 #' @param Kc_T if not NULL, the Kc_T value for the new instance
 #' @param Ko_T if not NULL, the Ko_T value for the new instance
 #' @param S_T if not NULL, the S_T value for the new instance
+#' @param T_max if not NULL, the upper thermal limit of the new instance
 #' @param PGS if not NULL, the default phosphoglycolate salvage (PGS) pathway
 #'   for the new instance
 #' @param name if not NULL, the identifier ("name") for the new instance
@@ -214,12 +241,16 @@ print.enzyme <- function(x, unicode = TRUE, ...) {
 #' print(pro_worse_enzyme) # printout modified enzyme info
 modify_enzyme <- function(
   the_enzyme,
-  kcat_val = NULL, Kc_val = NULL, Ko_val = NULL, S_val = NULL,
-  kcat_T = NULL, Kc_T = NULL, Ko_T = NULL, S_T = NULL, 
-  PGS = NULL, name = NULL
+  kcat_val = NULL, Kc_val = NULL, Ko_val = NULL, S_val = NULL, temp=NULL,
+  kcat_T = NULL, Kc_T = NULL, Ko_T = NULL, S_T = NULL,
+  T_max = NULL, PGS = NULL, name = NULL
 ) {
 
   # NOTE: recall that R copy on edit
+
+  if (!is.null(temp)){
+    warning("The `temp` argument is NOT USED and will be IGNORED.\n  Please set temperature of each kinetic parameter separately.")
+  }
 
   # overwrite value whenever a new one is supplied
   if (!is.null(kcat_val)) {
@@ -245,6 +276,9 @@ modify_enzyme <- function(
   }
   if (!is.null(S_T)) {
     the_enzyme$S_T <- S_T
+  }
+  if (!is.null(T_max)) {
+    the_enzyme$T_max <- T_max
   }
   if (!is.null(PGS)) {
     the_enzyme$PGS <- PGS
@@ -343,18 +377,36 @@ Enzyme <- function(id_name, id_col="identifier", enzyme_name=NULL, data=NULL){
   if (is.na(S_T)) {S_T = NULL}
 
   if ("temp" %in% cols){
-    return(new_enzyme(
-      data_sub$kcat_val, data_sub$Kc_val, data_sub$Ko_val, data_sub$S_val,
-      data_sub$temp,
-      kcat_T = kcat_T, Kc_T = Kc_T, Ko_T = Ko_T, S_T = S_T,
-      PGS = PGS, name = enzyme_name
-    ))
+    if ("T_max" %in% cols){
+      return(new_enzyme(
+        data_sub$kcat_val, data_sub$Kc_val, data_sub$Ko_val, data_sub$S_val,
+        data_sub$temp,
+        kcat_T = kcat_T, Kc_T = Kc_T, Ko_T = Ko_T, S_T = S_T,
+        T_max = T_max, PGS = PGS, name = enzyme_name
+      ))
+    } else {
+      return(new_enzyme(
+        data_sub$kcat_val, data_sub$Kc_val, data_sub$Ko_val, data_sub$S_val,
+        data_sub$temp,
+        kcat_T = kcat_T, Kc_T = Kc_T, Ko_T = Ko_T, S_T = S_T,
+        PGS = PGS, name = enzyme_name
+      ))
+    }
   } else {
-    return(new_enzyme(
-      data_sub$kcat_val, data_sub$Kc_val, data_sub$Ko_val, data_sub$S_val,
-      kcat_T = kcat_T, Kc_T = Kc_T, Ko_T = Ko_T, S_T = S_T,
-      PGS = PGS, name = enzyme_name
-    ))
+    if ("T_max" %in% cols){
+      return(new_enzyme(
+        data_sub$kcat_val, data_sub$Kc_val, data_sub$Ko_val, data_sub$S_val,
+        kcat_T = kcat_T, Kc_T = Kc_T, Ko_T = Ko_T, S_T = S_T,
+        T_max = T_max, PGS = PGS, name = enzyme_name
+      ))
+
+    } else {
+      return(new_enzyme(
+        data_sub$kcat_val, data_sub$Kc_val, data_sub$Ko_val, data_sub$S_val,
+        kcat_T = kcat_T, Kc_T = Kc_T, Ko_T = Ko_T, S_T = S_T,
+        PGS = PGS, name = enzyme_name
+      ))
+    }
   }
 }
 
@@ -458,7 +510,7 @@ search_alias <- function(string, data=NULL, match="complete"){
     }
 
   }
-  
+
   # warning("No entry found")
   return(NULL)
 
@@ -472,7 +524,7 @@ search_alias <- function(string, data=NULL, match="complete"){
 #'
 #' @param string a string to search for in the database (case insensitive)
 #' @param level the taxonomic level to search. Can be "alias", "genus", "species",
-#'   "form", "taxonomy", or NULL. If NULL, the search will proceed from alias to 
+#'   "form", "taxonomy", or NULL. If NULL, the search will proceed from alias to
 #'   genus to species to taxonomy to form until a match is found
 #' @param data the source data to search from. Can be "abridged", "comprehensive",
 #'   or NULL. If NULL, the search will proceed from abridged to comprehensive
