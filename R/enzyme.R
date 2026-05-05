@@ -382,7 +382,7 @@ Enzyme <- function(id_name, id_col="identifier", enzyme_name=NULL, data=NULL){
         data_sub$kcat_val, data_sub$Kc_val, data_sub$Ko_val, data_sub$S_val,
         data_sub$temp,
         kcat_T = kcat_T, Kc_T = Kc_T, Ko_T = Ko_T, S_T = S_T,
-        T_max = T_max, PGS = PGS, name = enzyme_name
+        T_max = data_sub$T_max, PGS = PGS, name = enzyme_name
       ))
     } else {
       return(new_enzyme(
@@ -397,7 +397,7 @@ Enzyme <- function(id_name, id_col="identifier", enzyme_name=NULL, data=NULL){
       return(new_enzyme(
         data_sub$kcat_val, data_sub$Kc_val, data_sub$Ko_val, data_sub$S_val,
         kcat_T = kcat_T, Kc_T = Kc_T, Ko_T = Ko_T, S_T = S_T,
-        T_max = T_max, PGS = PGS, name = enzyme_name
+        T_max = data_sub$T_max, PGS = PGS, name = enzyme_name
       ))
 
     } else {

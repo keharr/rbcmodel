@@ -10,10 +10,12 @@ modify_enzyme(
   Kc_val = NULL,
   Ko_val = NULL,
   S_val = NULL,
+  temp = NULL,
   kcat_T = NULL,
   Kc_T = NULL,
   Ko_T = NULL,
   S_T = NULL,
+  T_max = NULL,
   PGS = NULL,
   name = NULL
 )
@@ -29,6 +31,9 @@ modify_enzyme(
 
 \item{S_val}{if not NULL, the S_val value for the new instance}
 
+\item{temp}{NOT USED. A warning is produced if this argument is used.
+Please set the temperature for each kinetic parameters separately}
+
 \item{kcat_T}{if not NULL, the kcat_T value for the new instance}
 
 \item{Kc_T}{if not NULL, the Kc_T value for the new instance}
@@ -36,6 +41,8 @@ modify_enzyme(
 \item{Ko_T}{if not NULL, the Ko_T value for the new instance}
 
 \item{S_T}{if not NULL, the S_T value for the new instance}
+
+\item{T_max}{if not NULL, the upper thermal limit of the new instance}
 
 \item{PGS}{if not NULL, the default phosphoglycolate salvage (PGS) pathway
 for the new instance}

@@ -84,6 +84,7 @@ CO2_dependence <- function(enzyme, DHScale, PGS=NULL) {
   S_val <- enzyme$S_val
   S_dH <- DHScale$S_dH
   S_T <- enzyme$S_T
+  T_max <- enzyme$T_max
 
   # create temperature dependence function for each kinetic variable
   kcat <- kinetics_T_dep(kcat_val, kcat_dH, kcat_T)
@@ -94,18 +95,30 @@ CO2_dependence <- function(enzyme, DHScale, PGS=NULL) {
   # use different formula depending on the PGS pathway chosen
   if (PGS == "gross") {
     out_func <- function(CO2, O2, temp) {
+      if (temp > T_max) { stop("Temperature above upper thermal limit") }
+      if (CO2 <= 0) { stop("CO2 concentration must be positive") }
+      if (O2 <= 0) { stop("Oxygen concentration must be positive") }
       kcat(temp) * CO2 / (CO2 + kc(temp) + kc(temp) * (O2 / ko(temp)))
     }
   } else if (PGS == "canon") {
     out_func <- function(CO2, O2, temp) {
+      if (temp > T_max) { stop("Temperature above upper thermal limit") }
+      if (CO2 <= 0) { stop("CO2 concentration must be positive") }
+      if (O2 <= 0) { stop("Oxygen concentration must be positive") }
       kcat(temp) * (CO2 / (CO2 + kc(temp) + kc(temp) * (O2 / ko(temp)))) * (1 - O2 / (2 * s(temp) * CO2))
     }
   } else if (PGS == "alt") {
     out_func <- function(CO2 ,O2, temp) {
+      if (temp > T_max) { stop("Temperature above upper thermal limit") }
+      if (CO2 <= 0) { stop("CO2 concentration must be positive") }
+      if (O2 <= 0) { stop("Oxygen concentration must be positive") }
       kcat(temp) * (CO2 / (CO2 + kc(temp) + kc(temp) * (O2 / ko(temp)))) * (1 - 2 * O2 / (s(temp) * CO2))
     }
   } else if (PGS == "diatom") {
     out_func <- function(CO2, O2, temp) {
+      if (temp > T_max) { stop("Temperature above upper thermal limit") }
+      if (CO2 <= 0) { stop("CO2 concentration must be positive") }
+      if (O2 <= 0) { stop("Oxygen concentration must be positive") }
       kcat(temp) * (CO2 / (CO2 + kc(temp) + kc(temp) * (O2 / ko(temp)))) * (1 - O2 / (s(temp) * CO2))
     }
   }
