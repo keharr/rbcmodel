@@ -1,0 +1,529 @@
+---
+title: "Designing a Custom Enzyme"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Designing a Custom Enzyme}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+#library(rbcmodel)
+devtools::load_all()
+```
+
+## Overview
+This vignette is for users who plan to create an enzyme from scratch, modify an enzyme, or combine information from more than one entry. Users who wish only to use a model enzyme and one of the provided temperature dependence scales can stick to the basic workflow in the [introductory vignette](rbcmodel.html). First, we provide a more thorough explanation of the different ways of searching the database for a particular enzyme's kinetics or temperature dependences than we gave in the introductory vignette. Second, we go into detail about the different scenarios of constructing an appropriate `Enzyme` object from the kinetics data, starting with those in which there is a lot of data and moving to those in which there is very little data. We repeat this in the third section with the different scenarios that may crop up when constructing an appropriate `DHScale` object. Fourth, we discuss how to decide which PGS pathway to use when there is no data. Finally, we discuss our philosophy on creating the various averages and composite enzymes we have provided in the package database, in the hopes that it will provide a starting point for those that are truly stuck.
+
+## 1. Searching for my enzyme
+In the introductory vignette, we mostly stuck to the `abridged` table for kinetics and the `averages` table for the temperature dependences, since those are the tables that have the most complete data in them. If all you want to do is look at a model enzyme that many people have measured, this should cover your use case! However, for those of you who are interested in looking at enzymes with fewer measurements or forms of Rubisco with fewer measurements, you will probably have to use the `comprehensive` enzyme table and the `abridged` DHScale table.
+
+#>DO I WANT TO RENAME THE DHSCALE TABLE??
+
+### 1.1 Recommendations for searching
+The comprehensive enzyme table has a lot more columns than the abridged enzyme table, to provide the full range of data about each of the studies and the measurements. If you are overwhelmed by the amount of information, we recommend saving your searches as an object and calling only those columns that you plan to use to distinguish between studies:
+
+```{r search_less}
+test<-search_enzyme("Synechococcus",data="comprehensive")
+test[,c(1:5,9,12,15,18,21,24,26,28)] #DOUBLE-CHECK THAT THESE NUMBERS ARE RIGHT ONCE I ADD THE NEW COLUMN
+```
+
+In our example, we removed most of the information not provided in the abridged table, in addition to the individual kinetics' temperature columns, as a look at the data shows that none of them were measured at anything other than 25°C (and are therefore all comparable with each other). Once we've decided on the studies we want to include, we can look over their whole rows to make sure there aren't any red flags in the other columns.
+
+We can also do some other filtering, like removing from our search all of the kinetics for those mutants included in the larger table:
+
+```{r search_nomutant}
+test<-test[test$mutant=="FALSE",]
+test[,c(1:4,9,12,15,18,21,24,26,28)] #removed mutant column, as they are all not mutants now
+```
+
+Now it is much easier to review the data. The rest of the data is still in the database and can be recalled by running the same search as before with whatever rows you have decided are potentially useful rows, for that red flag check we mentioned before. Say you like the Iñiguez composite enzyme and the Mueller-Cajar 2008 enzyme (rows 8 and 21 in the initial search, based on the row numbers on the left of our test outputs):
+
+```{r search_check}
+search_enzyme("Synechococcus",data="comprehensive")[c(8,21),]
+```
+
+For all of these examples, we used a model genus with complete data present in the `abridged` table. Those of you looking at this vignette are far more likely to be looking for species or genera that have very few measurements, or forms of Rubisco with few measurements. If nothing comes up when searching for your species/genus, we suggest moving to their taxonomy first, followed by the form of Rubisco. If you are still having trouble finding analogous Rubisco sequences, we also have a `group` category, which groups Rubisco into five broad categories: plants, algae, bacteria, archaea, and metagenomes. The final category is for Rubisco sequences that were derived from metagenomes and were not isolated from any particular organism, but rather used to transform something (predominantly *E. coli*) for expression. As these cannot be confirmed to represent a single organism's Rubisco sequence rather than a population consensus, we decided to group them separately, even when there is an assigned taxonomy.
+
+When searching for temperature dependences, we suggest that you follow the same progression (species -> genus -> taxonomy -> form -> group). There are many fewer temperature dependence measurements in the tables, and all of the temperature dependence tables have fewer columns, making it easier to look at and manipulate a broader search (taxonomy/form/group), which is far more likely to be necessary for temperature dependences given the scarcity of that data.
+
+### 1.2 Taxonomic classifications
+There are many possible ways that these sequences could have been classified. For our `taxonomy` category, we have maintained many of the classifications in use by the Rubisco community, and added some additional class-level taxonomy categories for the bacteria, which with the inclusion of metagenome-derived sequences span a much broader range of classes. For archaea, there were not enough sequences to make it worthwhile to classify them to the class level at the present time, so the taxonomy for all archaea is simply `Archaea`. This may change in future versions of the package, as more data is collected. We also implemented a `Reconstruction` taxonomy for those sequences that are ancestral reconstructions. For these sequences, their `group` category places them into algae or bacteria, as appropriate. Finally, there are a few sequences classified as `Unknown` which did not have a known taxonomic classification, or were bacteria with no known class.
+
+The following tables list the taxonomic classifications present in the database for algae, plants, and bacteria. The first has all of the algal and plant taxonomies, and the second lists the bacterial taxonomies. Since some of the bacterial classes only have a handful of measurements in them, the second table also groups these classes by their phyla to make it easier to determine what other classes are most likely to contain related sequences. 
+
+Algae and Plants:
+| Algae | Plants |
+|:-------------------:|:-------------------:|
+| Alveolata | C3 plants |
+| Brown algae | C3-C4 plants |
+| Coccolithophore | C4 plants |
+| Diatoms | C4-like plants #ASK JODI IF I CAN JUST USE C3-C4 plants FOR THIS |
+| Dinoflagellate | CAM plants |
+| Green algae | Basal angiosperm |
+| Haptophytes | Bryophyte |
+| Macroalgae | Carnivorous plants |
+| Red algae | Fern |
+| | Gymnosperm |
+| | Hornwort |
+| | Lycopods |
+
+Bacteria:
+| Phylum | Class |
+|:-------------:|:-------------------:|
+| Actinomycetota | Actinomycetes |
+| | |
+| Bacillota | Bacilli |
+|  | Clostridia |
+| | |
+| Chloroflexota | Anaerolineae |
+|  | Ardenticatenia |
+|  | Chloroflexi |
+| | |
+| Candidate phyla radiation | CPR |
+| | |
+| Cyanobacteriota | Cyanobacteria |
+| | |
+| Peregrinibacteriota | Peregrinibacteria |
+| | |
+| Pseudomonadota | Acidithiobacillia |
+|  | Alphaproteobacteria |
+|  | Betaproteobacteria |
+|  | Mariprofundia |
+|  | Gammaproteobacteria |
+|  | Hydrogenophilia |
+| | |
+| Spirochaetota | Leptospiria |
+| | |
+| Thermosdesulfobacteriota | Desulfovibrionia |
+| | |
+| Verrucomicrobiota | Verrucomicrobiia |
+
+### 1.3 Forms of Rubisco
+The forms of Rubisco included in this package are as follows:
+
+| Forms of Rubisco |
+|:-------:|
+| 1A |
+| 1Aq |
+| 1Ac |
+| 1B |
+| 1Bc |
+| 1C |
+| 1D |
+| 1E |
+| 1_Anaero |
+| 1' |
+| 1'' |
+| 1ɑ |
+| 2 |
+| 3 |
+| 2_3 |
+
+`1A` is implemented only for kinetic measurements where an organism has both form 1Ac and 1Aq, and the study authors did not purify the Rubisco before measuring the kinetics.
+
+## 2. Kinetics
+Once you have found any appropriate kinetics that apply to your enzyme, the next step is to create an `Enzyme` object that represents the enzyme as best as possible. We have separated this section by the various scenarios you may encounter when creating a custom enzyme, although strategies between many of these scenarios will be shared.
+
+### 2.1 I have measured the kinetics for my enzyme (or there's a study not in the database)
+If you have measurements of the kinetics for your enzyme, you can fill those in manually. This is, in many ways, the easiest scenario to deal with. In our example, we will assume that you have measured all four of the parameters, but if you have measured only some of them, you can go to section 2.4 to figure out how to fill in those missing parameters.
+
+Let's say we've measured the kinetics at 25°C for the form II Rubisco from the Gammaproteobacterium SUP05: *k*~cat,C~ = 7.2, K~c~=36, K~o~=68, S~C/O~=14. To create a custom `Enzyme` object, we'll use the function `new_enzyme()`:
+```{r enzyme_from_scratch}
+SUP05_Rbc<-new_enzyme(kcat_val=7.2,Kc_val=36,Ko_val=68,S_val=14)
+SUP05_Rbc
+```
+Since our measurements were done at 25°C, the default assumption, we do not need to input a temperature in any way. However, let's say that instead we measured all of these at 22°C, and our S~C/O~ was measured at 30°C. We can input our temperatures using the `temp` argument and the specific argument for S~C/O~, `S_T`:
+```{r enzyme_from_scratch2}
+SUP05_Rbc2<-new_enzyme(kcat_val=7.2,Kc_val=36,Ko_val=68,S_val=14,temp=22,S_T=30)
+SUP05_Rbc2
+```
+
+#### 2.1.1 `new_enzyme()` Arguments
+`new_enzyme()` also includes the arguments `PGS`, to add a PGS pathway (which can also be added when combining the `Enzyme` and `DHScale` objects using `CO2_dependence()`), and `name`, if you wish to have more description than what the object name can provide.
+
+| Argument | Description | Default | Accepted Inputs |
+|----------|------------------|:-------:|-----------------|
+| kcat_val | Value of *k*~cat,c~ | (required) | Any number |
+| Kc_val | Value of K~c~ | (required) | Any number |
+| Ko_val | Value of K~o~ | (required) | Any number |
+| S_val | Value of S~C/O~ | (required) | Any number |
+| temp | Shared temperature for all kinetic parameters | 25 | Any number |
+| kcat_T | Measurement temperature for *k*~cat,c~ | NULL (default to `temp`) | Any number |
+| Kc_T | Measurement temperature for K~c~ | NULL (default to `temp`) | Any number |
+| Ko_T | Measurement temperature for K~o~ | NULL (default to `temp`) | Any number |
+| S_T | Measurement temperature for S~C/O~ | NULL (default to `temp`) | Any number |
+| PGS | PGS stoichiometry to use | NA | "canon", "diatom", "gross", or "alt" |
+| name | Name of the enzyme | `""` | Any string |
+
+### 2.2 There are multiple complete studies for my enzyme
+For a few enzymes, there are multiple studies that have determined all of the kinetics, but there is no methodology-corrected average or other composite. For example, there have been two complete studies of *Beta vulgaris*: Hermida-Carrera 2016 and Orr 2016. How do you choose between these studies? In the abridged table, there is minimal data about the two studies, but if we look at the same studies in the comprehensive table, we can see more data.
+
+```{r compare_vulgaris}
+search_enzyme("Beta",data="comprehensive")[3:4,]
+```
+
+We can see that the subspecies (for plants this is usually a variant or cultivar) differs, so if we were interested in one of the two, we could choose that study. Alternatively, if we were interested in a different subspecies, we could merge the entries together using `merge_entries()`. `merge_entries()` will take multiple entries and merge each kinetic parameter by averaging them (`method="mean"`), finding the median (`method="median"`), or taking the last non-NA value (`method="last"`), as desired.
+
+Let's say we're interested in this second option, investigating *B. vulgaris* more broadly. The first step is to look at the `comprehensive` table to ensure that we have captured all the measurements of *Beta vulgaris*, not just the complete entries:
+
+```{r search_vulgaris}
+df1<-search_enzyme("Beta",data="comprehensive")
+df1
+```
+
+We bound them into a dataframe, since we know we will want to manipulate these entries later. (As long as you've included the `identifier`, `kcat_val`, `Kc_val`, `Ko_val`, `S_val`, and `temp` columns, it is possible to use `merge_entries()` with columns removed for viewing ease, like we did in section 1.)
+
+```{r search_vulgaris}
+df1<-search_enzyme("Beta",data="comprehensive")
+df1
+```
+
+The two studies that are not complete only measured the specificity, so there are 4 specificity measurements, with the rest of the parameters measured only twice. Our first step is to check the `temp`, `kcat_T`, `Kc_T`, `Ko_T`, and `S_T` columns, which would tell us if any of these measurements were done at a different temperature, in which case we can't combine them. Lucky for us, all four of the studies only measured parameters at 25°C, so we can proceed to the merge. To use `merge_entries()`, we have to choose a column that is unique to the different studies. In this case, `identifier`, `subspecies`, or `short_ref` would all work, but in general we recommend using `identifier`, which is always unique to each entry. Since one of the methods to combine entries relies on order (`"last"`), you also need to input the values of each identifier in the argument `id_vals`. However, in this first pass, we will use `median` to combine them, so we don't care about order (which also lets us simply use that column of the dataframe to call the identifiers). `merge_entries()` requires, in order, the `data`, the column of the unique values used to determine the order of the studies or `id_col`, the values of the individual entries in that column or `id_vals`, and then the `method`, which must be one of `"median"`, `"average"`, or `"last"`. You should also add a new name for your entry in `new_id`, which can be any string. Here's an example using `"median"` as our method:
+
+```{r merge_median_vulgaris}
+df2<-merge_entries(df1,"identifier",df1$identifier,"median",new_id="Vulgaris_merged")
+df2
+```
+
+Any text column that did not match in all entries was set to `NA`. This would be the same if you used the `"mean"` merging method as well. The `"last"` method will instead take the final entry that is not `NA`, which is important to keep in mind. The merge we just performed also combined columns like `pKa`, which are numerical.
+
+This new dataframe includes all of the original entries that we used to merge. If we don't want that to be the case, we can set the argument `keep_merged` to `FALSE`:
+
+```{r merge_smaller_output}
+df3<-merge_entries(df1,"identifier",df1$identifier,"median",new_id="Vulgaris_merged",keep_merged=FALSE)
+```
+
+What if we were interested in the marcosii cultivar, and so we wanted to keep its measured specificity value? We have two options: 1) we can use a different study as the base and replace only the specificity, or 2) we can find the median of all values, and then replace only the specificity. Either of these will require the use of the `"last"` merging method.
+
+We'll start with 1) as it's the easier option. We decide that we will combine the *Beta vulgaris vulgaris* entry with the *Beta vulgaris marcosii* entry. Now, our argument for `id_vals` will not be all four of our studies in the base `df1` dataframe, but only these two:
+
+```{r merge_orr}
+df4<-merge_entries(df1,"identifier",c(df1$identifier[1],df1$identifier[4]),"last",new_id="Vulgaris_merged",keep_merged=FALSE)
+df4
+```
+
+Hmm. We ended up with an entry that is simply a duplicate of the Orr 2016 entry. (This example also illustrates why the use of `keep_unmerged=FALSE` may be helpful, as it would remove the two that are not being merged.) Our problem here lies in the order of the entries that we gave to `id_vals`; since we listed the marcosii study first, and `"last"` takes the final entry it is presented with, only the Orr study was kept. We have to flip the order in `id_vals` to get the result we want:
+
+```{r merge_orr_correct}
+df4<-merge_entries(df1,"identifier",c(df1$identifier[4],df1$identifier[1]),"last",new_id="Vulgaris_merged",keep_unmerged=FALSE)
+df4
+```
+
+So that's option one. Our second option, if we don't want to rely on a single study, is to find the median (or average) of all the values measured by everyone, and then replace only the specificity. In this case, we'll do exactly the same thing we did before to produce the median, keeping the merged entries, and then merge only our new merged entry and the marcosii study with the `"last"` method:
+
+```{r merge_median_marcosii}
+df5<-merge_entries(df1,"identifier",df1$identifier,"median",new_id="Vulgaris_merged")
+df5<-merge_entries(df5,"identifier",c("Vulgaris_merged",df1$identifier[1]),"last",new_id="Marcosii_merged",keep_unmerged=FALSE)
+df5
+```
+
+Any of these new dataframes we've made (we'll use this most recent one) can then be used as the base data for `Enzyme()`, using the argument `data`:
+```{r create_marcosii}
+marcosii_Rbc<-Enzyme("Marcosii_merged",data=df5)
+marcosii_Rbc
+```
+
+We use our `new_id` and the dataframe to call the appropriate enzyme. If we'd used a different column for our unique ids and therefore left `identifier` blank on our new entry, we would also need to set the `id_col` argument in `Enzyme()` to the appropriate column name for `Enzyme()` to correctly identify the entry.
+
+#### 2.2.1 `merge_entries()` arguments
+Further customization of merged entries can be done; for example, providing a list of columns that must be the same in order for the merge to occur. Here are all the arguments that can be provided to `merge_entries()`:
+
+| Argument | Description | Default | Accepted Inputs |
+|----------|------------------|:-------:|-----------------|
+| data | The dataframe with the entries | (required) | Any dataframe |
+| id_col | The identifying column for the entries desired | (required) | Any column name string (i.e. "identifier") |
+| id_vals | The values of the desired entries in the identifying column | (required) | Any vector of values |
+| method | Which method to use for merging | (required) | "average", "median", or "last" |
+| new_id | The new value of the merged entry in the identifying column | NA | Any single input, numerical or string |
+| const_cols | Columns whose values must be constant in the desired entries for the merge to occur | NULL | Any list of strings identifying the columns |
+| keep_merged | Whether to keep pre-merged entries | TRUE | TRUE or FALSE |
+| keep_unmerged | Whether to keep unmerged entries | TRUE | TRUE or FALSE |
+
+### 2.3 All kinetics for my enzyme have been measured, but not in the same study
+If all of the kinetics for your enzyme have been measured, but there are no "complete" entries, i.e. entries where all four kinetic parameters are present, you will need to merge entries into each other. We show one example workflow here, but since we have already provided many examples of ways to merge entries in section 2.2, we will not go into extensive detail here.
+
+Let's say we want to create an enzyme for the diatom *Thalassiosira antarctica*. When we search for it, we determine that there are two studies, one of which measured S~C/O~, the other which measured the other three. We would like to combine them. In this case, because there are only two studies and no overlaps between them, it does not matter which combination method we use (`"average"`, `"median"`, or `"last"`). We'll use `"median"`.
+
+```{r creat_thalassiosira}
+ta_df<-search_enzyme("antarctica")[2:3,]
+ta_merged<-merge_entries(ta_df,"identifier",ta_df$identifier,"median",new_id="t_antarctica_merged")
+Enzyme("t_antarctica_merged",data=ta_merged)
+```
+
+### 2.4 Some of the kinetics for my enzyme have been measured
+If you can use sections 2.1, 2.2, or 2.3, you are in some ways quite fortunate! For many of the non-plant organisms and sequences present in our database, only one or two of Rubisco's four kinetic parameters have been measured. If you wish to create an enzyme for one of these, you'll have to get more creative.
+
+#### 2.4.1 Other members of the genus have been measured
+We're going to start with the easiest option and work our way down. We want to compare the *T. antarctica* enzyme we created with another diatom, *Skeletonema costatum*. However, when we search for *S. costatum*, we find out that only the K~c~ and S~C/O~ have been measured.
+
+```{r search_sc}
+search_enzyme("costatum")
+```
+
+We have to broaden our search, so we search for the genus next, keeping the data argument set to "comprehensive" to make sure we also capture our *S. costatum* data.
+
+```{r search_sc_genus}
+sc_df<-search_enzyme("Skeletonema",data="comprehensive")
+sc_df
+```
+
+Ok, that's better. There are two studies that measured *Skeletonema marinoi* and all of the four parameters are measured at least once. We can use this data as a base, and in our final merged entry, replace the K~c~ and S~C/O~ with the *S. costatum* measurements. Since it doesn't matter if we include the *S. costatum* measurements in the medians we construct (we'll be replacing any of those with the value from *S. costatum* at the end), we can just use `"median"` to combine all these entries, and then `"last"` with the merged entry listed first followed by the *S. costatum* entries at the end to create a *S. costatum* enzyme. (See Section 2.2 for a more thorough explanation of this.)
+
+```{r merge_sc}
+sc_merged<-merge_entries(sc_df,"identifier",sc_df$identifier,"median",new_id="Skeletonema_merged")
+sc_merged<-merge_entries(sc_merged,"identifier",c("Skeletonema_merged",sc_df$identifier[1:2,]),"last",new_id="Costatum_merged",keep_unmerged=FALSE)
+sc_merged
+Enzyme("Costatum_merged",data=sc_merged)
+```
+
+#### 2.4.2 Other members of the taxonomic group or Rubisco form have been measured
+A very similar process can be followed when instead of other members of the genus, other members of the taxonomic group (or Rubisco form) have been measured. Instead of *S. costatum*, now we're interested in *Bellerochea horologicalis*, but specificity has never been measured for this Rubisco, or any Rubisco in this genus. So we broaden our search to all diatoms (which we already know have at least one specificity measurement), and save the result as a dataframe.
+
+```{r search_bh}
+search_enzyme("horologicalis")
+diatom_df<-search_enzyme("Diatoms",data="comprehensive")
+```
+
+We can then use that dataframe to average or find the median of all of the diatom data, and at the end, replace it with the *B. horologicalis* data - just a bigger version of the merge we did in section 2.4.1 when merging the genus. However, we have also included average versions of many of the taxonomic groups or forms of Rubisco present in the database (medians of all the data from 25°C in the database that matches that taxonomic group or form of Rubisco, as appropriate). When we look at the averages, we can see that there is a diatom 1D already available for us to use.
+
+```{r search_diatom}
+search_enzyme("average")
+diatom_base<-search_enzyme("average")[10,]
+```
+
+We can then call the *B. horologicalis* enzyme, and replace the only missing value with the diatom_base one. Since the average enzymes are all from the abridged table and thus don't have all the columns [DO WE WANT TO CHANGE THIS????? ADD THEM TO COMPREHENSIVE TO MAKE THINGS EASIER FOR PEOPLE?], we'll want to do that with `modify_enzyme()`.
+
+First, we need to make the incomplete *B. horologicalis* enzyme (although you could of course do this the other way around as well).
+
+```{r create_bh}
+bh_Rbc<-Enzyme("horologicalis_Young_2016")
+bh_Rbc
+```
+
+Then we can use `modify_enzyme()` to adjust the missing S~C/O~. `modify_enzyme()` has all the same arguments as `new_enzyme()` (see Section 2.1.1), with the addition of one required argument - the enzyme to be modified! 
+
+```{r fix_bh}
+bh_Rbc<-modify_enzyme(bh_Rbc,S_val=diatom_base$S_val)
+bh_Rbc
+```
+
+If there weren't any measurements of specificity in diatoms, we could instead pull that from an average of form 1D, or if form 1D had no specificity measurements, we could go even more broad to form 1 as a whole. This gets increasingly less likely to be similar to the real value, but unfortunately there's no way around that except to measure more Rubisco kinetics!
+
+### 2.5 None of the kinetics for my enzyme have been measured
+If you have gotten to this point, this is pretty much the end of the road. If there are no kinetics for your enzyme, you'll have to try and find an option that seems likely to be close, or go with the average for your taxonomic group/Rubisco form. We'll start with the former.
+
+Now we're interested in looking at some autotrophic bacteria, in particular, the Gammaproteobacterium *Thiomicrorhabdus arctica*. *T. arctica* has two forms of Rubisco (a form 2 and a form 1Aq), but only the form 2 has been measured at all (*k*~cat,C~ by Davidi 2020). If we're interested in the form 1Aq, we are completely out of luck. So, ok. Let's try looking at the Gammaproteobacteria and see what our options are. To cut down on the amount of entries that will be unhelpful, we filter our final `search_enzyme()` output so we only keep the form 1Aq measurements (and we removed some columns). 
+
+```{r find_gamma_entries}
+gpb_df<-search_enzyme("Gammaproteobacteria",data="comprehensive")[,c(1:4,9,12,15,18,21,24,26,28)]
+gpb_df<-gpb_df[gpb_df$form=="1Aq",]
+gpb_df
+```
+
+1Aq has only been measured in Gammaproteobacteria in *A. vinosum* and *H. marinus*. We happen to know that *H. marinus* is very closely related to *T. arctica*, so that's probably our best bet. However, K~c~ and K~o~ were not measured in that, so we'll have to pull those from *A. vinosum*. Unfortunately, *H. marinus* was measured at 30°C, so we'll have to remake our dataframe to include the individual kinetics' temperature parameters and make sure those are correctly set at the end. Then we find the median of all the Gammaproteobacteria 1Aq data, and follow it by replacing the *k*~cat,C~ and S~C/O~ values with *H. marinus*'s. (See Sections 2.2 and 2.4.1 to see a more thorough explanation of the `merge_entries()` code used here.)
+
+```{r merge_ta}
+gpb_df<-search_enzyme("Gammaproteobacteria",data="comprehensive")[,c(1:4,9:10,12:13,15:16,18:19,21,24,26,28)]
+gpb_df<-gpb_df[gpb_df$form=="1Aq",]
+gpb_merged<-merge_entries(gpb_df,"identifier",gpb_df$identifier,"median",new_id="gpb_1Aq_merged")
+gpb_merged<-merge_entries(gpb_merged,"identifier",c("gpb_1Aq_merged","marinus_Iaq_Hayashi_1998"),"last",new_id="Ta_merged",keep_unmerged=FALSE)
+gpb_merged
+ta_1Aq<-Enzyme("Ta_merged",data=gpb_merged)
+ta_1Aq
+```
+
+Because of the way this particular merge worked out, we ended up with exactly backward temperatures, so we need to go back in and modify the enzyme's `kcat_T`, `Kc_T`, `Ko_T`, `S_T`, and `temp` to fix that (see Section 2.4.2 for more details on modifying enzymes). Remember that the arguments for the individual kinetic parameter temperatures override the global `temp`! After that, we have an `Enzyme` object we can use.
+
+```{r fix_ta}
+ta_1Aq<-modify_enzyme(ta_1Aq,kcat_T=NA,Kc_T=25,Ko_T=25,S_T=NA,temp=30)
+ta_1Aq
+```
+
+If this data was not available and an average is provided in the database that matches the taxonomic group or form that you are interested in, you can always just use that average.
+
+### 2.6 Some of the kinetics for my Rubisco form are not measured
+Now we're really at the end of the road. If there are no measurements of e.g. K~o~ for your Rubisco form (true of many of the more recently-discovered Rubisco forms), you will have to make a best judgment call of what the closest Rubisco form is and use the value from the average of that form, or look at an average or median or whatever you would like of all the Rubisco present in the database, or some other method we haven't thought of. You can look at the previous sections for examples of merging entries to help you process the data.
+
+## 3. Temperature Dependences
+Temperature dependence (ΔH) data is much sparser than kinetics data for Rubisco, so most Rubiscos, even model ones, will need to rely on other data to fill in some of the gaps. Many of the procedures for dealing with these gaps will be the same as the ones we followed for Section 2's enzyme kinetics. We will provide an example for each of these sections, but we will also point to the appropriate section of Section 2 for even more information.
+
+For all of the following examples, we use whatever data is available for ΔH K~o~, but you will note that for the averages we have constructed, all of them use the same ΔH K~o~, 26.7. As Galmés et al. 2016 discusses, *in situ* measurements of ΔH K~o~ vary dramatically, even by sign. It is possible that this is accurate. However, it is also possible that this is due to the fact that almost all K~o~ values are determined by finding the slope of the K~c~ response as oxygen changes, and typically have quite large error bars. It is therefore not surprising that the subsequent step of determining ΔH K~o~ from these individual uncertain measurements leads to some quite confusing data points. When Galmés looked only at *in vivo* measurements of ΔH K~o~, which measured K~o~ directly, all of the ΔH K~o~ values agreed in sign. We found the median of these values, excluding only *Arabidopsis thaliana*'s measurement, which had a noticeably lower R^2^ value than everything else, and this median is what we have included in all of our average DHScales, with the thought that it is more accurate to the real ΔH K~o~ value than the median of the *in situ* data would be. One major caveat here is that all of these *in vivo* values are from plants, so unfortunately any natural variation in the ΔH K~o~ value has been flattened. We still recommend using that value regardless, and hope that future studies will be able to measure ΔH K~o~ more directly.
+
+### 3.1 I have measured the temperature dependences for my enzyme
+If you have measurements of the temperature dependences for your enzyme, you can fill those in manually. In our example, we will assume that you have measured all four of the parameters, but if you have measured only some of them, you can go to section 3.3 to figure out how to fill in those missing parameters.
+
+Let's say we've measured the temperature dependences for the form II Rubisco from the Gammaproteobacterium SUP05: ΔH *k*~cat,C~=35.6, ΔH K~c~=40.1, ΔH K~o~=15.5, ΔH S~C/O~=-25.1. To create a custom `DHScale` object, we'll use the function `new_DHScale()`:
+```{r DHScale_from_scratch}
+SUP05_DH<-new_DHScale(kcat_dH=35.6,Kc_dH=40.1,Ko_dH=15.5,S_dH=-25.1)
+SUP05_DH
+```
+
+#### 3.1.1 `new_DHScale()` Arguments
+As with creating a new enzyme, the easiest way to create a `DHScale` object is to use one of the options presented in the provided data, but if you wish to create one from scratch, you can use `new_DHScale()`. The function has four required arguments, which are the ΔH values for each of *k*~cat,c~, K~c~, K~o~, and S~C/O~. As with `new_enzyme()`, `new_DHScale()` has an additional optional input, `name`, which can be any text string. `name` can be used to provide further information about the `DHScale` object that might not be contained within the name of the resulting object.
+Although a second constant (c) is measured and reported along with ΔH values, we calculate c during `CO2_dependence()`, from the `DHScale`'s ΔH for a particular kinetic parameter, the `Enzyme` object's value for that parameter, and the temperature the `Enzyme` object's value was measured at. That way, we ensure that the temperature scaling would actually produce the measured value:
+$$x(T)=e^{c-\frac{\Delta H}{RT}}$$
+$$c=ln{x(T)}+\frac{\Delta H}{RT}$$
+
+| Argument | Description | Default | Accepted Inputs |
+|----------|------------------|:-------:|-----------------|
+| kcat_dH | Value of ΔH for *k*~cat,c~ | (required) | Any number |
+| Kc_dH | Value of ΔH for K~c~ | (required) | Any number |
+| Ko_dH | Value of ΔH for K~o~ | (required) | Any number |
+| S_dH | Value of ΔH for S~C/O~ | (required) | Any number |
+| name | Name of the enzyme | `""` | Any string |
+
+### 3.2 All temperature dependences for my enzyme have been measured, but not in the same study
+
+If all of the ΔH values for your enzyme have been measured, but there are no "complete" entries, i.e. entries where all four are present, you will need to merge entries into each other. We show one example workflow here, but since we have already provided many examples of ways to merge entries in section 2.2, we will not go into extensive detail here.
+
+Let's say we want to create a `DHScale` for the plant *Trifolium repens*. When we search for it, we determine that there are two studies, one of which measured ΔH *k*~cat,C~, and a second that measured the other three. We would like to combine them. In this case, because there are only two studies and no overlaps between them, it does not matter which combination method we use (`"average"`, `"median"`, or `"last"`). We'll use `"median"`.
+
+```{r create_tr}
+tr_dH<-search_DHScale("repens")
+tr_merged<-merge_entries(tr_dH,"identifier",tr_dH$identifier,"median",new_id="t_repens_dH_merged")
+DHScale("t_repens_dH_merged",data=tr_merged)
+```
+
+### 3.3 Some of the temperature dependences for my enzyme have been measured
+
+This scenario and 3.4 (none of the temperature dependences measured) are the most likely options for building a `DHScale` object, given the scarcity of temperature dependence data. As in section 2.4, we will begin with the easiest scenario to solve and proceed through the more complicated ones.
+
+#### 3.3.1 Other members of the genus have been measured
+We want to make a `DHScale` for the plant *Chenopodium album*, but when we search for its temperature dependences, we see that only its ΔH *k*~cat,C~ is measured.
+
+```{r search_ca}
+search_DHScale("album")
+```
+
+We have to broaden our search, so we search for the genus next.
+
+```{r search_ca_genus}
+ca_dH<-search_DHScale("Chenopodium")
+ca_dH
+```
+
+Ok, that's better. Orr 2016 measured all the ΔH values for two other *Chenopodium* species, *C. murale* and *C. petiolare*. We can use this data as a base, and in our final merged entry, replace ΔH *k*~cat,C~ with the *C. album* measurement. Since it doesn't matter if we include the *C. album* measurement in the medians we construct (we'll be replacing any of those with the value from *C. album* at the end), we can just use `"median"` to combine all these entries, and then `"last"` with the merged entry listed first followed by the *C. album* entry at the end to create a *C. album* `DHScale`. (See Section 2.2 for a more thorough explanation of this.)
+
+```{r create_album}
+ca_merged<-merge_entries(ca_dH,"identifier",ca_dH$identifier,"median",new_id="Chenopodium_merged")
+ca_merged<-merge_entries(ca_merged,"identifier",c("Chenopodium_merged",ca_dH$identifier[1,]),"last",new_id="album_merged",keep_unmerged=FALSE)
+ca_merged
+DHScale("album_merged",data=ca_merged)
+```
+
+#### 3.3.2 Other members of the taxonomic group or Rubisco form have been measured
+A very similar process can be followed when instead of other members of the genus, other members of the taxonomic group (or Rubisco form) have been measured. Let us say that we are interested in building a DHScale for *Zea mays*, for which only ΔH K~c~ and ΔH S~C/O~ have been measured, and no other species from *Zea* have been measured at all. So we broaden our search to all C4 plants and save the result as a dataframe.
+
+```{r search_Zm}
+search_DHScale("Zea")
+C4_df<-search_DHScale("C4 plants",data="comprehensive")
+```
+
+We can then use that dataframe to average or find the median of all of the C4 plant data, and at the end, replace it with the *Z. mays* data - just a bigger version of the merge we did in section 3.3.1 when merging the genus.
+
+```{r}
+[[[[[ADD THIS]]]]]
+```
+
+Alternatively, we have also included average versions of many of the taxonomic groups or forms of Rubisco present in the database (medians of all the data in the database that matches that taxonomic group or form of Rubisco, as appropriate, with the ΔH K~o~ value set to 26.7). When we look at the averages, we can see that there is a C4 plant 1B average `DHScale` already available for us to use.
+
+```{r find_c4_avg}
+C4_average<-search_DHScale("C4 plants",data="average")
+C4_average
+```
+
+We can then call the *Z. mays* enzyme, and replace the only missing value with the `C4_average` one. Since the average enzymes are all from the abridged table and thus don't have all the columns, we'll want to do that with `modify_DHScale()`.
+
+First, we need to make the incomplete *Z. mays* `DHScale` (although you could of course do this the other way around as well).
+
+```{r create_zm}
+zm_dH<-DHScale("95")
+zm_dH
+```
+
+Then we can use `modify_DHScale()` to adjust the missing ΔH *k*~cat,C~ and ΔH K~o~. `modify_DHScale()` has all the same arguments as `new_DHScale()` (see Section 3.1.1), with the addition of one required argument - the `DHScale` to be modified! 
+
+```{r fix_zm}
+zm_dH<-modify_DHScale(zm_dH,kcat_dH=C4_average$kcat_dH,Ko_dH=C4_average$Ko_dH)
+zm_dH
+```
+
+If there weren't any measurements of specificity in diatoms, we could instead pull that from an average of form 1D, or if form 1D had no specificity measurements, we could go even more broad to form 1 as a whole. This gets increasingly less likely to be similar to the real value, but unfortunately there's no way around that except to measure more Rubisco kinetics!
+
+### 3.4 None of the temperature dependences for my enzyme have been measured
+
+[[FIX THIS]]
+
+If you have gotten to this point, this is pretty much the end of the road. If there are no kinetics for your enzyme, you'll have to try and find an option that seems likely to be close, or go with the average for your taxonomic group/Rubisco form. We'll start with the former.
+
+Now we're interested in looking at some autotrophic bacteria, in particular, the Gammaproteobacterium *Thiomicrorhabdus arctica*. *T. arctica* has two forms of Rubisco (a form 2 and a form 1Aq), but only the form 2 has been measured at all (*k*~cat,C~ by Davidi 2020). If we're interested in the form 1Aq, we are completely out of luck. So, ok. Let's try looking at the Gammaproteobacteria and see what our options are. To cut down on the amount of entries that will be unhelpful, we filter our final `search_enzyme()` output so we only keep the form 1Aq measurements (and we removed some columns). 
+
+```{r}
+gpb_df<-search_enzyme("Gammaproteobacteria",data="comprehensive")[,c(1:4,9,12,15,18,21,24,26,28)]
+gpb_df<-gpb_df[gpb_df$form=="1Aq",]
+gpb_df
+```
+
+1Aq has only been measured in Gammaproteobacteria in *A. vinosum* and *H. marinus*. We happen to know that *H. marinus* is very closely related to *T. arctica*, so that's probably our best bet. However, K~c~ and K~o~ were not measured in that, so we'll have to pull those from *A. vinosum*. Unfortunately, *H. marinus* was measured at 30°C, so we'll have to remake our dataframe to include the individual kinetics' temperature parameters and make sure those are correctly set at the end. Then we find the median of all the Gammaproteobacteria 1Aq data, and follow it by replacing the *k*~cat,C~ and S~C/O~ values with *H. marinus*'s. (See Sections 2.2 and 2.4.1 to see a more thorough explanation of the `merge_entries()` code used here.)
+
+```{r}
+gpb_df<-search_enzyme("Gammaproteobacteria",data="comprehensive")[,c(1:4,9:10,12:13,15:16,18:19,21,24,26,28)]
+gpb_df<-gpb_df[gpb_df$form=="1Aq",]
+gpb_merged<-merge_entries(gpb_df,"identifier",gpb_df$identifier,"median",new_id="gpb_1Aq_merged")
+gpb_merged<-merge_entries(gpb_merged,"identifier",c("gpb_1Aq_merged","marinus_Iaq_Hayashi_1998"),"last",new_id="Ta_merged",keep_unmerged=FALSE)
+gpb_merged
+ta_1Aq<-Enzyme("Ta_merged",data=gpb_merged)
+ta_1Aq
+```
+
+Because of the way this particular merge worked out, we ended up with exactly backward temperatures, so we need to go back in and modify the enzyme's `kcat_T`, `Kc_T`, `Ko_T`, `S_T`, and `temp` to fix that (see Section 2.4.2 for more details on modifying enzymes). Remember that the arguments for the individual kinetic parameter temperatures override the global `temp`! After that, we have an `Enzyme` object we can use.
+
+```{r}
+ta_1Aq<-modify_enzyme(ta_1Aq,kcat_T=NA,Kc_T=25,Ko_T=25,S_T=NA,temp=30) #FIX ONCE I TALK TO WING-HO BECAUSE YOU CAN'T RE-NULL IT
+ta_1Aq
+```
+
+If this data was not available and an average is provided in the database that matches the taxonomic group or form that you are interested in, you can always just use that average. Now we're really at the end of the road. If there are no measurements of e.g. K~o~ for your Rubisco form (true of many of the more recently-discovered Rubisco forms), you will have to make a best judgment call of what the closest Rubisco form is and use the value from the average of that form, or look at an average or median or whatever you would like of all the Rubisco present in the database, or some other method we haven't thought of. You can look at the previous sections for examples of merging entries to help you process the data.
+
+
+## 4. Adding an appropriate PGS pathway
+The PGS pathway is an important component of this package, and is necessary for calculating the loss of CO~2~ caused by Rubisco's oxygenation reaction. We have included four different stoichiometries for PGS pathways in the package:
+
+| PGS Pathway | Stoichiometry | Organisms |
+|:------------:|:-----------:|:----------------------------:|
+| gross | No R~O~ | For calculations |
+| canon | 2 R~O~:1 CO~2~ lost | plants, algae, cyanobacteria, some bacteria |
+| diatom | 1 R~O~:1 CO~2~ lost | diatoms (only under high stress) |
+| alt | 1 R~O~:2 CO~2~ lost | cyanobacteria, bacteria (usually as a last resort), archaea (export from cell) |
+
+Usually we recommend using `"canon"`, as both the glycerate and the C2 cycle use this stoichiometry, and one of those two pathways is usually the PGS pathway of choice in plants, algae, cyanobacteria, and bacteria. The `"diatom"` stoichiometry is probably used only under high stress in diatoms. The pathways that use the `"alt"` stoichiometry are usually supplemental pathways for the organism, but if you want to look at e.g. the effect of exporting the oxygenation product (2-phosphoglycolate) from the cell, this is a good choice. `"alt"` is also the right choice for archaea, since archaea only export 2-phospholycolate out of the cell. `"gross"` assumes that the oxygenation reaction does not occur, so O~2~ acts as a competitive inhibitor of the carboxylation reaction but there is no additional penalty for fixing oxygen. This may be useful for some model scenarios.
+
+There is a PGS pathway noted as a recommendation for many of the kinetics entries, which would automatically be imported when you call that entry with `Enzyme()`. If there is no recommendation, if you merged entries and ended up with a PGS pathway that is not appropriate, or if you wish to model the impact of a different PGS pathway, you can always modify the PGS pathway afterwards with `modify_enzyme()`.
+
+Here is an example, using our *Thiomicrorhabdus arctica* 1Aq enzyme we created in 2.5.
+```{r change_PGS}
+ta_1Aq
+modify_enzyme(ta_1Aq,PGS="canon")
+```
+
+If the PGS pathway is not defined earlier, you can also set it in `CO2_dependence()` when you combine the `Enzyme` object and the `DHScale` object:
+```{r PGS_in_dependence}
+#have to define a DHScale first
+avg_1A<-DHScale(search_DHScale("proteobacteria",data="average")[1,1])
+#using CO2_dependence without adding the PGS pathway causes an error
+CO2_dependence(ta_1Aq,avg_1A)
+#when we add the PGS pathway we get functional calculations
+Rbc_ta<-CO2_dependence(ta_1Aq,avg_1A,PGS="canon")
+Rbc_ta(100,200,5)
+```
+
+## 5. How we constructed the averages and composites
+FILL IN A WHOLE BUNCH OF STUFF

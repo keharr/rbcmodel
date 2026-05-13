@@ -1,0 +1,103 @@
+---
+title: "Creating Custom Plots"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Creating Custom Plots}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+#library(rbcmodel)
+devtools::load_all()
+#basic plot
+Rbc_wheat <- Enzyme("aestivum_corrected_average",enzyme_name="wheat")
+wheat_DH<-DHScale("71",data="abridged")
+wheat_DH<-modify_DHScale(wheat_DH,kcat_dH=58.1,Ko_dH=26.7,S_dH=mean(c(-20.5,-19.7)))
+wheat_carbon<-CO2_dependence(Rbc_wheat,wheat_DH)
+CO2_seq<-O2_seq<-seq(0,1000,by=10)
+temp_seq<-seq(0,40,by=.1)
+wheat_grid<-make_4D_grid(wheat_carbon,CO2_seq,O2_seq,temp_seq,var_names=c("CO2","O2","T","wheat"))
+s1<-slice_4D_grid(wheat_grid,dim=3,25)
+s2<-slice_4D_grid(wheat_grid,dim=2,300)
+```
+
+## Overview
+
+This vignette walks through more of the ways to customize the `plot_slice_3D()` graphs created by rbcmodel. The basic plot workflow is discussed in the introductory vignette. Here, we start with a description of all of the `plot_slice_3D()` arguments. We then discuss how to customize labels for the plot, change the color palette, and add other elements using the base R plot functions. Finally, we include a description of `permute_4D_grid()`, a utility function to change the 4D grid created by `make_4D_grid()` for easier slicing.
+
+## 1. `plot_slice_3D()` arguments
+
+For customization, `plot_slice_3D()` accepts the following named arguments. When the default is NULL, any default response from the function is listed in parentheses next to it. Furthermore, additional arguments whose name does not match the list will be passed to the `image2D()` function in the package `plot3D` used under the hood.
+
+| Argument | Description | Default | Accepted Inputs |
+|----------|------------------|:-------:|-----------------|
+| grid_slice | The 3D slice to plot | (required) | Any 3D slice created from `slice_4D_grid()` or `transpose_3D_slice()` |
+| contours | The values of the contour lines to be drawn | NULL (no contours) | Any vector of values |
+| contour_col | The color used for contours | `"black"` | Any color word or hex code |
+| lwd | Contour line width | `2` | Any number |
+| dims | Specification of which element of the grid is the horizontal, vertical, and contour/color variables of the plot | NULL (auto-detects)* | Integer vector, length 3. e.g., c(1,2,4) |
+| cmin | The minimum value of the color scale | NULL (`min(z)`) | Any number |
+| cmax | The maximum value of the color scale | NULL (`max(z)`) | Any number |
+| colors | The color scale used | `"default"` | Any list of hex codes |
+| NA_col | The color used for NA values | `"grey"` | Any color word or hex code |
+| xlabel | The label for the x-axis | `""` | Any string |
+| ylabel | The label for the y-axis | `""` | Any string |
+| clabel | The label for the color scale | `c("Carbon", "(C/s)")` | Any string |
+*The function will attempt to automatically determine which variable should be the horizontal and the vertical values, and assume that the last element of the grid is the contour/color variable. If this is not successful, dims can be specified like so: `c(1,3,4)`.
+
+## 2. Changing labels
+`plot_slice_3D()` uses the same formatting constraints as the base R `plot()` function for labels, so some tricks used in other plotting packages (such as `ggplot2`) to get subscripts, superscripts, Greek letters, etc. may not work in `plot_slice_3D()`. We recommend using the Unicode characters for degree symbols. To make a subscript or superscript, you can use the base R function `expression()` to create them. Greek letters can also be created using `expression()`. Below, we provide an example of a CO~2~ vs. T plot that includes formatted labels that you can use:
+
+```{r nice_labels}
+plot_slice_3D(s2,contours=c(1.5,2,2.5),xlabel=expression(CO[2]~(μM)),ylabel="T (°C)")
+plot_slice_3D(s2,contours=c(1.5,2,2.5),xlabel=expression(CO[2]~(mu*M)),ylabel="T (°C)")
+```
+
+## 3. Creating a custom color palette
+We have provided an automatic color palette (red for positive values, white at 0, blue for negative values) for all `plot_slice_3D()` graphs. Pure red (`"#ff0000"`) is used for the maximum value of the color scale, and pure blue (`"#0000ff"`) is used for the minimum value of the color scale. To adjust the color scale boundaries, you can use the arguments `cmin` and `cmax`. Any values that are present on the graph that do not fall within that range will end up the color specified by `NA_col`, which be default is `"grey"`.
+
+```{r shifting_color_scale_boundaries}
+plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel=expression(CO[2]~(μM)),ylabel=expression(O[2]~(μM)))
+plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel=expression(CO[2]~(μM)),ylabel=expression(O[2]~(μM)), cmax=5)
+```
+
+Alternatively, you can specify your own color palette from scratch using `colors`. This should be a list of many hex code values, and can be created using functions like `ramp.col()` from the `plot3D` package, a dependency of `rbcmodel`.
+
+```{r color_palette_from_scratch}
+green_ex<-plot3D::ramp.col(c("white","green"),n=125)
+#print color scale for visualization of data structure
+green_ex
+plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel=expression(CO[2]~(μM)),ylabel=expression(O[2]~(μM)),colors=green_ex)
+```
+
+## 4. Adding elements to the graph
+Because `plot_slice_3D()` is based on the base R plot functions, any of the base R plot functions can be combined with the graph created by `plot_slice_3D()`. To start, `plot_slice_3D()` passes on any unused variables to `plot3D::image2D()` and from there to `plot()`:
+
+```{r unused_variable}
+#passing an unused variable to image2D()
+plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel=expression(CO[2]~(μM)),ylabel=expression(O[2]~(μM)),rasterImage=TRUE)
+```
+
+Adding a title is as simple as invoking `title()` after `plot_slice_3D()`:
+
+```{r add_title}
+plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel=expression(CO[2]~(μM)),ylabel=expression(O[2]~(μM)))
+title("My title")
+```
+
+It is also possible to add points, horizontal/vertical lines, and other shapes as you would with any base R plot. In this example, we will add a horizontal line at 300μM O~2~:
+
+```{r add_line}
+plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel=expression(CO[2]~(μM)),ylabel=expression(O[2]~(μM)))
+abline(h=300)
+```
+
+## 5. `permute_4D_grid()`
