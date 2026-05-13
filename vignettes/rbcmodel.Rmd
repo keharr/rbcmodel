@@ -42,9 +42,10 @@ To determine the net carboxylation rate, R~O~ must then be converted to carbon m
 |:------:|------------------|------|
 | 2 R~O~ : 1 CO~2~ lost | C~2~ cycle, glycerate pathway | [4] |
 | 1 R~O~ : 2 CO~2~ lost | malate cycle, oxalyl-CoA decarboxylation, export from cell | [4] |
-| 1 R~O~ : 1 CO~2~ lost | diatom photorespiration | [5] |
+| 1 R~O~ : 1 CO~2~ lost | diatom photorespiration* | [5] |
+*Under most conditions, 2-PG in diatoms is routed through an incomplete C~2~ cycle to amino acid metabolism and thus is more appropriately modeled using the C~2~ cycle stoichiometry. This stoichiometry is more appropriate for severe photorespiratory conditions, when 2-PG is routed through a different peroxisomal cycle.
 
-Enzyme kinetics also change with temperature, such that half-saturation constants typically increase while speed typically decreases [6]. The temperature dependence of the four commonly measured kinetic parameters have been measured for a range of Rubisco enzymes, and can therefore be used to scale these parameters with temperature using an Arrhenius curve [7]:
+Enzyme kinetics also change with temperature. The temperature dependence of the four commonly measured kinetic parameters have been measured for a range of Rubisco enzymes, and can therefore be used to scale these parameters with temperature using an Arrhenius curve [6]:
 $$x(T)=e^{c-\frac{\Delta H}{RT}}$$
 
 This package automates these calculations, determining a quantitative net carboxylation rate per active site across a range of temperatures and CO~2~ and O~2~ concentrations. With a quantitative rate, it is possible to compare any Rubisco enzyme to any other, regardless of the distance between them on the tree of life.
@@ -123,7 +124,7 @@ Now that the `enzyme` object has been created, it can be combined with a tempera
 
 ## 3.1 Creating a temperature dependence scale: `search_DHScale()`,`DHScale()`, and `modify_DHScale()`
 
-We have provided many temperature dependence measurements from the literature within the package, along with averages modified from Galmés et al. 2016 [7]. These scales can be searched and used to create a `DHScale` object as with the kinetics, using `search_DHScale()` and `DHScale()` instead of `search_enzyme()` and `Enzyme()`. Given the much smaller number of temperate dependence studies, we often recommend searching based on form or taxonomy instead of genus or species.
+We have provided many temperature dependence measurements from the literature within the package, along with averages modified from Galmés et al. 2016 [6]. These scales can be searched and used to create a `DHScale` object as with the kinetics, using `search_DHScale()` and `DHScale()` instead of `search_enzyme()` and `Enzyme()`. Given the much smaller number of temperate dependence studies, we often recommend searching based on form or taxonomy instead of genus or species.
 
 ```{r search_DH}
 search_DHScale("Triticum")
@@ -274,7 +275,7 @@ To allow users to access published data more easily, this package includes a com
 
 ## 6.1 Abridged table: the curated kinetics data
 
-The abridged table (~260 entries) is the first table to be searched by `search_enzyme()`, unless otherwise specified. It only includes complete records, i.e. entries where all of the standard kinetic parameters (*k*~cat,c~, K~o~, K~c~, and S~C/O~) for a particular enzyme are included. Most of the 260 entries are studies that published all four parameters. For many model species, methodology-corrected averages are also available from Iñiguez et al. 2021 [8]. Where there are gaps in the reported enzyme kinetics from Iñiguez et al., composites have been constructed using averages from multiple other studies. Finally, there are average versions of each of the forms of Rubisco, with separate options for taxonomy (i.e., there is a plant/algae average form IB, but there are also separate average form IB enzymes for green algae and C3 plants). All the average entries can be found by searching for "Average". An entry in the abridged table looks like:
+The abridged table (~260 entries) is the first table to be searched by `search_enzyme()`, unless otherwise specified. It only includes complete records, i.e. entries where all of the standard kinetic parameters (*k*~cat,c~, K~o~, K~c~, and S~C/O~) for a particular enzyme are included. Most of the 260 entries are studies that published all four parameters. For many model species, methodology-corrected averages are also available from Iñiguez et al. 2021 [7]. Where there are gaps in the reported enzyme kinetics from Iñiguez et al., composites have been constructed using averages from multiple other studies. Finally, there are average versions of each of the forms of Rubisco, with separate options for taxonomy (i.e., there is a plant/algae average form IB, but there are also separate average form IB enzymes for green algae and C3 plants). All the average entries can be found by searching for "Average". An entry in the abridged table looks like:
 ```{r abridged}
 search_enzyme("Average")[1,]
 ```
@@ -299,18 +300,17 @@ search_DHScale("Triticum",data="abridged")[1,]
 search_DHScale("1B",data="average")[1,]
 ```
 
-All K~o~ ΔH values in the averages table are the same, as published ΔH values vary sometimes even in sign, likely a result of the indirect measurements of K~o~ values. Our value here comes from the average of the three *in vivo* measurements reported in Galmés et al. 2016 [7], excepting *A. thaliana* as its correlation coefficient was much smaller than the other three. Where individual studies report K~o~ ΔH values, we have included them in the abridged table, but in general we recommend using the average K~o~ ΔH values provided.
+All K~o~ ΔH values in the averages table are the same, as published ΔH values vary sometimes even in sign, likely a result of the indirect measurements of K~o~ values. Our value here comes from the average of the three *in vivo* measurements reported in Galmés et al. 2016 [6], excepting *A. thaliana* as its correlation coefficient was much smaller than the other three. Where individual studies report K~o~ ΔH values, we have included them in the abridged table, but in general we recommend using the average K~o~ ΔH values provided.
 
 # 7. References & Acknowledgements
 ## 7.1 Acknowledgements:
-This work was funded by NSF CAREER Award 2142491, and NASA FINESST Award _____.
+K.H. was funded by NSF CAREER Award 2142491 and NASA FINESST Award 80NSSC24K1794. J.Y. was funded by _____. W.K. was funded by the University of Washington School of Oceanography.
 
 ## 7.2 References
-1. Most common enzyme on the planet
-2. 9 from my paper
-3. My paper
-4. Claassens
-5. Diatom PGS paper
-6. Typical kinetics temperature scaling
-7. Galmés et al. 2016
-8. Iñiguez et al. 2021
+1. Raven J. 2009. Contributions of anoxygenic and oxygenic phototrophy and chemolithotrophy to carbon and oxygen fluxes in aquatic environments. Aquat Microb Ecol 56:177–192.
+2. Zhu X-G, Long SP, Ort DR. 2008. What is the maximum efficiency with which photosynthesis can convert solar energy into biomass? Curr Opin Biotechnol 19:153–159.
+3. Harrison K, Rapp JZ, Jaffe AL, Deming JW, Young J. Chemoautotrophy in subzero environments and the potential for cold-adapted Rubisco. Appl Environ Microbiol 91:e00604-25.
+4. Claassens NJ, Scarinci G, Fischer A, Flamholz AI, Newell W, Frielingsdorf S, Lenz O, Bar-Even A. 2020. Phosphoglycolate salvage in a chemolithoautotroph using the Calvin cycle. Proc Natl Acad Sci 117:22452–22461.
+5. Davis A, Abbriano R, Smith SR, Hildebrand M. 2017. Clarification of Photorespiratory Processes and the Role of Malic Enzyme in Diatoms. Protist 168:134–153.
+6. Galmés J, Hermida-Carrera C, Laanisto L, Niinemets Ü. 2016. A compendium of temperature responses of Rubisco kinetic traits: variability among and within photosynthetic groups and impacts on photosynthesis modeling. J Exp Bot 67:5067–5091.
+7. Iñiguez C, Niinemets Ü, Mark K, Galmés J. 2021. Analyzing the causes of method-to-method variability among Rubisco kinetic traits: from the first to the current measurements. J Exp Bot 72:7846–7862.

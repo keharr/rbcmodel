@@ -215,7 +215,7 @@ print.enzyme <- function(x, unicode = TRUE, ...) {
 modify_enzyme <- function(
   the_enzyme,
   kcat_val = NULL, Kc_val = NULL, Ko_val = NULL, S_val = NULL,
-  kcat_T = NULL, Kc_T = NULL, Ko_T = NULL, S_T = NULL, 
+  kcat_T = NULL, Kc_T = NULL, Ko_T = NULL, S_T = NULL,
   PGS = NULL, name = NULL
 ) {
 
@@ -458,7 +458,7 @@ search_alias <- function(string, data=NULL, match="complete"){
     }
 
   }
-  
+
   # warning("No entry found")
   return(NULL)
 
@@ -472,7 +472,7 @@ search_alias <- function(string, data=NULL, match="complete"){
 #'
 #' @param string a string to search for in the database (case insensitive)
 #' @param level the taxonomic level to search. Can be "alias", "genus", "species",
-#'   "form", "taxonomy", or NULL. If NULL, the search will proceed from alias to 
+#'   "form", "taxonomy", or NULL. If NULL, the search will proceed from alias to
 #'   genus to species to taxonomy to form until a match is found
 #' @param data the source data to search from. Can be "abridged", "comprehensive",
 #'   or NULL. If NULL, the search will proceed from abridged to comprehensive
