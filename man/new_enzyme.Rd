@@ -14,6 +14,7 @@ new_enzyme(
   Kc_T = NULL,
   Ko_T = NULL,
   S_T = NULL,
+  T_max = 55,
   PGS = NA,
   name = ""
 )
@@ -48,6 +49,8 @@ used to specify temperatures.}
 \item{Ko_T}{The temperature (in celsius) at which Ko_val is measured.}
 
 \item{S_T}{The temperature (in celsius) at which S_val is measured.}
+
+\item{T_max}{The upper thermal limit (in celsius) of the enzyme.}
 
 \item{PGS}{The default phosphoglycolate salvage (PGS) pathway of the enzyme.
 Can be NA.}

@@ -1,5 +1,9 @@
 ^rbcmodel\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+^\.positai$
+^\.claude$
 ^data-raw$
 ^dev.Rmd$
+^doc$
+^Meta$
