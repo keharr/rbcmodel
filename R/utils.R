@@ -57,7 +57,7 @@ median_if_num <- function(x, na.rm = TRUE) {
     return(NA)
   } else if (is.numeric(x) || is.logical(x)) {
     # compute average if numeric
-    return(median(x))
+    return(stats::median(x))
   } else {
     # otherwise return NA
     return(NA)
@@ -189,7 +189,6 @@ merge_entries <- function(
 #'
 #'
 #'
-
 cite_data <- function(identifier,data="abridged") {
   if (data=="abridged") {
     if (grepl("this package",Rubisco_abridged[Rubisco_abridged[,1]==identifier,17],fixed=TRUE)) {

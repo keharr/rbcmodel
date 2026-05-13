@@ -23,7 +23,7 @@ merge_entries(
 \item{id_vals}{The values from id_col for which the corresponding entries
 will be pulled.}
 
-\item{method}{The method to combine entries. Can be "average" or "last".}
+\item{method}{The method to combine entries. Can be "average", "median", or "last".}
 
 \item{new_id}{The new identifier (for id_col) for the merged entry.}
 
