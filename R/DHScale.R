@@ -191,20 +191,46 @@ DHScale <- function(id_name, id_col="identifier", scale_name=NULL, data=NULL){
     }
   }
 
-  # NULL is (currently) interpreted as the same as "average"
-  if (is.null(data)){
-    data <- temp_dep_averaged
-  }
 
-  if (!is.null(id_col)){ # now handle the non-NULL case
+  if (is.null(data)){ # NULL = first try averaged then abridged
 
-    data_sub <- data[
-      !is.na(data[[id_col]]) & data[[id_col]] == id_name
-      , ]
+    data_sub <- temp_dep_averaged
 
-  } else {
+    if (!is.null(id_col)){ # subset using id_name
 
-    data_sub <- data
+      data_sub <- data_sub[
+        !is.na(data_sub[[id_col]]) & data_sub[[id_col]] == id_name
+        , ]
+
+    }
+
+    if (nrow(data_sub) == 0){
+
+      data_sub <- temp_dep_abridged
+
+      if (!is.null(id_col)){ # subset using id_name
+
+        data_sub <- data_sub[
+          !is.na(data_sub[[id_col]]) & data_sub[[id_col]] == id_name
+          , ]
+
+      }
+
+    }
+
+  } else { # now handle the non-NULL case
+
+    if (!is.null(id_col)){
+
+      data_sub <- data[
+        !is.na(data[[id_col]]) & data[[id_col]] == id_name
+        , ]
+
+    } else {
+
+      data_sub <- data
+
+    }
 
   }
 
