@@ -15,8 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-#library(rbcmodel)
-devtools::load_all()
+library(rbcmodel)
 ```
 
 ## Abstract
