@@ -12,8 +12,13 @@ cite_data(identifier, data = "abridged")
 \item{data}{The data table from which the identifier was pulled.}
 }
 \value{
-For data from a single study, this returns the citation for that study. For data averaged or compiled by this study, returns a note to cite this package.
+For data from a single study, this returns the citation for that
+study. For data averaged or compiled by this study, returns a note to
+cite this package.
 }
 \description{
 Cite data collected in the package.
+}
+\examples{
+print(EXAMPLE PENDING)
 }
