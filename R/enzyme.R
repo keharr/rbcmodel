@@ -222,7 +222,7 @@ print.enzyme <- function(x, unicode = TRUE, ...) {
 #' @param Kc_val if not NULL, the Kc_val value for the new instance
 #' @param Ko_val if not NULL, the Ko_val value for the new instance
 #' @param S_val if not NULL, the S_val value for the new instance
-#' @param temp NOT USED. A warning is produced if this argument is used. 
+#' @param temp NOT USED. A warning is produced if this argument is used.
 #'   Please set the temperature for each kinetic parameters separately
 #' @param kcat_T if not NULL, the kcat_T value for the new instance
 #' @param Kc_T if not NULL, the Kc_T value for the new instance
@@ -524,8 +524,8 @@ search_alias <- function(string, data=NULL, match="complete"){
 #'
 #' @param string a string to search for in the database (case insensitive)
 #' @param level the taxonomic level to search. Can be "alias", "genus", "species",
-#'   "form", "taxonomy", or NULL. If NULL, the search will proceed from alias to
-#'   genus to species to taxonomy to form until a match is found
+#'   "form", "taxonomy", "group" or NULL. If NULL, the search will proceed from alias to
+#'   genus to species to taxonomy to form to group until a match is found
 #' @param data the source data to search from. Can be "abridged", "comprehensive",
 #'   or NULL. If NULL, the search will proceed from abridged to comprehensive
 #'   until a match is found
@@ -733,6 +733,56 @@ search_enzyme <- function(string, level=NULL, data=NULL, match="complete"){
 
       if (nrow(out) > 0) {
         message("Matched form in comprehensive table")
+        rownames(out) <- NULL
+        return(out)
+      }
+
+    }
+
+  }
+
+  if (is.null(level) || tolower(level) == "group"){
+
+    if (is.null(data) || data == "abridged"){
+
+      # search the abridged table
+      if (tolower(match)=="complete"){
+        out <- Rubisco_abridged[
+          !is.na(Rubisco_abridged[["group"]]) &
+            (tolower(Rubisco_abridged[["group"]]) == tolower(string))
+          , ]
+      } else {
+        out <- Rubisco_abridged[
+          !is.na(Rubisco_abridged[["group"]]) &
+            grepl(tolower(string), tolower(Rubisco_abridged[["group"]]), fixed=TRUE)
+          , ]
+      }
+
+      # return if there's any match
+      if (nrow(out) > 0) {
+        message("Matched group in abridged table")
+        rownames(out) <- NULL
+        return(out)
+      }
+    }
+
+    if (is.null(data) || tolower(data) == "comprehensive"){
+
+      # search the full table
+      if (tolower(match)=="complete"){
+        out <- Rubisco_25C[
+          !is.na(Rubisco_25C[["group"]]) &
+            (tolower(Rubisco_25C[["group"]]) == tolower(string))
+          , ]
+      } else {
+        out <- Rubisco_25C[
+          !is.na(Rubisco_25C[["group"]]) &
+            grepl(tolower(string), tolower(Rubisco_25C[["group"]]), fixed=TRUE)
+          , ]
+      }
+
+      if (nrow(out) > 0) {
+        message("Matched group in comprehensive table")
         rownames(out) <- NULL
         return(out)
       }

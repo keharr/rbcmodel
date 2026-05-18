@@ -1,4 +1,4 @@
-identifier,genus,species,subspecies,kcat_dH,Kc_dH,Ko_dH,S_dH,Form,taxonomy,group,note,short_ref
+identifier,genus,species,subspecies,kcat_dH,Kc_dH,Ko_dH,S_dH,form,taxonomy,group,note,short_ref
 1,Thalassiosira,weissflogii,,54.0507,,,,1D,Diatoms,Algae,,Young unpublished
 2,Thalassiosira,oceanica,,57.6962,,,,1D,Diatoms,Algae,,Young unpublished
 3,Fragilariopsis,cylindrus,,38.325,,,,1D,Diatoms,Algae,,Young unpublished
@@ -181,3 +181,4 @@ identifier,genus,species,subspecies,kcat_dH,Kc_dH,Ko_dH,S_dH,Form,taxonomy,group
 191,Tephrosia,rhodesica,,80.9,19.5,89.6,-21.8,1B,C3 plants,Plants,,Orr 2016
 192,Triticum,aestivum,,64.0,42.7,-38.7,-16.6,1B,C3 plants,Plants,,Orr 2016
 193,Triticum,boeoticum,,92.5,55.0,-15.0,-19.5,1B,C3 plants,Plants,,Orr 2016
+,,,,61.3629840899551,40.5266501242832,-11.9701681784529,-17.6,,,,,

@@ -257,8 +257,8 @@ DHScale <- function(id_name, id_col="identifier", scale_name=NULL, data=NULL){
 #'
 #' @param string a string to search for in the database
 #' @param level the level at which to search. Can be "species", "genus",
-#'   "taxonomy", "form", or NULL. If NULL, the search will proceed from genus
-#'   to species to taxonomy to form until a match is found
+#'   "taxonomy", "form", "group", or NULL. If NULL, the search will proceed from genus
+#'   to species to taxonomy to form to group until a match is found
 #' @param data the source data to search from. Can be "averaged", "abridged",
 #'   or NULL. If NULL, the search will proceed from abridged to averaged
 #'   until a match is found
@@ -358,13 +358,13 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       # search the abridged table
       if (tolower(match)=="complete"){
         out <- temp_dep_abridged[
-          !is.na(temp_dep_abridged[["Taxonomy"]]) &
-            (tolower(temp_dep_abridged[["Taxonomy"]]) == tolower(string))
+          !is.na(temp_dep_abridged[["taxonomy"]]) &
+            (tolower(temp_dep_abridged[["taxonomy"]]) == tolower(string))
           , ]
       } else {
         out <- temp_dep_abridged[
-          !is.na(temp_dep_abridged[["Taxonomy"]]) &
-            grepl(tolower(string), tolower(temp_dep_abridged[["Taxonomy"]]), fixed=TRUE)
+          !is.na(temp_dep_abridged[["taxonomy"]]) &
+            grepl(tolower(string), tolower(temp_dep_abridged[["taxonomy"]]), fixed=TRUE)
           , ]
       }
 
@@ -380,13 +380,13 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       # search the full table
       if (tolower(match)=="complete"){
         out <- temp_dep_averaged[
-          !is.na(temp_dep_averaged[["Taxonomy"]]) &
-            (tolower(temp_dep_averaged[["Taxonomy"]]) == tolower(string))
+          !is.na(temp_dep_averaged[["taxonomy"]]) &
+            (tolower(temp_dep_averaged[["taxonomy"]]) == tolower(string))
           , ]
       } else {
         out <- temp_dep_averaged[
-          !is.na(temp_dep_averaged[["Taxonomy"]]) &
-            grepl(tolower(string), tolower(temp_dep_averaged[["Taxonomy"]]), fixed=TRUE)
+          !is.na(temp_dep_averaged[["taxonomy"]]) &
+            grepl(tolower(string), tolower(temp_dep_averaged[["taxonomy"]]), fixed=TRUE)
           , ]
       }
       if (nrow(out) > 0) {
@@ -405,13 +405,13 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       # search the abridged table
       if (tolower(match)=="complete"){
         out <- temp_dep_abridged[
-          !is.na(temp_dep_abridged[["Form"]]) &
-            (tolower(temp_dep_abridged[["Form"]]) == tolower(string))
+          !is.na(temp_dep_abridged[["form"]]) &
+            (tolower(temp_dep_abridged[["form"]]) == tolower(string))
           , ]
       } else {
         out <- temp_dep_abridged[
-          !is.na(temp_dep_abridged[["Form"]]) &
-            grepl(tolower(string), tolower(temp_dep_abridged[["Form"]]), fixed=TRUE)
+          !is.na(temp_dep_abridged[["form"]]) &
+            grepl(tolower(string), tolower(temp_dep_abridged[["form"]]), fixed=TRUE)
           , ]
       }
 
@@ -427,17 +427,64 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       # search the full table
       if (tolower(match)=="complete"){
         out <- temp_dep_averaged[
-          !is.na(temp_dep_averaged[["Form"]]) &
-            (tolower(temp_dep_averaged[["Form"]]) == tolower(string))
+          !is.na(temp_dep_averaged[["form"]]) &
+            (tolower(temp_dep_averaged[["form"]]) == tolower(string))
           , ]
       } else {
         out <- temp_dep_averaged[
-          !is.na(temp_dep_averaged[["Form"]]) &
-            grepl(tolower(string), tolower(temp_dep_averaged[["Form"]]), fixed=TRUE)
+          !is.na(temp_dep_averaged[["form"]]) &
+            grepl(tolower(string), tolower(temp_dep_averaged[["form"]]), fixed=TRUE)
           , ]
       }
       if (nrow(out) > 0) {
         message("Matched form in averages table")
+        rownames(out) <- NULL
+        return(out)
+      }
+    }
+
+  }
+
+  if (is.null(level) || tolower(level) == "group"){
+
+    if (is.null(data) || tolower(data) == "abridged"){
+
+      # search the abridged table
+      if (tolower(match)=="complete"){
+        out <- temp_dep_abridged[
+          !is.na(temp_dep_abridged[["group"]]) &
+            (tolower(temp_dep_abridged[["group"]]) == tolower(string))
+          , ]
+      } else {
+        out <- temp_dep_abridged[
+          !is.na(temp_dep_abridged[["group"]]) &
+            grepl(tolower(string), tolower(temp_dep_abridged[["group"]]), fixed=TRUE)
+          , ]
+      }
+
+      # return if there's any match
+      if (nrow(out) > 0) {
+        message("Matched group in abridged table")
+        rownames(out) <- NULL
+        return(out)
+      }
+    }
+
+    if (is.null(data) || tolower(data) == "average"){
+      # search the full table
+      if (tolower(match)=="complete"){
+        out <- temp_dep_averaged[
+          !is.na(temp_dep_averaged[["group"]]) &
+            (tolower(temp_dep_averaged[["group"]]) == tolower(string))
+          , ]
+      } else {
+        out <- temp_dep_averaged[
+          !is.na(temp_dep_averaged[["group"]]) &
+            grepl(tolower(string), tolower(temp_dep_averaged[["group"]]), fixed=TRUE)
+          , ]
+      }
+      if (nrow(out) > 0) {
+        message("Matched group in averages table")
         rownames(out) <- NULL
         return(out)
       }
