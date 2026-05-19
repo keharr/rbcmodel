@@ -181,13 +181,15 @@ merge_entries <- function(
 
 #' Cite data collected in the package.
 #'
+#' NOT FULLY IMPLEMENTED YET.
+#'
 #' @param identifier The identifier of the data.
 #' @param data The data table from which the identifier was pulled.
-#' @returns For data from a single study, this returns the citation for that 
-#'   study. For data averaged or compiled by this study, returns a note to 
+#' @returns For data from a single study, this returns the citation for that
+#'   study. For data averaged or compiled by this study, returns a note to
 #'   cite this package.
 #' @examples
-#' print(EXAMPLE PENDING)
+#' print("EXAMPLE PENDING")
 cite_data <- function(identifier, data="abridged") {
   if (data=="abridged") {
     if (grepl("this package",Rubisco_abridged[Rubisco_abridged[,1]==identifier,17],fixed=TRUE)) {

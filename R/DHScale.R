@@ -257,8 +257,8 @@ DHScale <- function(id_name, id_col="identifier", scale_name=NULL, data=NULL){
 #'
 #' @param string a string to search for in the database
 #' @param level the level at which to search. Can be "species", "genus",
-#'   "taxonomy", "form", "group", or NULL. If NULL, the search will proceed from genus
-#'   to species to taxonomy to form to group until a match is found
+#'   "taxonomy", "form", "group", or NULL. If NULL, the search will proceed
+#'   from genus to species to taxonomy to form to group until a match is found
 #' @param data the source data to search from. Can be "averaged", "abridged",
 #'   or NULL. If NULL, the search will proceed from abridged to averaged
 #'   until a match is found

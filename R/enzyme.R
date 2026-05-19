@@ -308,7 +308,7 @@ modify_enzyme <- function(
 #' @returns a new Enzyme instance
 #' @export
 #' @examples
-#' biuncialis <- Enzyme("biuncialis_prins_2016") # retrieved from abridged database
+#' biuncialis <- Enzyme("biuncialis_Prins_2016") # retrieved from abridged database
 #' # specify enzyme using species name
 #' vavilovii <- Enzyme("vavilovii", "species", data="comprehensive")
 Enzyme <- function(id_name, id_col="identifier", enzyme_name=NULL, data=NULL){
@@ -524,8 +524,8 @@ search_alias <- function(string, data=NULL, match="complete"){
 #'
 #' @param string a string to search for in the database (case insensitive)
 #' @param level the taxonomic level to search. Can be "alias", "genus", "species",
-#'   "form", "taxonomy", "group" or NULL. If NULL, the search will proceed from alias to
-#'   genus to species to taxonomy to form to group until a match is found
+#'   "form", "taxonomy", "group" or NULL. If NULL, the search will proceed from
+#'   alias to genus to species to taxonomy to form to group until a match is found
 #' @param data the source data to search from. Can be "abridged", "comprehensive",
 #'   or NULL. If NULL, the search will proceed from abridged to comprehensive
 #'   until a match is found
@@ -588,6 +588,7 @@ search_enzyme <- function(string, level=NULL, data=NULL, match="complete"){
         rownames(out) <- NULL
         return(out)
       }
+
     }
 
   }
@@ -637,9 +638,10 @@ search_enzyme <- function(string, level=NULL, data=NULL, match="complete"){
         rownames(out) <- NULL
         return(out)
       }
-    }
-  }
 
+    }
+
+  }
 
   if (is.null(level) || tolower(level) == "taxonomy"){
 
