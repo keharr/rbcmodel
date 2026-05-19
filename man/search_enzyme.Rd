@@ -10,8 +10,8 @@ search_enzyme(string, level = NULL, data = NULL, match = "complete")
 \item{string}{a string to search for in the database (case insensitive)}
 
 \item{level}{the taxonomic level to search. Can be "alias", "genus", "species",
-"form", "taxonomy", or NULL. If NULL, the search will proceed from alias to
-genus to species to taxonomy to form until a match is found}
+"form", "taxonomy", "group" or NULL. If NULL, the search will proceed from
+alias to genus to species to taxonomy to form to group until a match is found}
 
 \item{data}{the source data to search from. Can be "abridged", "comprehensive",
 or NULL. If NULL, the search will proceed from abridged to comprehensive

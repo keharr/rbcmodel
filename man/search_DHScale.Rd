@@ -10,8 +10,8 @@ search_DHScale(string, level = NULL, data = NULL, match = "complete")
 \item{string}{a string to search for in the database}
 
 \item{level}{the level at which to search. Can be "species", "genus",
-"taxonomy", "form", or NULL. If NULL, the search will proceed from genus
-to species to taxonomy to form until a match is found}
+"taxonomy", "form", "group", or NULL. If NULL, the search will proceed
+from genus to species to taxonomy to form to group until a match is found}
 
 \item{data}{the source data to search from. Can be "averaged", "abridged",
 or NULL. If NULL, the search will proceed from abridged to averaged
