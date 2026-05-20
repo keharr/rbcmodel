@@ -30,7 +30,7 @@ s2<-slice_4D_grid(wheat_grid,dim=2,300)
 
 ## Overview
 
-This vignette walks through more of the ways to customize the `plot_slice_3D()` graphs created by rbcmodel. The basic plot workflow is discussed in the introductory vignette. Here, we start with a description of all of the `plot_slice_3D()` arguments. We then discuss how to customize labels for the plot, change the color palette, and add other elements using the base R plot functions. Finally, we include a description of `permute_4D_grid()`, a utility function to change the 4D grid created by `make_4D_grid()` for easier slicing.
+This vignette walks through more of the ways to customize the `plot_slice_3D()` graphs created by rbcmodel. The basic plot workflow is discussed in the introductory vignette. Here, we start with a description of all of the `plot_slice_3D()` arguments. We then discuss how to customize labels for the plot, change the color palette, and add other elements using the base R plot functions. Finally, we include a description of `permute_4D_grid()`, a utility function to change the 4D grid created by `make_4D_grid()` in anticipation of slicing and plotting.
 
 ## 1. `plot_slice_3D()` arguments
 
@@ -100,3 +100,24 @@ abline(h=300)
 ```
 
 ## 5. `permute_4D_grid()`
+
+In the introduction, we described a workflow that starts with `make_4D_grid()`, followed by `slice_4D_grid()` and possibly `transpose_3D_slices()`, before visualizing via `plot_3D_slices()`. Occasionally, we may want the axes of multiple plots to be transposed. For example, we may want to produce plots of CO~2~ versus temperature and O~2~ versus temperature, both of which with temperature on the x-axis. In such case it may be more convenient to permute the 4D grid so that temperature becomes the first variable. This can be achieved using the `permute_4D_grid()` function:
+
+```{r permute_4D_grid}
+g2 <- permute_4D_grid(wheat_grid, c(3, 1, 2))
+names(g2)
+```
+
+Now we can make two slices and plot
+
+```{r dim_2_slice_after_permute}
+s3 <- slice_4D_grid(g2, dim=2, val=500)
+plot_slice_3D(s3, contours=c(2, 4, 6),xlabel=expression("T (°C)"),ylabel=expression(O[2]~(μM)))
+```
+
+```{r dim_3_slice_after_permute}
+s3 <- slice_4D_grid(g2, dim=3, val=500)
+plot_slice_3D(s3, contours=c(2, 4, 6), xlabel=expression("T (°C)"), ylabel=expression(CO[2]~(μM)))
+```
+
+Compare this with the workflow described in the introduction, where 2 separate `transpose_3D_slices()` call will be needed.

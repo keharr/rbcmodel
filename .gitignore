@@ -10,3 +10,5 @@ dev.Rmd
 inst/doc
 doc
 Meta
+/doc/
+/Meta/
