@@ -17,7 +17,9 @@ Rubisco_abridged_cols = readr::cols(
   form = readr::col_character(),
   PGS = readr::col_character(),
   taxonomy = readr::col_character(),
-  note = readr::col_character()
+  group = readr::col_character(),
+  note = readr::col_character(),
+  short_ref = readr::col_character()
 )
 
 Rubisco_alias_cols = readr::cols(
@@ -54,6 +56,7 @@ Rubisco_kinetics_cols = readr::cols(
   form = readr::col_character(),
   PGS = readr::col_character(),
   taxonomy = readr::col_character(),
+  group = readr::col_character(),
   note = readr::col_character(),
   short_ref = readr::col_character(),
   pmid_or_doi = readr::col_character(),
@@ -63,13 +66,17 @@ Rubisco_kinetics_cols = readr::cols(
 
 temp_averaged_cols = readr::cols(
   identifier = readr::col_character(),
+  genus = readr::col_character(),
+  species = readr::col_character(),
+  subspecies = readr::col_character(),
   kcat_dH = readr::col_double(),
   Kc_dH = readr::col_double(),
   Ko_dH = readr::col_double(),
   S_dH = readr::col_double(),
-  Form = readr::col_character(),
-  Taxonomy = readr::col_character(),
-  Note = readr::col_character(),
+  form = readr::col_character(),
+  taxonomy = readr::col_character(),
+  group = readr::col_character(),
+  note = readr::col_character(),
   short_ref = readr::col_character()
 )
 
@@ -82,9 +89,10 @@ temp_abridged_cols = readr::cols(
   Kc_dH = readr::col_double(),
   Ko_dH = readr::col_double(),
   S_dH = readr::col_double(),
-  Form = readr::col_character(),
-  Taxonomy = readr::col_character(),
-  Note = readr::col_character(),
+  form = readr::col_character(),
+  taxonomy = readr::col_character(),
+  group = readr::col_character(),
+  note = readr::col_character(),
   short_ref = readr::col_character()
 )
 

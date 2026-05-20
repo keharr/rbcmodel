@@ -17,8 +17,8 @@ study. For data averaged or compiled by this study, returns a note to
 cite this package.
 }
 \description{
-Cite data collected in the package.
+NOT FULLY IMPLEMENTED YET.
 }
 \examples{
-print(EXAMPLE PENDING)
+print("EXAMPLE PENDING")
 }
