@@ -167,6 +167,7 @@ SUP05_Rbc2
 | Kc_T | Measurement temperature for K~c~ | NULL (default to `temp`) | Any number |
 | Ko_T | Measurement temperature for K~o~ | NULL (default to `temp`) | Any number |
 | S_T | Measurement temperature for S~C/O~ | NULL (default to `temp`) | Any number |
+| T_max | Upper thermal limit for enzyme | NULL (default to 55) | Any number |
 | PGS | PGS stoichiometry to use | NA | "canon", "diatom", "gross", or "alt" |
 | name | Name of the enzyme | `""` | Any string |
 
@@ -201,6 +202,7 @@ This new dataframe includes all of the original entries that we used to merge. I
 
 ```{r merge_smaller_output}
 df3<-merge_entries(df1,"identifier",df1$identifier,"median",new_id="Vulgaris_merged",keep_merged=FALSE)
+df3
 ```
 
 What if we were interested in the marcosii cultivar, and so we wanted to keep its measured specificity value? We have two options: 1) we can use a different study as the base and replace only the specificity, or 2) we can find the median of all values, and then replace only the specificity. Either of these will require the use of the `"last"` merging method.
@@ -212,7 +214,7 @@ df4<-merge_entries(df1,"identifier",c(df1$identifier[1],df1$identifier[4]),"last
 df4
 ```
 
-Hmm. We ended up with an entry that is simply a duplicate of the Orr 2016 entry. (This example also illustrates why the use of `keep_unmerged=FALSE` may be helpful, as it would remove the two that are not being merged.) Our problem here lies in the order of the entries that we gave to `id_vals`; since we listed the marcosii study first, and `"last"` takes the final entry it is presented with, only the Orr study was kept. We have to flip the order in `id_vals` to get the result we want:
+Hmm. We ended up with an entry that is simply a duplicate of the Orr 2016 entry. (This example also illustrates why the use of `keep_unmerged=FALSE` may be helpful, as it removed the two that are not being merged.) Our problem here lies in the order of the entries that we gave to `id_vals`; since we listed the marcosii study first, and `"last"` takes the final entry it is presented with, only the Orr study was kept. We have to flip the order in `id_vals` to get the result we want:
 
 ```{r merge_orr_correct}
 df4<-merge_entries(df1,"identifier",c(df1$identifier[4],df1$identifier[1]),"last",new_id="Vulgaris_merged",keep_unmerged=FALSE)
@@ -298,10 +300,10 @@ We could then use that dataframe to average or find the median of all of the dia
 
 ```{r search_diatom}
 search_enzyme("average")
-diatom_base<-search_enzyme("average")[10,]
+diatom_base<-search_enzyme("average")[14,]
 ```
 
-We can then call the *B. horologicalis* enzyme, and replace the only missing value with the diatom_base one. Since the average enzymes are all from the abridged table and thus don't have all the columns, we'll want to do that with `modify_enzyme()`. (Alternatively, you could pare the *B. horologicalis* dataframe down to have only the columns the abridged table contains, which would allow you to use `merge_entries()`)
+We can then call the *B. horologicalis* enzyme, and replace the only missing value with the one we just saved as `diatom_base`. Since the average enzymes are all from the abridged table and thus don't have all the columns, we'll want to do that with `modify_enzyme()`. (Alternatively, you could pare the *B. horologicalis* dataframe down to have only the columns the abridged table contains, which would allow you to use `merge_entries()`)
 
 First, we need to make the incomplete *B. horologicalis* enzyme (although you could of course do this the other way around as well).
 
@@ -322,15 +324,19 @@ If there weren't any measurements of specificity in diatoms, we could instead pu
 ### 2.5 None of the kinetics for my enzyme have been measured
 If you have gotten to this point, this is pretty much the end of the road. If there are no kinetics for your enzyme, you'll have to try and find an option that seems likely to be close, or go with the average for your taxonomic group/Rubisco form. We'll start with the former.
 
-This time we're interested in looking at some autotrophic bacteria, in particular, the Gammaproteobacterium *Thiomicrorhabdus arctica*. *T. arctica* has two forms of Rubisco (a form 2 and a form 1Aq), but only the form 2 has been measured at all (*k*~cat,C~ by Davidi 2020). If we're interested in the form 1Aq, we are completely out of luck. So, ok. Let's try looking at the Gammaproteobacteria and see what our options are. To cut down on the amount of entries that will be unhelpful, we filter our final `search_enzyme()` output so we only keep the form 1Aq measurements (and we removed some columns). 
+This time we're interested in looking at some autotrophic bacteria, in particular, the Gammaproteobacterium *Thiomicrorhabdus arctica*. *T. arctica* has two forms of Rubisco (a form 2 and a form 1Aq), but only the form 2 has been measured at all (*k*~cat,C~ by Davidi 2020). If we're interested in the form 1Aq, we are completely out of luck. So, ok. Let's try looking at the Gammaproteobacteria and see what our options are. To cut down on the amount of entries that will be unhelpful, we filter our final `search_enzyme()` output so we only keep the form 1Aq non-metagenome-derived measurements (and we removed some columns that are unimportant for this example, along with the results from de Pins 2025 that are a reinterpretation of rates from de Pins 2024).
 
 ```{r find_gamma_entries}
-gpb_df<-search_enzyme("Gammaproteobacteria",data="comprehensive")[,c(1:4,9,12,15,18,21,24,26,27,29)]
+gpb_df<-search_enzyme("Gammaproteobacteria",data="comprehensive")[,c(1:4,7,9:10,12,15,18,21,24,26,27,29)]
 gpb_df<-gpb_df[gpb_df$form=="1Aq",]
+gpb_df<-gpb_df[gpb_df$group=="Bacteria",]
+gpb_df<-gpb_df[gpb_df$primary,]
+#now to remove the primary and group columns, which we don't need anymore
+gpb_df<-gpb_df[,-c(5,14)]
 gpb_df
 ```
 
-1Aq has only been measured in Gammaproteobacteria in *A. vinosum* and *H. marinus*. We happen to know that *H. marinus* is very closely related to *T. arctica*, so that's probably our best bet. However, K~c~ and K~o~ were not measured in that, so we'll have to pull those from *A. vinosum*. Unfortunately, *H. marinus* was measured at 30°C, so we'll have to remake our dataframe to include the individual kinetics' temperature parameters and make sure those are correctly set at the end. Then we find the median of all the Gammaproteobacteria 1Aq data, and follow it by replacing the *k*~cat,C~ and S~C/O~ values with *H. marinus*'s. (See Sections 2.2 and 2.4.1 to see a more thorough explanation of the `merge_entries()` code used here.)
+1Aq has been measured in a variety of Gammaproteobacteria. We happen to know that *H. marinus* is very closely related to *T. arctica*, so that's probably our best bet. However, K~c~ and K~o~ were not measured in that, so we'll have to pull those from *A. vinosum*. Unfortunately, *H. marinus* was measured at 30°C, so we'll have to remake our dataframe to include the individual kinetics' temperature parameters and make sure those are correctly set at the end. Then we find the median of all the Gammaproteobacteria 1Aq data, and follow it by replacing the *k*~cat,C~ and S~C/O~ values with *H. marinus*'s. (See Sections 2.2 and 2.4.1 to see a more thorough explanation of the `merge_entries()` code used here.)
 
 ```{r merge_ta}
 gpb_df<-search_enzyme("Gammaproteobacteria",data="comprehensive")[,c(1:4,9:10,12:13,15:16,18:19,21,24,26,27,29)]
@@ -342,7 +348,7 @@ ta_1Aq<-Enzyme("Ta_merged",data=gpb_merged)
 ta_1Aq
 ```
 
-Because of the way this particular merge worked out, we ended up with exactly backward temperatures, so we need to go back in and modify the enzyme's `kcat_T`, `Kc_T`, `Ko_T`, and `S_T` to fix that (see Section 2.4.2 for more details on modifying enzymes). Remember that there is no more global `temp` argument! After that, we have an `Enzyme` object we can use.
+Because of the way this particular merge worked out, we ended up with some wrong temperatures, so we need to go back in and modify the enzyme's `kcat_T`, `Kc_T`, `Ko_T`, and `S_T` to fix that (see Section 2.4.2 for more details on modifying enzymes). Remember that there is no more global `temp` argument! After that, we have an `Enzyme` object we can use.
 
 ```{r fix_ta}
 ta_1Aq<-modify_enzyme(ta_1Aq,kcat_T=30,Kc_T=25,Ko_T=25,S_T=30)

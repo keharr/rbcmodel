@@ -101,14 +101,14 @@ abline(h=300)
 
 ## 5. `permute_4D_grid()`
 
-In the introduction, we described a workflow that starts with `make_4D_grid()`, followed by `slice_4D_grid()` and possibly `transpose_3D_slices()`, before visualizing via `plot_3D_slices()`. Occasionally, we may want the axes of multiple plots to be transposed. For example, we may want to produce plots of CO~2~ versus temperature and O~2~ versus temperature, both of which with temperature on the x-axis. In such case it may be more convenient to permute the 4D grid so that temperature becomes the first variable. This can be achieved using the `permute_4D_grid()` function:
+In the introduction, we described a workflow that starts with `make_4D_grid()`, followed by `slice_4D_grid()` and possibly `transpose_3D_slice()`, before visualizing via `plot_slice_3D()`. Occasionally, we may want the axes of multiple plots to be transposed. For example, we may want to produce plots of CO~2~ versus temperature and O~2~ versus temperature, both of which with temperature on the x-axis. In such case it may be more convenient to permute the 4D grid so that temperature becomes the first variable. This can be achieved using the `permute_4D_grid()` function:
 
 ```{r permute_4D_grid}
 g2 <- permute_4D_grid(wheat_grid, c(3, 1, 2))
 names(g2)
 ```
 
-Now we can make two slices and plot
+Now we can make two slices and plot:
 
 ```{r dim_2_slice_after_permute}
 s3 <- slice_4D_grid(g2, dim=2, val=500)
@@ -120,4 +120,4 @@ s3 <- slice_4D_grid(g2, dim=3, val=500)
 plot_slice_3D(s3, contours=c(2, 4, 6), xlabel=expression("T (°C)"), ylabel=expression(CO[2]~(μM)))
 ```
 
-Compare this with the workflow described in the introduction, where 2 separate `transpose_3D_slices()` call will be needed.
+Compare this with the workflow described in the introduction, where 2 separate `transpose_3D_slice()` calls would be needed.
