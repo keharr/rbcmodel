@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(rbcmodel)
 #basic plot
-Rbc_wheat <- Enzyme("aestivum_corrected_average",enzyme_name="wheat")
+Rbc_wheat <- Enzyme("aestivum_Iñiguez_2021",enzyme_name="wheat")
 wheat_DH<-DHScale("71",data="abridged")
 wheat_DH<-modify_DHScale(wheat_DH,kcat_dH=58.1,Ko_dH=26.7,S_dH=mean(c(-20.5,-19.7)))
 wheat_carbon<-CO2_dependence(Rbc_wheat,wheat_DH)

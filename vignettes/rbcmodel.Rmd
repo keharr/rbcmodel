@@ -107,7 +107,7 @@ Now that you have the kinetics and the PGS pathway to use, you can make the enzy
 
 Using the identifier for a particular enzyme, in this case the Iñiguez methodology-corrected wheat enzyme, we can create the `enzyme` object with the function `Enzyme()`:
 ``` {r create_wheat}
-Rbc_wheat <- Enzyme("aestivum_corrected_average",enzyme_name="wheat")
+Rbc_wheat <- Enzyme("aestivum_Iñiguez_2021",enzyme_name="wheat")
 ```
 
 If your enzyme is created from an identifier in the `comprehensive` table, it may have missing values, so it is good practice to double-check that your enzyme has been created successfully with `check_enzyme()`. `check_enzyme()` will warn you if you have used an unacceptable PGS string, or failed to provide a numeric value for any of the kinetics parameters.
@@ -218,7 +218,7 @@ Until this point, we have only been working with a single enzyme. This package i
 
 We will compare wheat with spinach, another model enzyme. Both enzymes need to have a `CO2_dependence` object, so we need to construct the one for spinach:
 ```{r spinach}
-Rbc_spinach<-Enzyme("oleracea_corrected_average",enzyme_name="spinach")
+Rbc_spinach<-Enzyme("oleracea_Iñiguez_2021",enzyme_name="spinach")
 spinach_dH<-new_DHScale(46.2,50.2,26.7,-18.15,name="spinach")
 spinach_carbon<-CO2_dependence(Rbc_spinach,spinach_dH)
 ```
