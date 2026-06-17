@@ -18,8 +18,8 @@ knitr::opts_chunk$set(
 library(rbcmodel)
 #basic plot
 Rbc_wheat <- Enzyme("aestivum_Iñiguez_2021",enzyme_name="wheat")
-wheat_DH<-DHScale("71",data="abridged")
-wheat_DH<-modify_DHScale(wheat_DH,kcat_dH=58.1,Ko_dH=26.7,S_dH=mean(c(-20.5,-19.7)))
+wheat_DH<-DHScale("aestivum_orr_2016_dH",data="abridged")
+wheat_DH<-modify_DHScale(wheat_DH,Ko_dH=26.7)
 wheat_carbon<-CO2_dependence(Rbc_wheat,wheat_DH)
 CO2_seq<-O2_seq<-seq(0,1000,by=10)
 temp_seq<-seq(0,40,by=.1)
@@ -56,8 +56,8 @@ For customization, `plot_slice_3D()` accepts the following named arguments. When
 `plot_slice_3D()` uses the same formatting constraints as the base R `plot()` function for labels, so some tricks used in other plotting packages (such as `ggplot2`) to get subscripts, superscripts, Greek letters, etc. may not work in `plot_slice_3D()`. We recommend using the Unicode characters for degree symbols. To make a subscript or superscript, you can use the base R function `expression()` to create them. Greek letters can also be created using `expression()`. Below, we provide an example of a CO~2~ vs. T plot that includes formatted labels that you can use:
 
 ```{r nice_labels}
-plot_slice_3D(s2,contours=c(1.5,2,2.5),xlabel=expression(CO[2]~(μM)),ylabel="T (°C)")
-plot_slice_3D(s2,contours=c(1.5,2,2.5),xlabel=expression(CO[2]~(mu*M)),ylabel="T (°C)")
+plot_slice_3D(s2,contours=c(2,4,6,8),xlabel=expression(CO[2]~(μM)),ylabel="T (°C)")
+#plot_slice_3D(s2,contours=c(2,4,6,8),xlabel=expression(CO[2]~(mu*M)),ylabel="T (°C)") will create mu just as easily.
 ```
 
 ## 3. Creating a custom color palette

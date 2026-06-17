@@ -184,8 +184,8 @@ print.enzyme <- function(x, unicode = TRUE, ...) {
 
   cat(paste0('Enzyme "', the_enzyme$name, '":\n'))
   cat(paste0(
-    "  k_cat = ", the_enzyme$kcat_val, kcat_unit,
-    " @ T_cat = ", the_enzyme$kcat_T, T_unit, "\n"
+    "  kcat = ", the_enzyme$kcat_val, kcat_unit,
+    " @ T_kcat = ", the_enzyme$kcat_T, T_unit, "\n"
   ))
   cat(paste0(
     "  K_c = ", the_enzyme$Kc_val, k_unit,

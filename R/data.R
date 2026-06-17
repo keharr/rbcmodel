@@ -45,7 +45,7 @@
 #'
 #' A dataset of Rubisco kinetics data compiled from the literature. Includes all four major kinetic parameters (kcat, Kc, Ko, and Sc/o), along with ancillary information about the measurements and the studies.
 #' @format ## 'Rubisco_25C'
-#' A data frame with 1454 rows and 32 columns:
+#' A data frame with 1454 rows and 30 columns:
 #' \describe{
 #'   \item{identifier}{Unique entry ID}
 #'   \item{genus}{Genus}
@@ -76,8 +76,6 @@
 #'   \item{group}{Broader phylogenetic group}
 #'   \item{note}{Note}
 #'   \item{short_ref}{Short reference}
-#'   \item{pmid_or_doi}{The pmid number or the doi}
-#'   \item{citation}{Full citation}
 #'   \item{Year}{Study year}
 #' }
 #' @source compiled by the authors from a literature search
@@ -128,3 +126,16 @@
 #' }
 #' @source compiled by the authors from a literature search
 "temp_dep_abridged"
+
+#' References table
+#'
+#' A table containing a list of the citation information and pmid/doi numbers to help with citing data from the package.
+#' @format ## 'refs_to_citation'
+#' A data frame with 150 rows and 3 columns:
+#' \describe{
+#'   \item{short_ref}{Short reference}
+#'   \item{pmid_or_doi}{The pmid number or the doi}
+#'   \item{citation}{Full citation}
+#' }
+#' @source compiled by the authors
+"refs_to_citation"

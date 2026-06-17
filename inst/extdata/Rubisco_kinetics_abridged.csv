@@ -68,17 +68,17 @@ pratensis_Orr_2016,Festuca,pratensis,,5.1,,23.1,,686,,106,,25,1B,canon,C3 plants
 anomala_Kubien_2008,Flaveria,anomala,,3.8,,10.7,,605,,77.9,,25,1B,canon,C3-C4 plants,Plants,Used Kane method for S so no pKa correction needed,Kubien 2008
 australasica_Kubien_2008,Flaveria,australasica,,3.84,,22,,309,,77.2,,25,1B,canon,C4 plants,Plants,Used Kane method for S so no pKa correction needed,Kubien 2008
 bidentis_Kubien_2008,Flaveria,bidentis,,4.16,,20.2,,639,,75.5,,25,1B,canon,C4 plants,Plants,Used Kane method for S so no pKa correction needed,Kubien 2008
-bidentis_Whitney_2011b,Flaveria,bidentis,,4.8,,20.4,,420,,81,,25,1B,canon,C4 plants,Plants,,Whitney 2011b
+bidentis_Whitney_2011b,Flaveria,bidentis,,4.8,,20.4,,420,,81,,25,1B,canon,C4 plants,Plants,,Whitney 2011
 brownii_Kubien_2008,Flaveria,brownii,,2.58,,12.8,,378,,83.8,,25,1B,canon,C4 plants,Plants,Used Kane method for S so no pKa correction needed; C4-like,Kubien 2008
 chloraefolia_Kubien_2008,Flaveria,chloraefolia,,3.35,,12.4,,740,,81.6,,25,1B,canon,C3-C4 plants,Plants,Used Kane method for S so no pKa correction needed,Kubien 2008
 cronquistii_Kubien_2008,Flaveria,cronquistii,,3.13,,10.8,,653,,81,,25,1B,canon,C3 plants,Plants,Used Kane method for S so no pKa correction needed,Kubien 2008
 floridana_Kubien_2008,Flaveria,floridana,,3.19,,13.2,,686,,84.5,,25,1B,canon,C3-C4 plants,Plants,Used Kane method for S so no pKa correction needed,Kubien 2008
-floridana_Whitney_2011b,Flaveria,floridana,,3.6,,14.4,,374,,82,,25,1B,canon,C3-C4 plants,Plants,,Whitney 2011b
+floridana_Whitney_2011b,Flaveria,floridana,,3.6,,14.4,,374,,82,,25,1B,canon,C3-C4 plants,Plants,,Whitney 2011
 kochiana_Kubien_2008,Flaveria,kochiana,,3.68,,22.7,,150,,77,,25,1B,canon,C4 plants,Plants,Used Kane method for S so no pKa correction needed,Kubien 2008
 linearis_Kubien_2008,Flaveria,linearis,,3.43,,12.5,,415,,78.1,,25,1B,canon,C3-C4 plants,Plants,Used Kane method for S so no pKa correction needed,Kubien 2008
 palmeri_Kubien_2008,Flaveria,palmeri,,3.54,,13.5,,193,,83.8,,25,1B,canon,C4 plants,Plants,Used Kane method for S so no pKa correction needed; C4-like,Kubien 2008
 pringlei_Kubien_2008,Flaveria,pringlei,,3.11,,12,,666,,80.8,,25,1B,canon,C3 plants,Plants,Used Kane method for S so no pKa correction needed,Kubien 2008
-pringlei_Whitney_2011b,Flaveria,pringlei,,3.5,,13.7,,376,,81,,25,1B,canon,C3 plants,Plants,,Whitney 2011b
+pringlei_Whitney_2011b,Flaveria,pringlei,,3.5,,13.7,,376,,81,,25,1B,canon,C3 plants,Plants,,Whitney 2011
 pringlei_Zhu_1998,Flaveria,pringlei,,2.1,,12,,880,,102,,25,1B,canon,C3 plants,Plants,"Very light on details, pH could be wrong for kcat",Zhu 1998
 ramosissima_Kubien_2008,Flaveria,ramosissima,,2.77,,12,,722,,79.8,,25,1B,canon,C3-C4 plants,Plants,Used Kane method for S so no pKa correction needed,Kubien 2008
 sonorensis_Kubien_2008,Flaveria,sonorensis,,2.69,,10.2,,785,,84.3,,25,1B,canon,C3-C4 plants,Plants,Used Kane method for S so no pKa correction needed,Kubien 2008
@@ -130,7 +130,7 @@ tabacum_Orr_2016,Nicotiana,tabacum,PH,4.4,,21.2,,452,,96.4,,25,1B,canon,C3 plant
 tabacum_Sharwood_2016b,Nicotiana,tabacum,,3.1,,9.7,,283,,82.6,,25,1B,canon,C3 plants,Plants,pKa not needed for Sc/o; pKa from Iniguez et al. 2021,Sharwood 2016b
 tabacum_Sharwood_2017,Nicotiana,tabacum,,3.1,,9.4,,236,,82.3,,25,1B,canon,C3 plants,Plants,pKa not needed for Sc/o; pKa from Iniguez et al. 2021,Sharwood 2017
 tabacum_Whitney_2001,Nicotiana,tabacum,,3.4,,10.7,,295,,82,,25,1B,canon,C3 plants,Plants,pKa not needed for Sc/o; assumed 6.25 for pKa as Whitney papers have been using that value since 1999,Whitney 2001
-tabacum_Whitney_2011b,Nicotiana,tabacum,,3.2,,12.6,,274,,81,,25,1B,canon,C3 plants,Plants,,Whitney 2011b
+tabacum_Whitney_2011b,Nicotiana,tabacum,,3.2,,12.6,,274,,81,,25,1B,canon,C3 plants,Plants,,Whitney 2011
 tabacum_Young_2016,Nicotiana,tabacum,,3.1,,9.7,,283,,82,,25,1B,canon,C3 plants,Plants,pKa from Whitney et al. 2011; pKa not necessary for Sc/o,Young 2016
 luteus_Read_1994,Olisthodiscus,luteus,,0.83,,59,,692,,100,,25,1D,canon,Brown algae,Algae,,Read 1994
 barthii/glaberrima_Orr_2016,Oryza,barthii/glaberrima,,2.5,,14,,479,,107,,25,1B,canon,C3 plants,Plants,Points to Prins JExpB 2016 for methods. Extracted pH and pKa from there.,Orr 2016
@@ -268,28 +268,3 @@ elongata_capó-bauçà_2022b,Ellisolandia,elongata,,3.4,,36.2,,1875,,137.4,,25,1
 tenerrima_capó-bauçà_2022b,Palisada,tenerrima,,1.65,,12.2,,840,,146.5,,25,1D,canon,Macroalgae,Algae,pKa from Galmés 2014; Kane method for Sc/o so no need for pKa there,Capó-Bauçà 2022b
 breve_banda_2020,Promineifilum,breve,,2.23,,22.2,,401,,36.1,,25,1’,,Chloroflexi,Bacteria,,Banda 2020
 synechococcus_banda_2020,Synechococcus,sp,PCC 6301,14.3,,235,,983,,56.1,,25,1Bc,canon,Cyanobacteria,Bacteria,,Banda 2020
-average_1ac_cyanobacteria,Average,1Ac,cyanobacteria,9.4,,169,,1310,,53.5,,25,1Ac,canon,Cyanobacteria,Bacteria,values medians of collected cyanobacterial measurements at 25C,this study
-average_1ac_proteobacteria,Average,1Ac,proteobacteria,6.5,30,461,,1310,,33.1,30,25,1Ac,,,Bacteria,kcat median of proteobacteria 1Ac measured at 30C; Kc median of proteobacteria 1Ac measured at 25C; Ko median of 1Ac cyanobacteria measured at 25C; S H. marinus value,this study
-average_1aq,Average,1Aq,,6.9,,34.8,,965,,43.6,,25,1Aq,,,Bacteria,medians of 1Aq measured at 25C,this study
-average_1b_c3_plant,Average,1B,C3 plant,2.8,,15.4,,429,,98.1,,25,1B,canon,C3 plants,Plants,medians of C3 plants measured at 25C,this study
-average_1b_c4_plant,Average,1B,C4 plant,4.16,,26.3,,444,,82.2,,25,1B,canon,C4 plants,Plants,medians of C4 plants measured at 25C,this study
-average_1b_c3-c4_plant,Average,1B,C3-C4 plant,2.86,,12.4,,646,,82.6,,25,1B,canon,C3-C4 plants,Plants,medians of C3-C4 plants measured at 25C,this study
-average_1b_cam_plant,Average,1B,CAM plant,4.5,,15,,312,,88.7,,25,1B,canon,CAM plants,Plants,medians of CAM plants measured at 25C,this study
-average_1b_bryophyte,Average,1B,bryophyte,3.35,,24.4,,565,,70.5,,25,1B,canon,Bryophytes,Plants,medians of bryophytes measured at 25C,this study
-average_1b_aquatic_plant,Average,1B,aquatic plant,2.38,,22,,990,,90,,25,1B,canon,Aquatic plants,Plants,medians of aquatic plants measured at 25C,this study
-average_1b_green_algae,Average,1B,green algae,2.47,,32,,480,,62,,25,1B,canon,Green algae,Algae,medians of green algae measured at 25C,this study
-average_1b_all,Average,1B,,3.09,,17,,445,,94,,25,1B,canon,,,medians of all 1B measured at 25C,this study
-average_1bc,Average,1Bc,,11.5,,162,,664,,45,,25,1Bc,canon,Cyanobacteria,Bacteria,medians of 1Bc measured at 25C,this study
-average_1c,Average,1C,,2.1,30,55.5,30,1282,,62,,25,1C,,,Bacteria,"kcat, Kc medians of 1C measured at 30C; Ko, S medians of 1C at 25C",this study
-average_1d_diatom,Average,1D,diatom,3.25,,48.5,,764,,92,,25,1D,canon,Diatoms,Algae,medians of diatoms measured at 25C,this study
-average_1d_red_algae,Average,1D,red algae,1.59,,8,,1238,,166,,25,1D,canon,Red algae,Algae,medians of red algae measured at 25C,this study
-average_1d_macroalgae,Average,1D,macroalgae,2.07,,17.5,,1601,,132,,25,1D,canon,Macroalgae,Algae,medians of macroalgae measured at 25C,this study
-average_1d_all,Average,1D,,2.27,,23.9,,862,,104,,25,1D,canon,,Algae,medians of all 1D measured at 25C,this study
-average_2,Average,2,prokaryote,12.3,,161,,220,,13.3,,25,2,,,Bacteria,medians of all prokaryote form 2 measured at 25C,this study
-average_rubisco,Average,Rubisco,,3.19,,18.7,,465,,91.5,,25,,,,,medians of all Rubiscos (except forms 2/3 & 3) measured at 25C,this study
-vinosum_Iñiguez_2021,Allochromatium,vinosum,,5.3,,34.8,,290,,44.4,,25,1Aq,,Gammaproteobacteria,Bacteria,"kcat methodology-corrected average from Iñiguez et al. 2021 across multiple strains; Kc, Ko, S medians of A. vinosum studies at 25C",this study
-thaliana_Iñiguez_2021,Arabidopsis,thaliana,,3.2,,16.5,,333,,88.6,,25,1B,canon,C3 plants,Plants,kcat methodology-corrected average from Iñiguez et al. 2021 across multiple cultivars; Kc average of Galmés 2014 and Oh 2024; Ko from Galmés 2014; S from Oh 2024,this study
-max_Iñiguez_2021,Glycine,max,,1.5,,10.8,,496,,97,,25,1B,canon,C3 plants,Plants,"kcat, Kc, Ko methodology-corrected average fromm Iñiguez 202; S median of collected studies at 25C",this study
-annuus_Iñiguez_2021,Helianthus,annuus,,1.7,,9.4,,429,,104,,25,1B,canon,C3 plants,Plants,kcat methodology-corrected average from Iñiguez et al. 2021 across multiple strains; Kc from Makino 1985; Ko from median C3 plant value; S median of studies at 25C,this study
-sativa_Iñiguez_2021,Oryza,sativa,,1.8,,9.5,,332,,103.5,,25,1B,canon,C3 plants,Plants,"kcat, Kc, Ko methodology-corrected average fromm Iñiguez 202; S median of collected studies at 25C",this study
-vulgaris_Iñiguez_2021,Phaseolus,vulgaris,,2.4,,14,,394,,102.4,,25,1B,canon,C3 plants,Plants,"kcat methodology-corrected average from Iñiguez et al. 2021; Kc, Ko, S median of collected studies at 25C",this study

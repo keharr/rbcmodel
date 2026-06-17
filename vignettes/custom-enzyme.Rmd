@@ -29,7 +29,8 @@ The comprehensive enzyme table has a lot more columns than the abridged enzyme t
 
 ```{r search_less}
 test<-search_enzyme("Synechococcus",data="comprehensive")
-test[,c(1:5,9,12,15,18,21,24,26,27,29)]
+#filter columns and restrict entries for readability
+test[1:10,c(1:5,9,12,15,18,21,24,26,27,29)]
 ```
 
 In our example, we removed most of the information not provided in the abridged table, in addition to the individual kinetics' temperature columns, as a look at the data shows that none of them were measured at anything other than 25°C (and are therefore all comparable with each other). Once we've decided on the studies we want to include, we can look over their whole rows to make sure there aren't any red flags in the other columns.
@@ -38,13 +39,14 @@ We can also do some other filtering, like removing from our search all of the ki
 
 ```{r search_nomutant}
 test<-test[test$mutant=="FALSE",]
+#no longer restricting entry number
 test[,c(1:4,9,12,15,18,21,24,26,27,29)] #removed mutant column, as they are all not mutants now
 ```
 
-Now it is much easier to review the data. The rest of the data is still in the database and can be recalled by running the same search as before with whatever rows you have decided are potentially useful rows, for that red flag check we mentioned before. Say you like the Iñiguez composite enzyme and the Mueller-Cajar 2008 enzyme (rows 8 and 21 in the initial search, based on the row numbers on the left of our test outputs):
+Now it is much easier to review the data. The rest of the data is still in the database and can be recalled by running the same search as before with whatever rows you have decided are potentially useful rows, for that red flag check we mentioned before. Say you like the Iñiguez composite enzyme and the Mueller-Cajar 2008 enzyme (rows 33 and 41 in the initial search, based on the row numbers on the left of our test outputs):
 
 ```{r search_check}
-search_enzyme("Synechococcus",data="comprehensive")[c(8,21),]
+search_enzyme("Synechococcus",data="comprehensive")[c(33,41),]
 ```
 
 For all of these examples, we used a model genus with complete data present in the `abridged` table. Those of you looking at this vignette are far more likely to be looking for species or genera that have very few measurements, or forms of Rubisco with few measurements. If nothing comes up when searching for your species/genus, we suggest moving to their taxonomy first, followed by the form of Rubisco. If you are still having trouble finding analogous Rubisco sequences, we also have a `group` category, which groups Rubisco into five broad categories: plants, algae, bacteria, archaea, and metagenomes. The final category is for Rubisco sequences that were derived from metagenomes and were not isolated from any particular organism, but rather used to transform something (predominantly *E. coli*) for expression. As these cannot be confirmed to represent a single organism's Rubisco sequence rather than a population consensus, we decided to group them separately, even when there is an assigned taxonomy.
@@ -446,7 +448,7 @@ DHScale("Zmays_merged",data=zm_merged)
 Alternatively, we have also included average versions of many of the taxonomic groups or forms of Rubisco present in the database (medians of all the data in the database that matches that taxonomic group or form of Rubisco, as appropriate, with the ΔH K~o~ value set to 26.7). When we look at the averages, we can see that there is a C4 plant 1B average `DHScale` already available for us to use.
 
 ```{r find_c4_avg}
-C4_average<-search_DHScale("C4 plants",data="average")
+C4_average<-search_DHScale("C4 plants",data="averaged")
 C4_average
 ```
 
@@ -455,7 +457,7 @@ We can then call the *Z. mays* enzyme, and replace the only missing value with t
 First, we need to make the incomplete *Z. mays* `DHScale` (although you could of course do this the other way around as well).
 
 ```{r create_zm}
-zm_dH<-DHScale("95", data="abridged")
+zm_dH<-DHScale("mays_galmés_2016_dH", data="abridged")
 zm_dH
 ```
 
@@ -520,7 +522,7 @@ modify_enzyme(ta_1Aq,PGS="canon")
 If the PGS pathway is not defined earlier, you can also set it in `CO2_dependence()` when you combine the `Enzyme` object and the `DHScale` object:
 ```{r PGS_in_dependence}
 #define a DHScale first
-avg_1A<-DHScale(search_DHScale("proteobacteria",data="average")[1,1])
+avg_1A<-DHScale(search_DHScale("1A",data="averaged")[1,1])
 #set PGS pathway to get CO2_dependence() to work
 Rbc_ta<-CO2_dependence(ta_1Aq,avg_1A,PGS="canon")
 Rbc_ta(100,200,5)

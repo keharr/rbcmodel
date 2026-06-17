@@ -181,34 +181,47 @@ merge_entries <- function(
 
 #' Cite data collected in the package.
 #'
-#' NOT FULLY IMPLEMENTED YET.
-#'
-#' @param identifier The identifier of the data.
-#' @param data The data table from which the identifier was pulled.
+#' @param identifier The identifier of the data. Takes a single identifier or a
+#' list of identifiers.
+#' @param type The type of citation desired. Can take "full", which will return
+#' the full citation, or "short", which returns the pmid or doi, if available.
 #' @returns For data from a single study, this returns the citation for that
 #'   study. For data averaged or compiled by this study, returns a note to
 #'   cite this package.
 #' @examples
-#' print("EXAMPLE PENDING")
-cite_data <- function(identifier, data="abridged") {
-  if (data=="abridged") {
-    if (grepl("this package",Rubisco_abridged[Rubisco_abridged[,1]==identifier,17],fixed=TRUE)) {
-      stop("This set of kinetics is averaged from appropriate studies. Cite this package.")
-    } else if (grepl("composite",Rubisco_abridged[Rubisco_abridged[,1]==identifier,17],fixed=TRUE)) {
-      stop("This set of kinetics is a mixture of several studies. Cite this package.")
+#' cite_Rbc("average_1B_all")
+#' cite_Rbc(c("japonica_Sage_2002b","japonica_orr_2016_dH","average_1B_C3_warm_dH"))
+#' cite_Rbc("breve_banda_2020",type="short")
+cite_Rbc <- function(identifier, type="full") {
+  if (!type %in% c("short","full")) {
+    stop("type must be \"short\" or \"full\".")
+  }
+
+  citation <- vector(length=length(identifier))
+
+  for (x in 1:length(identifier)) {
+    i <- identifier[x]
+    if (grepl("dH",i)) {
+      if (grepl("average",i)) {
+        ref <- temp_dep_averaged[temp_dep_averaged[["identifier"]]==i,][["short_ref"]]
+      } else {
+        ref <- temp_dep_abridged[temp_dep_abridged[["identifier"]]==i,][["short_ref"]]
+      }
+    } else if (grepl("average",i)) {
+      ref <- Rubisco_abridged[Rubisco_abridged[["identifier"]]==i,][["short_ref"]]
     } else {
-    info <- Rubisco_abridged[Rubisco_abridged[,1]==identifier,c(2,3,4,5,7,9,11)]
-    citation <- Rubisco_25C[Rubisco_25C[,c(2,3,4,9,12,15,18)]==info,30]
+      ref <- Rubisco_25C[Rubisco_25C[["identifier"]]==i,][["short_ref"]]
     }
-  } else if (data=="comprehensive") {
-    citation <- Rubisco_25C[Rubisco_25C[,1]==identifier,30]
-  } else if (data=="DH_abridged") {
-    ref <- temp_dep_abridged[temp_dep_abridged[,1]==identifier,12]
-    citation <- Rubisco_25C[Rubisco_25C[,28]==ref,30][1,]
-  } else if (data=="DH_averages") {
-    stop("For any average DH scales, cite this package.")
-  } else {
-    stop("Unknown database string; data must be one of abridged, comprehensive, DH_abridged, or DH_averages.")
+
+    if (identical(ref,character(0))) {
+      stop(paste("No identifier matching",i,"was found."))
+    }
+
+    if (type=="short") {
+      citation[x] <- refs_to_citation[refs_to_citation[["short_ref"]]==ref,][["pmid_or_doi"]]
+    } else {
+      citation[x] <- refs_to_citation[refs_to_citation[["short_ref"]]==ref,][["citation"]]
+    }
   }
   print(citation)
 }

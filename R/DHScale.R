@@ -283,6 +283,14 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
     )}
   }
 
+  if (!is.null(data)) {
+    if(!(data%in%c("averaged","abridged"))) {
+      stop(
+        paste0('Data must be one of \"averaged\" or \"abridged\"')
+      )
+    }
+  }
+
   # First search for species in abridged table
   if (is.null(level) || tolower(level) == "genus"){
 
@@ -376,7 +384,7 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       }
     }
 
-    if (is.null(data) || tolower(data) == "average"){
+    if (is.null(data) || tolower(data) == "averaged"){
       # search the full table
       if (tolower(match)=="complete"){
         out <- temp_dep_averaged[
@@ -423,7 +431,7 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       }
     }
 
-    if (is.null(data) || tolower(data) == "average"){
+    if (is.null(data) || tolower(data) == "averaged"){
       # search the full table
       if (tolower(match)=="complete"){
         out <- temp_dep_averaged[
@@ -470,7 +478,7 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       }
     }
 
-    if (is.null(data) || tolower(data) == "average"){
+    if (is.null(data) || tolower(data) == "averaged"){
       # search the full table
       if (tolower(match)=="complete"){
         out <- temp_dep_averaged[
