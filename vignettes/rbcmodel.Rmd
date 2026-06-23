@@ -306,6 +306,7 @@ search_DHScale("1B",data="averaged")[1,]
 All K~o~ ΔH values in the averages table are the same, as published ΔH values vary sometimes even in sign, likely a result of the indirect measurements of K~o~ values. Our value here comes from the average of the three *in vivo* measurements reported in Galmés et al. 2016 [6], excepting *A. thaliana* as its correlation coefficient was much smaller than the other three. Where individual studies report K~o~ ΔH values, we have included them in the abridged table, but in general we recommend using the average K~o~ ΔH values provided.
 
 # 7. References & Acknowledgements
+
 ## 7.1 Acknowledgements:
 K.H. was funded by NSF CAREER Award 2142491 and NASA FINESST Award 80NSSC24K1794. J.Y. was funded by _____. W.K. was funded by the University of Washington School of Oceanography.
 

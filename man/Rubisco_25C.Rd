@@ -5,12 +5,50 @@
 \alias{Rubisco_25C}
 \title{Comprehensive Rubisco kinetics data}
 \format{
-An object of class \code{data.frame} with 869 rows and 31 columns.
+\subsection{'Rubisco_25C'}{
+
+A data frame with 1454 rows and 30 columns:
+\describe{
+\item{identifier}{Unique entry ID}
+\item{genus}{Genus}
+\item{species}{Species}
+\item{subspecies}{Subspecies, variant, or cultivar}
+\item{mutant}{Species}
+\item{mutant_details}{Species}
+\item{primary}{Species}
+\item{heterologous_expression}{Species}
+\item{kcat_val}{Value of kcat (/sec)}
+\item{kcat_T}{kcat measurement temperature (°C)}
+\item{kcat_pH}{kcat measurement pH}
+\item{Kc_val}{Value of Kc (μM)}
+\item{Kc_T}{Kc measurement temperature (°C)}
+\item{Kc_pH}{Kc measurement pH}
+\item{Ko_val}{Value of Ko (μM)}
+\item{Ko_T}{Ko measurement temperature (°C)}
+\item{Ko_pH}{Ko measurement pH}
+\item{S_val}{Value of Sc/o}
+\item{S_T}{Specificity measurement temperature (°C)}
+\item{S_pH}{Specificity measurement pH}
+\item{temp}{Kinetics measurement temperature (°C)}
+\item{pH}{Kinetics measurement pH}
+\item{pKa}{pKa used to determine CO2 concentration for Kc, Ko, and specificity calculations}
+\item{form}{Form of Rubisco}
+\item{PGS}{Recommended phosphoglycolate salvage pathway}
+\item{taxonomy}{Taxonomy}
+\item{group}{Broader phylogenetic group}
+\item{note}{Note}
+\item{short_ref}{Short reference}
+\item{Year}{Study year}
+}
+}
+}
+\source{
+compiled by the authors from a literature search
 }
 \usage{
 Rubisco_25C
 }
 \description{
-Comprehensive Rubisco kinetics data
+A dataset of Rubisco kinetics data compiled from the literature. Includes all four major kinetic parameters (kcat, Kc, Ko, and Sc/o), along with ancillary information about the measurements and the studies.
 }
 \keyword{datasets}

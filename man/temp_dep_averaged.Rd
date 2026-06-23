@@ -5,12 +5,33 @@
 \alias{temp_dep_averaged}
 \title{Averaged Delta H temperature scaling data}
 \format{
-An object of class \code{data.frame} with 8 rows and 12 columns.
+\subsection{'temp_dep_averaged'}{
+
+A data frame with 9 rows and 13 columns:
+\describe{
+\item{identifier}{Unique entry ID}
+\item{genus}{Genus}
+\item{species}{Species}
+\item{subspecies}{Subspecies, variant, or cultivar}
+\item{kcat_dH}{kcat temperature dependence parameter (kJ/mol)}
+\item{Kc_dH}{Kc temperature dependence parameter (kJ/mol)}
+\item{Ko_dH}{Ko temperature dependence parameter (kJ/mol)}
+\item{S_dH}{S temperature dependence parameter (kJ/mol)}
+\item{form}{Form of Rubisco}
+\item{taxonomy}{Taxonomy}
+\item{group}{Broader phylogenetic group}
+\item{note}{Note}
+\item{short_ref}{Short reference}
+}
+}
+}
+\source{
+compiled by the authors, mostly from Galmés et al. 2016
 }
 \usage{
 temp_dep_averaged
 }
 \description{
-Averaged Delta H temperature scaling data
+A dataset of average Rubisco temperature scaling data per taxonomic group and form, as described in Section 5.3 of the "Designing Custom Enzymes" vignette.
 }
 \keyword{datasets}

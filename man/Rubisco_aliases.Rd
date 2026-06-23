@@ -5,12 +5,24 @@
 \alias{Rubisco_aliases}
 \title{Rubisco alias table}
 \format{
-An object of class \code{data.frame} with 72 rows and 4 columns.
+\subsection{'Rubisco_aliases'}{
+
+A data frame with 79 rows and 4 columns:
+\describe{
+\item{alternate_name}{Alternate, user-input name}
+\item{genus_database}{Genus name in database}
+\item{species_database}{Species name in database}
+\item{subspecies_database}{Subspecies name in database}
+}
+}
+}
+\source{
+compiled by the authors
 }
 \usage{
 Rubisco_aliases
 }
 \description{
-Rubisco alias table
+A table containing a list of some of the alternative names for species contained within the datasets. This includes both common names (i.e., "wheat") and former names that are no longer in use (i.e., "Chenopodium rubra", which has become Oxybasis rubra).
 }
 \keyword{datasets}

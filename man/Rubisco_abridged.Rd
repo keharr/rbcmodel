@@ -5,12 +5,39 @@
 \alias{Rubisco_abridged}
 \title{Abridged Rubisco kinetics data}
 \format{
-An object of class \code{data.frame} with 258 rows and 17 columns.
+\subsection{'Rubisco_abridged'}{
+
+A data frame with 294 rows and 19 columns:
+\describe{
+\item{identifier}{Unique entry ID}
+\item{genus}{Genus}
+\item{species}{Species}
+\item{subspecies}{Subspecies, variant, or cultivar}
+\item{kcat_val}{Value of kcat (/sec)}
+\item{kcat_T}{kcat measurement temperature (°C)}
+\item{Kc_val}{Value of Kc (μM)}
+\item{Kc_T}{kcat measurement temperature (°C)}
+\item{Ko_val}{Value of Ko (μM)}
+\item{Ko_T}{kcat measurement temperature (°C)}
+\item{S_val}{Value of Sc/o}
+\item{S_T}{Specificity measurement temperature (°C)}
+\item{temp}{Kinetics measurement temperature (°C)}
+\item{form}{Form of Rubisco}
+\item{PGS}{Recommended phosphoglycolate salvage pathway}
+\item{taxonomy}{Taxonomy}
+\item{group}{Broader phylogenetic group}
+\item{note}{Note}
+\item{short_ref}{Short reference}
+}
+}
+}
+\source{
+compiled by the authors from a literature search
 }
 \usage{
 Rubisco_abridged
 }
 \description{
-Abridged Rubisco kinetics data
+A subset of data from the comprehensive Rubisco kinetics table also included in the package, plus some composite data and median Rubisco kinetics as described in sections 5.1 and 5.2 of the Creating Custom Enzymes vignette.
 }
 \keyword{datasets}

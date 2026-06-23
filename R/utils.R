@@ -188,6 +188,7 @@ merge_entries <- function(
 #' @returns For data from a single study, this returns the citation for that
 #'   study. For data averaged or compiled by this study, returns a note to
 #'   cite this package.
+#' @export
 #' @examples
 #' cite_Rbc("average_1B_all")
 #' cite_Rbc(c("japonica_Sage_2002b","japonica_orr_2016_dH","average_1B_C3_warm_dH"))

@@ -5,12 +5,33 @@
 \alias{temp_dep_abridged}
 \title{Abridged Delta H temperature scaling data}
 \format{
-An object of class \code{data.frame} with 111 rows and 12 columns.
+\subsection{'temp_dep_abridged'}{
+
+A data frame with 182 rows and 13 columns:
+\describe{
+\item{identifier}{Unique entry ID}
+\item{genus}{Genus}
+\item{species}{Species}
+\item{subspecies}{Subspecies, variant, or cultivar}
+\item{kcat_dH}{kcat temperature dependence parameter (kJ/mol)}
+\item{Kc_dH}{Kc temperature dependence parameter (kJ/mol)}
+\item{Ko_dH}{Ko temperature dependence parameter (kJ/mol)}
+\item{S_dH}{S temperature dependence parameter (kJ/mol)}
+\item{form}{Form of Rubisco}
+\item{taxonomy}{Taxonomy}
+\item{group}{Broader phylogenetic group}
+\item{note}{Note}
+\item{short_ref}{Short reference}
+}
+}
+}
+\source{
+compiled by the authors from a literature search
 }
 \usage{
 temp_dep_abridged
 }
 \description{
-Abridged Delta H temperature scaling data
+A dataset of Rubisco temperature dependence data compiled from a literature search.
 }
 \keyword{datasets}

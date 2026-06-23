@@ -175,7 +175,7 @@ modify_DHScale <- function(
 #' @returns a new DHScale instance
 #' @export
 #' @examples
-#' cyano <- DHScale("average_1B_C4") # retrieved from abridged database
+#' cyano <- DHScale("average_1Ac_Cyanobacteria_dH") # retrieved from averaged database
 DHScale <- function(id_name, id_col="identifier", scale_name=NULL, data=NULL){
 
   if (is.null(scale_name)){ scale_name <- id_name }
