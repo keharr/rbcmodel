@@ -11,7 +11,10 @@ search_DHScale(string, level = NULL, data = NULL, match = "complete")
 
 \item{level}{the level at which to search. Can be "species", "genus",
 "taxonomy", "form", "group", or NULL. If NULL, the search will proceed
-from genus to species to taxonomy to form to group until a match is found}
+from genus to species to taxonomy to form to group until a match is found.
+Note that on the averaged table the genus is always "Average," while the
+species generally agrees with "form," except for the overall average for
+which the specie is defined to be "Rubisco"}
 
 \item{data}{the source data to search from. Can be "averaged", "abridged",
 or NULL. If NULL, the search will proceed from abridged to averaged

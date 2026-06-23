@@ -258,7 +258,10 @@ DHScale <- function(id_name, id_col="identifier", scale_name=NULL, data=NULL){
 #' @param string a string to search for in the database
 #' @param level the level at which to search. Can be "species", "genus",
 #'   "taxonomy", "form", "group", or NULL. If NULL, the search will proceed
-#'   from genus to species to taxonomy to form to group until a match is found
+#'   from genus to species to taxonomy to form to group until a match is found.
+#'   Note that on the averaged table the genus is always "Average," while the 
+#'   species generally agrees with "form," except for the overall average for 
+#'   which the specie is defined to be "Rubisco"
 #' @param data the source data to search from. Can be "averaged", "abridged",
 #'   or NULL. If NULL, the search will proceed from abridged to averaged
 #'   until a match is found
@@ -291,7 +294,7 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
     }
   }
 
-  # First search for species in abridged table
+  # First search for genus in abridged table
   if (is.null(level) || tolower(level) == "genus"){
 
     if (is.null(data) || tolower(data) == "abridged"){
@@ -317,11 +320,25 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       }
     }
 
-    if (!is.null(level) & !is.null(data)) {
-      if (tolower(data) == "averaged"){
-        warning("Genus-specific data is absent in averages table")
-        return(NULL)
+    if (is.null(data) || tolower(data) == "averaged"){
+      # search the full table
+      if (tolower(match)=="complete"){
+        out <- temp_dep_averaged[
+          !is.na(temp_dep_averaged[["genus"]]) &
+            (tolower(temp_dep_averaged[["genus"]]) == tolower(string))
+          , ]
+      } else {
+        out <- temp_dep_averaged[
+          !is.na(temp_dep_averaged[["genus"]]) &
+            grepl(tolower(string), tolower(temp_dep_averaged[["genus"]]), fixed=TRUE)
+          , ]
       }
+      if (nrow(out) > 0) {
+        message("Matched genus in averaged table")
+        rownames(out) <- NULL
+        return(out)
+      }
+
     }
 
   }
@@ -351,12 +368,27 @@ search_DHScale <- function(string, level=NULL, data=NULL, match="complete"){
       }
     }
 
-    if (!is.null(level) & !is.null(data)) {
-      if (tolower(data) == "averaged"){
-        warning("Species-specific data is absent in averages table")
-        return(NULL)
+    if (is.null(data) || tolower(data) == "averaged"){
+      # search the full table
+      if (tolower(match)=="complete"){
+        out <- temp_dep_averaged[
+          !is.na(temp_dep_averaged[["species"]]) &
+            (tolower(temp_dep_averaged[["species"]]) == tolower(string))
+          , ]
+      } else {
+        out <- temp_dep_averaged[
+          !is.na(temp_dep_averaged[["species"]]) &
+            grepl(tolower(string), tolower(temp_dep_averaged[["species"]]), fixed=TRUE)
+          , ]
       }
+      if (nrow(out) > 0) {
+        message("Matched species in averaged table")
+        rownames(out) <- NULL
+        return(out)
+      }
+
     }
+
   }
 
   if (is.null(level) || tolower(level) == "taxonomy"){
