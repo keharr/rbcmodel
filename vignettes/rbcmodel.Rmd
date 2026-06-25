@@ -308,7 +308,7 @@ All K~o~ ΔH values in the averages table are the same, as published ΔH values 
 # 7. References & Acknowledgements
 
 ## 7.1 Acknowledgements:
-K.H. was funded by NSF CAREER Award 2142491 and NASA FINESST Award 80NSSC24K1794. J.Y. was funded by _____. W.K. was funded by the University of Washington School of Oceanography.
+K.H. and J.Y. were funded by NSF CAREER Award 2142491. K.H. was also funded by NASA FINESST Award 80NSSC24K1794. W.K. was funded by the University of Washington School of Oceanography.
 
 ## 7.2 References
 1. Raven J. 2009. Contributions of anoxygenic and oxygenic phototrophy and chemolithotrophy to carbon and oxygen fluxes in aquatic environments. Aquat Microb Ecol 56:177–192.

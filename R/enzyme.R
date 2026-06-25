@@ -539,6 +539,15 @@ search_enzyme <- function(string, level=NULL, data=NULL, match="complete"){
 
   out <- data.frame()
 
+  # Check for valid data string
+  if (!is.null(data)) {
+    if(!(data%in%c("abridged","comprehensive"))) {
+      stop(
+        paste0('Data must be one of \"abridged\" or \"comprehensive\"')
+      )
+    }
+  }
+
   # First search for alias in abridged table
   if (is.null(level) || tolower(level) == "alias"){
     result <- search_alias(string, data, match)
