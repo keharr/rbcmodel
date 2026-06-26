@@ -21,7 +21,14 @@ phosphoglycolate salvage).
 
 ## Installation
 
-You can install the development version of rbcmodel from
+You can install the CRAN release (v.1.0.0) of rbcmodel from
+[CRAN](https://cran.r-project.org/) with:
+
+``` r
+install.packages("rbcmodel")
+```
+
+Alternately, the development version of rbcmodel can be installed from
 [GitHub](https://github.com/) with:
 
 ``` r

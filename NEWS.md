@@ -1,3 +1,3 @@
-# rbcmodel 0.9.0
+# rbcmodel 1.0.0
 
 * Initial CRAN submission.
