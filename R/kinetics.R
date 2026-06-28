@@ -1,15 +1,15 @@
 #' Function factory for calculating temperature-dependent kinetics
 #'
 #' Calculates the non-supplied constant (c) for an Arrhenius-type temperature
-#' scaling function (as seen in Galmés et al. 2016). Uses measured values and
+#' scaling function (as seen in Galm\enc{é}{e}és et al. 2016). Uses measured values and
 #' the temperature they were measured at, along with a supplied temperature
-#' scaling constant (also called the activation energy, ΔH (in kJ/mol)).
+#' scaling constant (also called the activation energy, \eqn{\Delta}H (in kJ/mol)).
 #'
 #' @encoding UTF-8
 #' @param std Measured value
-#' @param delta_H ΔH value for this kinetic parameter for this organism type
+#' @param delta_H \eqn{\Delta}H value for this kinetic parameter for this organism type
 #'   (in kJ/mol).
-#' @param temp Temperature at which param 'std' was measured. Defaults to 25°C.
+#' @param temp Temperature at which param 'std' was measured. Defaults to 25\eqn{^\circ}C.
 #' @returns A new function that scales the supplied kinetic parameter with
 #'   temperature (in celsius).
 #' @export
