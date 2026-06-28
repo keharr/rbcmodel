@@ -18,18 +18,18 @@ A data frame with 1454 rows and 30 columns:
 \item{primary}{Species}
 \item{heterologous_expression}{Species}
 \item{kcat_val}{Value of kcat (/sec)}
-\item{kcat_T}{kcat measurement temperature (°C)}
+\item{kcat_T}{kcat measurement temperature (\eqn{^\circ}C)}
 \item{kcat_pH}{kcat measurement pH}
-\item{Kc_val}{Value of Kc (μM)}
-\item{Kc_T}{Kc measurement temperature (°C)}
+\item{Kc_val}{Value of Kc (\eqn{\mu}M)}
+\item{Kc_T}{Kc measurement temperature (\eqn{^\circ}C)}
 \item{Kc_pH}{Kc measurement pH}
-\item{Ko_val}{Value of Ko (μM)}
-\item{Ko_T}{Ko measurement temperature (°C)}
+\item{Ko_val}{Value of Ko (\eqn{\mu}M)}
+\item{Ko_T}{Ko measurement temperature (\eqn{^\circ}C)}
 \item{Ko_pH}{Ko measurement pH}
 \item{S_val}{Value of Sc/o}
-\item{S_T}{Specificity measurement temperature (°C)}
+\item{S_T}{Specificity measurement temperature (\eqn{^\circ}C)}
 \item{S_pH}{Specificity measurement pH}
-\item{temp}{Kinetics measurement temperature (°C)}
+\item{temp}{Kinetics measurement temperature (\eqn{^\circ}C)}
 \item{pH}{Kinetics measurement pH}
 \item{pKa}{pKa used to determine CO2 concentration for Kc, Ko, and specificity calculations}
 \item{form}{Form of Rubisco}

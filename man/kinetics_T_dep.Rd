@@ -10,10 +10,10 @@ kinetics_T_dep(std, delta_H, temp = 25)
 \arguments{
 \item{std}{Measured value}
 
-\item{delta_H}{ΔH value for this kinetic parameter for this organism type
+\item{delta_H}{\eqn{\Delta}H value for this kinetic parameter for this organism type
 (in kJ/mol).}
 
-\item{temp}{Temperature at which param 'std' was measured. Defaults to 25°C.}
+\item{temp}{Temperature at which param 'std' was measured. Defaults to 25\eqn{^\circ}C.}
 }
 \value{
 A new function that scales the supplied kinetic parameter with
@@ -21,9 +21,9 @@ temperature (in celsius).
 }
 \description{
 Calculates the non-supplied constant (c) for an Arrhenius-type temperature
-scaling function (as seen in Galmés et al. 2016). Uses measured values and
+scaling function (as seen in Galm\enc{é}{e}és et al. 2016). Uses measured values and
 the temperature they were measured at, along with a supplied temperature
-scaling constant (also called the activation energy, ΔH (in kJ/mol)).
+scaling constant (also called the activation energy, \eqn{\Delta}H (in kJ/mol)).
 }
 \examples{
 kcat_proteo_Ia <- kinetics_T_dep(15, 44.7) # create new function

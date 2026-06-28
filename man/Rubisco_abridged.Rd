@@ -14,14 +14,14 @@ A data frame with 294 rows and 19 columns:
 \item{species}{Species}
 \item{subspecies}{Subspecies, variant, or cultivar}
 \item{kcat_val}{Value of kcat (/sec)}
-\item{kcat_T}{kcat measurement temperature (°C)}
-\item{Kc_val}{Value of Kc (μM)}
-\item{Kc_T}{kcat measurement temperature (°C)}
-\item{Ko_val}{Value of Ko (μM)}
-\item{Ko_T}{kcat measurement temperature (°C)}
+\item{kcat_T}{kcat measurement temperature (\eqn{^\circ}C)}
+\item{Kc_val}{Value of Kc (\eqn{\mu}M)}
+\item{Kc_T}{kcat measurement temperature (\eqn{^\circ}C)}
+\item{Ko_val}{Value of Ko (\eqn{\mu}M)}
+\item{Ko_T}{kcat measurement temperature (\eqn{^\circ}C)}
 \item{S_val}{Value of Sc/o}
-\item{S_T}{Specificity measurement temperature (°C)}
-\item{temp}{Kinetics measurement temperature (°C)}
+\item{S_T}{Specificity measurement temperature (\eqn{^\circ}C)}
+\item{temp}{Kinetics measurement temperature (\eqn{^\circ}C)}
 \item{form}{Form of Rubisco}
 \item{PGS}{Recommended phosphoglycolate salvage pathway}
 \item{taxonomy}{Taxonomy}

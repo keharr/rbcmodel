@@ -24,7 +24,7 @@ A new 'DHScale' instance.
 \description{
 This class collects temperature scaling constants for each of the four
 kinetic parameters. These scaling constants are also called the activation
-energy of that kinetic parameter, and are typically denoted with ΔH. In
+energy of that kinetic parameter, and are typically denoted with \eqn{\Delta}H. In
 combination with an enzyme-class object, a DHScale-class object can be used
 to create a function that models an enzyme's carbon output with regards to
 temperature and CO2/O2 concentration.

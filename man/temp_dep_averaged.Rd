@@ -26,7 +26,7 @@ A data frame with 9 rows and 13 columns:
 }
 }
 \source{
-compiled by the authors, mostly from Galmés et al. 2016
+compiled by the authors, mostly from Galm\enc{é}{e}s et al. 2016
 }
 \usage{
 temp_dep_averaged
