@@ -26,17 +26,27 @@ make_4D_grid <- function(
   func, x_seq, y_seq, z_seq, var_names = c("x", "y", "z", "f")
 ) {
 
-  # use the mesh function from plot3D
-  mesh <- plot3D::mesh(x_seq, y_seq, z_seq)
+  dim_x <- length(x_seq)
+  dim_y <- length(y_seq)
+  dim_z <- length(z_seq)
+
+  # create mesh using base package's expand.grid
+  mesh <- expand.grid(x = x_seq, y = y_seq, z = z_seq)
 
   # applying function on the mesh
   f <- func(mesh[[1]], mesh[[2]], mesh[[3]])
 
+  # reshape the mesh and output
+  x <- array(mesh[[1]], dim = c(dim_x, dim_y, dim_z))
+  y <- array(mesh[[2]], dim = c(dim_x, dim_y, dim_z))
+  z <- array(mesh[[3]], dim = c(dim_x, dim_y, dim_z))
+  f <- array(f, dim = c(dim_x, dim_y, dim_z))
+
   # assemble all coordinates into a single list
   out <- list(
-    x = mesh[[1]],
-    y = mesh[[2]],
-    z = mesh[[3]],
+    x = x,
+    y = y,
+    z = z,
     f = f
   )
 

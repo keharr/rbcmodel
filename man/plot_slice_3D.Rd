@@ -77,6 +77,8 @@ variables form the horizontal and the vertical axes.
 f <- function(x, y, z) { x + y * z }
 g1 <- make_4D_grid(f, seq(1, 3, 0.1), seq(-2, 2, 0.2), seq(4, 10, 0.2))
 s1 <- slice_4D_grid(g1, 2, 2)
-# plot the 3D slice
-plot_slice_3D(s1, contours=seq(5, 25, 2.5), dims=c(1, 3, 4))
+# plot the 3D slice (if tcltk is available)
+if (capabilities("tcltk")) {
+  plot_slice_3D(s1, contours=seq(5, 25, 2.5), dims=c(1, 3, 4))
+}
 }

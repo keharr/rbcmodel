@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+has_tk <- capabilities("tcltk")
 ```
 
 ```{r setup}
@@ -55,7 +56,7 @@ For customization, `plot_slice_3D()` accepts the following named arguments. When
 ## 2. Changing labels
 `plot_slice_3D()` uses the same formatting constraints as the base R `plot()` function for labels, so some tricks used in other plotting packages (such as `ggplot2`) to get subscripts, superscripts, Greek letters, etc. may not work in `plot_slice_3D()`. We recommend using the Unicode characters for degree symbols. To make a subscript or superscript, you can use the base R function `expression()` to create them. Greek letters can also be created using `expression()`. Below, we provide an example of a CO~2~ vs. T plot that includes formatted labels that you can use:
 
-```{r nice_labels}
+```{r nice_labels, eval = has_tk}
 plot_slice_3D(s2,contours=c(2,4,6,8),xlabel=expression(CO[2]~(μM)),ylabel="T (°C)")
 #plot_slice_3D(s2,contours=c(2,4,6,8),xlabel=expression(CO[2]~(mu*M)),ylabel="T (°C)") will create mu just as easily.
 ```
@@ -63,14 +64,14 @@ plot_slice_3D(s2,contours=c(2,4,6,8),xlabel=expression(CO[2]~(μM)),ylabel="T (�
 ## 3. Creating a custom color palette
 We have provided an automatic color palette (red for positive values, white at 0, blue for negative values) for all `plot_slice_3D()` graphs. Pure red (`"#ff0000"`) is used for the maximum value of the color scale, and pure blue (`"#0000ff"`) is used for the minimum value of the color scale. To adjust the color scale boundaries, you can use the arguments `cmin` and `cmax`. Any values that are present on the graph that do not fall within that range will end up the color specified by `NA_col`, which be default is `"grey"`.
 
-```{r shifting_color_scale_boundaries}
+```{r shifting_color_scale_boundaries, eval = has_tk}
 plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel=expression(CO[2]~(μM)),ylabel=expression(O[2]~(μM)))
 plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel=expression(CO[2]~(μM)),ylabel=expression(O[2]~(μM)), cmax=5)
 ```
 
 Alternatively, you can specify your own color palette from scratch using `colors`. This should be a list of many hex code values, and can be created using functions like `ramp.col()` from the `plot3D` package, a dependency of `rbcmodel`.
 
-```{r color_palette_from_scratch}
+```{r color_palette_from_scratch, eval = has_tk}
 green_ex<-plot3D::ramp.col(c("white","green"),n=125)
 #print color scale for visualization of data structure
 green_ex
@@ -80,21 +81,21 @@ plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel=expression(CO[2]~(μM)),ylabel=exp
 ## 4. Adding elements to the graph
 Because `plot_slice_3D()` is based on the base R plot functions, any of the base R plot functions can be combined with the graph created by `plot_slice_3D()`. To start, `plot_slice_3D()` passes on any unused variables to `plot3D::image2D()` and from there to `plot()`:
 
-```{r unused_variable}
+```{r unused_variable, eval = has_tk}
 #passing an unused variable to image2D()
 plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel=expression(CO[2]~(μM)),ylabel=expression(O[2]~(μM)),rasterImage=TRUE)
 ```
 
 Adding a title is as simple as invoking `title()` after `plot_slice_3D()`:
 
-```{r add_title}
+```{r add_title, eval = has_tk}
 plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel=expression(CO[2]~(μM)),ylabel=expression(O[2]~(μM)))
 title("My title")
 ```
 
 It is also possible to add points, horizontal/vertical lines, and other shapes as you would with any base R plot. In this example, we will add a horizontal line at 300μM O~2~:
 
-```{r add_line}
+```{r add_line, eval = has_tk}
 plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel=expression(CO[2]~(μM)),ylabel=expression(O[2]~(μM)))
 abline(h=300)
 ```
@@ -110,12 +111,12 @@ names(g2)
 
 Now we can make two slices and plot:
 
-```{r dim_2_slice_after_permute}
+```{r dim_2_slice_after_permute, eval = has_tk}
 s3 <- slice_4D_grid(g2, dim=2, val=500)
 plot_slice_3D(s3, contours=c(2, 4, 6),xlabel=expression("T (°C)"),ylabel=expression(O[2]~(μM)))
 ```
 
-```{r dim_3_slice_after_permute}
+```{r dim_3_slice_after_permute, eval = has_tk}
 s3 <- slice_4D_grid(g2, dim=3, val=500)
 plot_slice_3D(s3, contours=c(2, 4, 6), xlabel=expression("T (°C)"), ylabel=expression(CO[2]~(μM)))
 ```

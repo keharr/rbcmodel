@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+has_tk <- capabilities("tcltk")
 ```
 
 ```{r setup}
@@ -188,12 +189,12 @@ Now that we have a slice, we can use `plot_slice_3D()` to see how the carbon fix
 
 The most basic input to `plot_slice_3D()` is just a slice. With no other inputs, it will plot the slice with an automatic color scale: blue for negative values, white at 0, and red for positive values. Larger absolute values are shown with increasing saturation. It sizes the legend to match the range of the plot, as seen in the plot of our slice from section 4.2:
 
-```{r plot_wheat_simple}
+```{r plot_wheat_simple, eval = has_tk}
 plot_slice_3D(s1)
 ```
 
 In this default configuration, it does not add contours or labels, and `NA` values (when O~2~ is 0 in either the `"canon"`, `diatom`, or `"alt"` PGS schemes), will be colored grey. Contours and labels can be provided using the `contours`, `xlabel`, and `ylabel` arguments:
-```{r plot_wheat}
+```{r plot_wheat, eval = has_tk}
 #plot the slice with some contours
 plot_slice_3D(s1,contours=c(1.5,2,2.5),xlabel="CO2",ylabel="O2")
 ```
@@ -206,6 +207,9 @@ A slice at constant temperature will always have CO~2~ on the x-axis and O~2~ on
 ```{r transpose_wheat}
 #transpose the temperature slice we made
 s2<-transpose_3D_slice(s1)
+```
+
+```{r plot_tranposed_wheat, eval = has_tk}
 #plot the new slice
 plot_slice_3D(s2,contours=c(1.5,2,2.5),xlabel="O2",ylabel="CO2")
 ```
@@ -233,7 +237,7 @@ wh_v_sp(15,200,25)
 ```
 
 A plot of the comparison is accomplished through the same method as a single enzyme alone:
-```{r plot_comparison}
+```{r plot_comparison, eval = has_tk}
 #create the grid
 wh_v_sp_grid<-make_4D_grid(wh_v_sp,CO2_seq,O2_seq,temp_seq,var_names=c("CO2","O2","T","wheat/spinach comp"))
 #slice at 25C
@@ -243,7 +247,7 @@ plot_slice_3D(s3,xlabel="CO2",ylabel="O2")
 ```
 
 According to our results, wheat Rubisco fixes more carbon at all shown concentrations of CO~2~ and O~2~ at 25°C. This is not the case at 0°C, where spinach Rubisco is faster across the whole parameter space (albeit at very small magnitudes).
-```{r 0C_comparison}
+```{r 0C_comparison, eval = has_tk}
 #slice at 0C
 s4<-slice_4D_grid(wh_v_sp_grid,dim=3,0)
 #plot 0C slice
@@ -251,7 +255,7 @@ plot_slice_3D(s4,contours=NULL,xlabel="CO2",ylabel="O2")
 ```
 
 And in between, at 13°C, whether wheat or spinach Rubisco is faster depends on the CO~2~ and O~2~ concentration.
-```{r 13C_comparison}
+```{r 13C_comparison, eval = has_tk}
 #slice at 13C
 s5<-slice_4D_grid(wh_v_sp_grid,dim=3,13)
 #plot slice
@@ -259,7 +263,7 @@ plot_slice_3D(s5,contours=seq(-0.03,.03,length.out=7),xlabel="CO2",ylabel="O2")
 ```
 
 The temperature switch in which enzyme has a higher carbon fixation rate can more easily be visualized by slicing O~2~ instead and allowing CO~2~ and temperature to change:
-```{r CO2vT_comparison}
+```{r CO2vT_comparison, eval = has_tk}
 #slice O2 at 500uM
 s6<-slice_4D_grid(wh_v_sp_grid,dim=2,500)
 #plot slice

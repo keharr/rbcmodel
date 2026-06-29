@@ -12,8 +12,7 @@ Description: Collects published kinetics of ribulose 1,5-bisphosphate
     enzyme using one of the three known phosphoglycolate salvage pathways.
     Custom enzymes and temperature dependences can be created with user
     kinetics, or published kinetics can be accessed through a meta-analysis
-    contained within the package. An expansion of methods from Harrison et al.
-    (2025) <doi:10.1128/aem.00604-25>.
+    contained within the package.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
