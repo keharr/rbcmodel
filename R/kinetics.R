@@ -1,7 +1,7 @@
 #' Function factory for calculating temperature-dependent kinetics
 #'
 #' Calculates the non-supplied constant (c) for an Arrhenius-type temperature
-#' scaling function (as seen in Galm\enc{é}{e}és et al. 2016). Uses measured values and
+#' scaling function (as seen in Galm\enc{é}{e}s et al. 2016). Uses measured values and
 #' the temperature they were measured at, along with a supplied temperature
 #' scaling constant (also called the activation energy, \eqn{\Delta}H (in kJ/mol)).
 #'
