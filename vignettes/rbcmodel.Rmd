@@ -12,7 +12,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-has_tk <- capabilities("tcltk")
+has_tk <- capabilities("tcltk") && (
+  !grepl("darwin", R.version$os, ignore.case = TRUE) ||
+  capabilities("X11")
+)
 ```
 
 ```{r setup}
