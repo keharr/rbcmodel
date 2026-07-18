@@ -237,8 +237,11 @@ DHScale <- function(id_name, id_col="identifier", scale_name=NULL, data=NULL){
   if (nrow(data_sub) == 0){
     stop("No entry found. Abort.")
   } else if (nrow(data_sub) > 1) {
-    print(data_sub)
-    stop("Multiple entries found. Abort.")
+    stop(errorCondition(
+      message="Multiple entries found. Abort. To see matched entries, catch this error and examine its $data element.",
+      class="ErrorWithData",
+      data=data_sub
+    ))
   }
 
   cols <- colnames(data_sub)
