@@ -96,6 +96,8 @@ last_non_NA <- function(x) {
 #'   and merged.
 #' @param keep_unmerged Whether to keep the original entries that have NOT
 #'   been touched.
+#' @returns a data frame consisting of the merged entries, and optionally the
+#'   unmerged and/or the untouched entries.
 #' @export
 #' @examples
 #' df <- data.frame(
