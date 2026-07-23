@@ -37,6 +37,10 @@ and merged.}
 \item{keep_unmerged}{Whether to keep the original entries that have NOT
 been touched.}
 }
+\value{
+a data frame consisting of the merged entries, and optionally the
+unmerged and/or the untouched entries.
+}
 \description{
 Merge (combine) several entries from a data.frame.
 }
